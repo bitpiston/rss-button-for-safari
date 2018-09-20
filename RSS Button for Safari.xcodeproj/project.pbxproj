@@ -1,0 +1,576 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E4BC96652154452800E65EA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC96642154452800E65EA5 /* AppDelegate.swift */; };
+		E4BC96672154452800E65EA5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC96662154452800E65EA5 /* ViewController.swift */; };
+		E4BC96692154452900E65EA5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E4BC96682154452900E65EA5 /* Assets.xcassets */; };
+		E4BC966C2154452900E65EA5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4BC966A2154452900E65EA5 /* Main.storyboard */; };
+		E4BC96782154452900E65EA5 /* RSS_Button_for_SafariTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC96772154452900E65EA5 /* RSS_Button_for_SafariTests.swift */; };
+		E4BC96832154452900E65EA5 /* RSS_Button_for_SafariUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC96822154452900E65EA5 /* RSS_Button_for_SafariUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E4BC96742154452900E65EA5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4BC96592154452800E65EA5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E4BC96602154452800E65EA5;
+			remoteInfo = "RSS Button for Safari";
+		};
+		E4BC967F2154452900E65EA5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4BC96592154452800E65EA5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E4BC96602154452800E65EA5;
+			remoteInfo = "RSS Button for Safari";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		E4BC96612154452800E65EA5 /* RSS Button for Safari.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RSS Button for Safari.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4BC96642154452800E65EA5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		E4BC96662154452800E65EA5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		E4BC96682154452900E65EA5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E4BC966B2154452900E65EA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		E4BC966D2154452900E65EA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E4BC966E2154452900E65EA5 /* RSS_Button_for_Safari.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RSS_Button_for_Safari.entitlements; sourceTree = "<group>"; };
+		E4BC96732154452900E65EA5 /* RSS Button for SafariTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RSS Button for SafariTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4BC96772154452900E65EA5 /* RSS_Button_for_SafariTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSS_Button_for_SafariTests.swift; sourceTree = "<group>"; };
+		E4BC96792154452900E65EA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E4BC967E2154452900E65EA5 /* RSS Button for SafariUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RSS Button for SafariUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4BC96822154452900E65EA5 /* RSS_Button_for_SafariUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSS_Button_for_SafariUITests.swift; sourceTree = "<group>"; };
+		E4BC96842154452900E65EA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E4BC965E2154452800E65EA5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E4BC96702154452900E65EA5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E4BC967B2154452900E65EA5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E4BC96582154452800E65EA5 = {
+			isa = PBXGroup;
+			children = (
+				E4BC96632154452800E65EA5 /* RSS Button for Safari */,
+				E4BC96762154452900E65EA5 /* RSS Button for SafariTests */,
+				E4BC96812154452900E65EA5 /* RSS Button for SafariUITests */,
+				E4BC96622154452800E65EA5 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E4BC96622154452800E65EA5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E4BC96612154452800E65EA5 /* RSS Button for Safari.app */,
+				E4BC96732154452900E65EA5 /* RSS Button for SafariTests.xctest */,
+				E4BC967E2154452900E65EA5 /* RSS Button for SafariUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E4BC96632154452800E65EA5 /* RSS Button for Safari */ = {
+			isa = PBXGroup;
+			children = (
+				E4BC96642154452800E65EA5 /* AppDelegate.swift */,
+				E4BC96662154452800E65EA5 /* ViewController.swift */,
+				E4BC96682154452900E65EA5 /* Assets.xcassets */,
+				E4BC966A2154452900E65EA5 /* Main.storyboard */,
+				E4BC966D2154452900E65EA5 /* Info.plist */,
+				E4BC966E2154452900E65EA5 /* RSS_Button_for_Safari.entitlements */,
+			);
+			path = "RSS Button for Safari";
+			sourceTree = "<group>";
+		};
+		E4BC96762154452900E65EA5 /* RSS Button for SafariTests */ = {
+			isa = PBXGroup;
+			children = (
+				E4BC96772154452900E65EA5 /* RSS_Button_for_SafariTests.swift */,
+				E4BC96792154452900E65EA5 /* Info.plist */,
+			);
+			path = "RSS Button for SafariTests";
+			sourceTree = "<group>";
+		};
+		E4BC96812154452900E65EA5 /* RSS Button for SafariUITests */ = {
+			isa = PBXGroup;
+			children = (
+				E4BC96822154452900E65EA5 /* RSS_Button_for_SafariUITests.swift */,
+				E4BC96842154452900E65EA5 /* Info.plist */,
+			);
+			path = "RSS Button for SafariUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E4BC96602154452800E65EA5 /* RSS Button for Safari */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E4BC96872154452900E65EA5 /* Build configuration list for PBXNativeTarget "RSS Button for Safari" */;
+			buildPhases = (
+				E4BC965D2154452800E65EA5 /* Sources */,
+				E4BC965E2154452800E65EA5 /* Frameworks */,
+				E4BC965F2154452800E65EA5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "RSS Button for Safari";
+			productName = "RSS Button for Safari";
+			productReference = E4BC96612154452800E65EA5 /* RSS Button for Safari.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E4BC96722154452900E65EA5 /* RSS Button for SafariTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E4BC968A2154452900E65EA5 /* Build configuration list for PBXNativeTarget "RSS Button for SafariTests" */;
+			buildPhases = (
+				E4BC966F2154452900E65EA5 /* Sources */,
+				E4BC96702154452900E65EA5 /* Frameworks */,
+				E4BC96712154452900E65EA5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E4BC96752154452900E65EA5 /* PBXTargetDependency */,
+			);
+			name = "RSS Button for SafariTests";
+			productName = "RSS Button for SafariTests";
+			productReference = E4BC96732154452900E65EA5 /* RSS Button for SafariTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		E4BC967D2154452900E65EA5 /* RSS Button for SafariUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E4BC968D2154452900E65EA5 /* Build configuration list for PBXNativeTarget "RSS Button for SafariUITests" */;
+			buildPhases = (
+				E4BC967A2154452900E65EA5 /* Sources */,
+				E4BC967B2154452900E65EA5 /* Frameworks */,
+				E4BC967C2154452900E65EA5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E4BC96802154452900E65EA5 /* PBXTargetDependency */,
+			);
+			name = "RSS Button for SafariUITests";
+			productName = "RSS Button for SafariUITests";
+			productReference = E4BC967E2154452900E65EA5 /* RSS Button for SafariUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E4BC96592154452800E65EA5 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1000;
+				LastUpgradeCheck = 1000;
+				ORGANIZATIONNAME = "BitPiston Studios";
+				TargetAttributes = {
+					E4BC96602154452800E65EA5 = {
+						CreatedOnToolsVersion = 10.0;
+					};
+					E4BC96722154452900E65EA5 = {
+						CreatedOnToolsVersion = 10.0;
+						TestTargetID = E4BC96602154452800E65EA5;
+					};
+					E4BC967D2154452900E65EA5 = {
+						CreatedOnToolsVersion = 10.0;
+						TestTargetID = E4BC96602154452800E65EA5;
+					};
+				};
+			};
+			buildConfigurationList = E4BC965C2154452800E65EA5 /* Build configuration list for PBXProject "RSS Button for Safari" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E4BC96582154452800E65EA5;
+			productRefGroup = E4BC96622154452800E65EA5 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E4BC96602154452800E65EA5 /* RSS Button for Safari */,
+				E4BC96722154452900E65EA5 /* RSS Button for SafariTests */,
+				E4BC967D2154452900E65EA5 /* RSS Button for SafariUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E4BC965F2154452800E65EA5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E4BC96692154452900E65EA5 /* Assets.xcassets in Resources */,
+				E4BC966C2154452900E65EA5 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E4BC96712154452900E65EA5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E4BC967C2154452900E65EA5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E4BC965D2154452800E65EA5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E4BC96672154452800E65EA5 /* ViewController.swift in Sources */,
+				E4BC96652154452800E65EA5 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E4BC966F2154452900E65EA5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E4BC96782154452900E65EA5 /* RSS_Button_for_SafariTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E4BC967A2154452900E65EA5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E4BC96832154452900E65EA5 /* RSS_Button_for_SafariUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E4BC96752154452900E65EA5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E4BC96602154452800E65EA5 /* RSS Button for Safari */;
+			targetProxy = E4BC96742154452900E65EA5 /* PBXContainerItemProxy */;
+		};
+		E4BC96802154452900E65EA5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E4BC96602154452800E65EA5 /* RSS Button for Safari */;
+			targetProxy = E4BC967F2154452900E65EA5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		E4BC966A2154452900E65EA5 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E4BC966B2154452900E65EA5 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		E4BC96852154452900E65EA5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		E4BC96862154452900E65EA5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		E4BC96882154452900E65EA5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "RSS Button for Safari/RSS_Button_for_Safari.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "RSS Button for Safari/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "bitpiston.RSS-Button-for-Safari";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+			};
+			name = Debug;
+		};
+		E4BC96892154452900E65EA5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "RSS Button for Safari/RSS_Button_for_Safari.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "RSS Button for Safari/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "bitpiston.RSS-Button-for-Safari";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+			};
+			name = Release;
+		};
+		E4BC968B2154452900E65EA5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "RSS Button for SafariTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "bitpiston.RSS-Button-for-SafariTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RSS Button for Safari.app/Contents/MacOS/RSS Button for Safari";
+			};
+			name = Debug;
+		};
+		E4BC968C2154452900E65EA5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "RSS Button for SafariTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "bitpiston.RSS-Button-for-SafariTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RSS Button for Safari.app/Contents/MacOS/RSS Button for Safari";
+			};
+			name = Release;
+		};
+		E4BC968E2154452900E65EA5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "RSS Button for SafariUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "bitpiston.RSS-Button-for-SafariUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TEST_TARGET_NAME = "RSS Button for Safari";
+			};
+			name = Debug;
+		};
+		E4BC968F2154452900E65EA5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "RSS Button for SafariUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "bitpiston.RSS-Button-for-SafariUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TEST_TARGET_NAME = "RSS Button for Safari";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E4BC965C2154452800E65EA5 /* Build configuration list for PBXProject "RSS Button for Safari" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E4BC96852154452900E65EA5 /* Debug */,
+				E4BC96862154452900E65EA5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E4BC96872154452900E65EA5 /* Build configuration list for PBXNativeTarget "RSS Button for Safari" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E4BC96882154452900E65EA5 /* Debug */,
+				E4BC96892154452900E65EA5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E4BC968A2154452900E65EA5 /* Build configuration list for PBXNativeTarget "RSS Button for SafariTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E4BC968B2154452900E65EA5 /* Debug */,
+				E4BC968C2154452900E65EA5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E4BC968D2154452900E65EA5 /* Build configuration list for PBXNativeTarget "RSS Button for SafariUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E4BC968E2154452900E65EA5 /* Debug */,
+				E4BC968F2154452900E65EA5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E4BC96592154452800E65EA5 /* Project object */;
+}
