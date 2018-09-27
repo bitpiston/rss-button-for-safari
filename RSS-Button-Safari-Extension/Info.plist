@@ -19,7 +19,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>2</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
 	<key>NSExtension</key>
@@ -57,6 +57,6 @@
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2018 BitPiston Studios. All rights reserved.</string>
 	<key>NSHumanReadableDescription</key>
-	<string>Safari extension to add a RSS button to the toolbar with a list of feeds for the current page.</string>
+	<string>A button in the Safari toolbar for viewing and subscribing to RSS feeds</string>
 </dict>
 </plist>
