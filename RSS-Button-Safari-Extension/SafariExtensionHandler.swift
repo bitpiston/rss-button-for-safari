@@ -11,6 +11,12 @@ import SafariServices
 class SafariExtensionHandler: SFSafariExtensionHandler {
     typealias FeedDictionary = [String: Any]
     
+    let feedHandlerAppId: CFString?
+    
+    override init() {
+        self.feedHandlerAppId = LSCopyDefaultHandlerForURLScheme("feed" as CFString)?.takeUnretainedValue()
+    }
+    
     override func messageReceived(withName messageName: String, from page: SFSafariPage, userInfo: [String: Any]?) {
         page.getPropertiesWithCompletionHandler { properties in
             #if DEBUG

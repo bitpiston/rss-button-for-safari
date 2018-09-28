@@ -17,6 +17,8 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
     var feeds = [FeedModel]()
     var contentWidth: CGFloat = 0
     var maxCellWidth: CGFloat = 0
+    var showFeedType: Bool = false
+    let feedHandlerAppId = LSCopyDefaultHandlerForURLScheme("feed" as CFString)?.takeUnretainedValue() as String?
     
     static let shared = SafariExtensionViewController()
     
@@ -45,8 +47,18 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
     }
     
     static func updateFeeds(with feeds: [FeedModel]) {
+        let rssFeed: Bool     = feeds.contains(where: { $0.type == "RSS" })
+        let atomFeed: Bool    = feeds.contains(where: { $0.type == "Atom" })
+        let unknownFeed: Bool = feeds.contains(where: { $0.type == "Unknown" })
+        
         DispatchQueue.main.async {
             shared.feeds = feeds
+            
+            if (rssFeed == true && atomFeed == true) || unknownFeed == true {
+                shared.showFeedType = true
+            } else {
+                shared.showFeedType = false
+            }
             
             //shared.tableView.sizeToFit()
             shared.tableView.reloadData()
@@ -59,8 +71,76 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
         let row = self.tableView.row(for: sender)
         
         if let url = URL(string: "feed:" + feeds[row].url) {
+            #if DEBUG
+            NSLog("Info: Opening feed (\(url))")
+            #endif
+            
             NSWorkspace.shared.open(url)
+        } else {
+            NSLog("Error: Unhandled URL for feed")
         }
+        
+/*
+        switch self.feedHandler.type {
+            case "app":
+                if self.feedHandler.value != nil, let url = URL(string: feeds[row].url) {
+                    #if DEBUG
+                    NSLog("Info: Opening feed (\(url)) with \(self.feedHandler.value)")
+                    #endif
+
+                    NSWorkspace.shared.open([url],
+                                            withAppBundleIdentifier: self.feedHandlerAppId!,
+                                            options: NSWorkspace.LaunchOptions.default,
+                                            additionalEventParamDescriptor: nil,
+                                            launchIdentifiers: nil)
+                } else {
+                    NSLog("Error: Unhandled URL for feed via application (\(self.feedHandler.value))")
+                }
+            case "web":
+                if self.feedHandler.value != nil, let url = URL(string: feeds[row].url) {
+                    // needs to construct a url replacing %s in feedHandler.value with feed.url
+                    #if DEBUG
+                    NSLog("Info: Opening feed (\(url)) with \(self.feedHandlerAppId!)")
+                    #endif
+
+                    NSWorkspace.shared.open(url)
+                } else {
+                    NSLog("Error: Unhandled URL for feed via web (\(self.feedHandler.value))")
+                }
+            default:
+                if let url = URL(string: "feed:" + feeds[row].url) {
+                    // this could probably be merged with web and replace %s on feed:%s
+                    #if DEBUG
+                    NSLog("Info: Opening \(url) with default application)")
+                    #endif
+
+                    NSWorkspace.shared.open(url)
+                } else {
+                    NSLog("Error: Unhandled URL for feed via default application")
+                }
+        }
+         
+        if self.feedHandlerAppId != nil, let url = URL(string: feeds[row].url) {
+            #if DEBUG
+            NSLog("Info: Opening feed (\(url)) with \(self.feedHandlerAppId!)")
+            #endif
+            
+            NSWorkspace.shared.open([url],
+                                    //withAppBundleIdentifier: self.feedHandlerAppId!,
+                                    withAppBundleIdentifier: "com.reederapp.mac",
+                                    options: NSWorkspace.LaunchOptions.default,
+                                    additionalEventParamDescriptor: nil,
+                                    launchIdentifiers: nil)
+        } else if let url = URL(string: "feed:" + feeds[row].url) {
+            #if DEBUG
+            NSLog("Info: Opening \(url) with default application)")
+            #endif
+            
+            NSWorkspace.shared.open(url)
+        } else {
+            NSLog("Error: Unhandled URL for feed")
+        }
+*/
     }
     
 }
@@ -80,7 +160,13 @@ extension SafariExtensionViewController: NSTableViewDataSource, NSTableViewDeleg
         
         if let cellView = tableView.makeView(withIdentifier: cellIdentifier, owner: self) as? FeedTableCellView {
             cellView.titleTextField.stringValue = feeds[row].title
-            cellView.detailsTextField.stringValue = "(\(feeds[row].type)) " + feeds[row].url
+            cellView.detailsTextField.stringValue = {
+                if showFeedType {
+                    return "(\(feeds[row].type)) " + feeds[row].url
+                } else {
+                    return feeds[row].url
+                }
+            }()
             cellView.subscribeButton.target = self
             cellView.subscribeButton.action = #selector(self.subscribeButtonClick(_:))
             
