@@ -24,7 +24,7 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
-        self.preferredContentSize = CGSize(width: 320, height: 74)
+        self.preferredContentSize = CGSize(width: 310, height: 75)
         
         super.viewDidLoad()
     }
@@ -38,8 +38,8 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
             self.maxCellWidth = 0
         }
         
-        let width: CGFloat = min(max(self.contentWidth, 320), 420)
-        let height: CGFloat = self.tableView.fittingSize.height + 31
+        let width: CGFloat = min(max(self.contentWidth, 310), 410)
+        let height: CGFloat = self.tableView.fittingSize.height + 30
         
         self.preferredContentSize = CGSize(width: width, height: height)
     }
@@ -51,7 +51,7 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
             //shared.tableView.sizeToFit()
             shared.tableView.reloadData()
             
-            shared.updatePreferredContentSize(updatingFeeds: true)
+            //shared.updatePreferredContentSize(updatingFeeds: true)
         }
     }
     
