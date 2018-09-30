@@ -26,6 +26,7 @@ class ViewController: NSViewController, NSWindowDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.checkExtensionState()
         self.updateFeedHandlers()
     }
     
