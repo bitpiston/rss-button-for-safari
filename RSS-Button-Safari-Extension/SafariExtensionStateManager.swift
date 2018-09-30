@@ -14,16 +14,16 @@ class SafariExtensionStateManager {
     
     var feeds: [URL: [FeedModel]] = [:]
     
-    static func setFeeds(url: URL, feeds: [FeedModel]) -> Void {
-        shared.feeds[url] = feeds
+    func setFeeds(url: URL, feeds: [FeedModel]) -> Void {
+        self.feeds[url] = feeds
     }
     
-    static func getFeeds(url: URL) -> [FeedModel] {
-        return shared.feeds[url] ?? [FeedModel]()
+    func getFeeds(url: URL) -> [FeedModel] {
+        return self.feeds[url] ?? [FeedModel]()
     }
     
-    static func hasFeeds(url: URL) -> Bool {
-        return shared.feeds[url]?.isEmpty ?? true ? false : true
+    func hasFeeds(url: URL) -> Bool {
+        return self.feeds[url]?.isEmpty ?? true ? false : true
     }
     
 }

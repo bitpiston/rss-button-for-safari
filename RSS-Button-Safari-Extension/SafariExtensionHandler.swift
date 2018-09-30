@@ -11,11 +11,8 @@ import SafariServices
 class SafariExtensionHandler: SFSafariExtensionHandler {
     typealias FeedDictionary = [String: Any]
     
-    let feedHandlerAppId: CFString?
-    
-    override init() {
-        self.feedHandlerAppId = LSCopyDefaultHandlerForURLScheme("feed" as CFString)?.takeUnretainedValue()
-    }
+    let stateManager = SafariExtensionStateManager.shared
+    let viewController = SafariExtensionViewController.shared
     
     override func messageReceived(withName messageName: String, from page: SFSafariPage, userInfo: [String: Any]?) {
         page.getPropertiesWithCompletionHandler { properties in
@@ -29,7 +26,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
                 let feeds = self.decodeJSONFeeds(data: userInfo?["feeds"] as? [FeedDictionary])
                 
                 if !feeds.isEmpty {
-                    SafariExtensionStateManager.setFeeds(url: url, feeds: feeds)
+                    self.stateManager.setFeeds(url: url, feeds: feeds)
                     SFSafariApplication.setToolbarItemsNeedUpdate()
                 }
                 
@@ -42,11 +39,11 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     override func validateToolbarItem(in window: SFSafariWindow, validationHandler: @escaping ((Bool, String) -> Void)) {
         getActivePageProperties {
             guard let url: URL = $0?.url else { return }
-            let feedsFound = SafariExtensionStateManager.hasFeeds(url: url)
+            let feedsFound = self.stateManager.hasFeeds(url: url)
             
             #if DEBUG
             NSLog("Info: validateToolbarItem (\(url)) with feedsFound (\(feedsFound))")
-            NSLog("Info: SafariExtensionStateManager feeds stored for \(SafariExtensionStateManager.shared.feeds.count) pages")
+            NSLog("Info: SafariExtensionStateManager feeds stored for \(self.stateManager.feeds.count) pages")
             #endif
             
             validationHandler(feedsFound, "")
@@ -54,19 +51,19 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     }
     
     override func popoverViewController() -> SFSafariExtensionViewController {
-        return SafariExtensionViewController.shared
+        return viewController
     }
     
     override func popoverWillShow(in window: SFSafariWindow) {
         getActivePageProperties {
             guard let url = $0?.url else { return }
-            let feeds = SafariExtensionStateManager.getFeeds(url: url)
+            let feeds = self.stateManager.getFeeds(url: url)
             
             #if DEBUG
             NSLog("Info: popoverWillShow (\(url)) with \(feeds.count) feeds (\(feeds))")
             #endif
             
-            SafariExtensionViewController.updateFeeds(with: feeds)
+            self.viewController.updateFeeds(with: feeds)
         }
     }
     

@@ -22,7 +22,13 @@
 		E4BC96BF2154CB2700E65EA5 /* ToolbarItemIcon.pdf in Resources */ = {isa = PBXBuildFile; fileRef = E4BC96BE2154CB2700E65EA5 /* ToolbarItemIcon.pdf */; };
 		E4BC96CB2158A5AA00E65EA5 /* FeedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC96C92158A2EB00E65EA5 /* FeedModel.swift */; };
 		E4BC96D02158A71400E65EA5 /* SafariExtensionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E4BC96CE2158A71400E65EA5 /* SafariExtensionViewController.xib */; };
-		E4C55BE2215DF34F00BF9426 /* sample.rss in Resources */ = {isa = PBXBuildFile; fileRef = E4C55BE1215DF34F00BF9426 /* sample.rss */; };
+		E4C55BE4215EF78D00BF9426 /* FeedHandlerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C55BE3215EF78D00BF9426 /* FeedHandlerModel.swift */; };
+		E4C55BE62160730100BF9426 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C55BE52160730100BF9426 /* SettingsManager.swift */; };
+		E4C55BE7216074D400BF9426 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C55BE52160730100BF9426 /* SettingsManager.swift */; };
+		E4C55BE8216074DC00BF9426 /* FeedHandlerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C55BE3215EF78D00BF9426 /* FeedHandlerModel.swift */; };
+		E4C55BE92160A10A00BF9426 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4BC96962154455500E65EA5 /* Cocoa.framework */; };
+		E4C55BEB2160A11C00BF9426 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C55BEA2160A11C00BF9426 /* CoreData.framework */; };
+		E4C55BEC2160A12D00BF9426 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C55BEA2160A11C00BF9426 /* CoreData.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,7 +94,9 @@
 		E4BC96BE2154CB2700E65EA5 /* ToolbarItemIcon.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = ToolbarItemIcon.pdf; sourceTree = "<group>"; };
 		E4BC96C92158A2EB00E65EA5 /* FeedModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedModel.swift; sourceTree = "<group>"; };
 		E4BC96CF2158A71400E65EA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SafariExtensionViewController.xib; sourceTree = "<group>"; };
-		E4C55BE1215DF34F00BF9426 /* sample.rss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = sample.rss; sourceTree = "<group>"; };
+		E4C55BE3215EF78D00BF9426 /* FeedHandlerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedHandlerModel.swift; sourceTree = "<group>"; };
+		E4C55BE52160730100BF9426 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
+		E4C55BEA2160A11C00BF9426 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +104,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4C55BEB2160A11C00BF9426 /* CoreData.framework in Frameworks */,
+				E4C55BE92160A10A00BF9426 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,6 +128,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4BC96972154455500E65EA5 /* Cocoa.framework in Frameworks */,
+				E4C55BEC2160A12D00BF9426 /* CoreData.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -151,10 +162,11 @@
 			isa = PBXGroup;
 			children = (
 				E4BC96642154452800E65EA5 /* AppDelegate.swift */,
+				E4C55BE52160730100BF9426 /* SettingsManager.swift */,
 				E4BC96662154452800E65EA5 /* ViewController.swift */,
+				E4C55BE3215EF78D00BF9426 /* FeedHandlerModel.swift */,
 				E4BC96682154452900E65EA5 /* Assets.xcassets */,
 				E4BC966A2154452900E65EA5 /* Main.storyboard */,
-				E4C55BE1215DF34F00BF9426 /* sample.rss */,
 				E4BC966D2154452900E65EA5 /* Info.plist */,
 				E4BC966E2154452900E65EA5 /* RSS_Button_for_Safari.entitlements */,
 			);
@@ -182,6 +194,7 @@
 		E4BC96952154455500E65EA5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E4C55BEA2160A11C00BF9426 /* CoreData.framework */,
 				E4BC96962154455500E65EA5 /* Cocoa.framework */,
 			);
 			name = Frameworks;
@@ -290,6 +303,11 @@
 				TargetAttributes = {
 					E4BC96602154452800E65EA5 = {
 						CreatedOnToolsVersion = 10.0;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.Mac = {
+								enabled = 1;
+							};
+						};
 					};
 					E4BC96722154452900E65EA5 = {
 						CreatedOnToolsVersion = 10.0;
@@ -301,6 +319,11 @@
 					};
 					E4BC96932154455500E65EA5 = {
 						CreatedOnToolsVersion = 10.0;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.Mac = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -332,7 +355,6 @@
 			files = (
 				E4BC96692154452900E65EA5 /* Assets.xcassets in Resources */,
 				E4BC966C2154452900E65EA5 /* Main.storyboard in Resources */,
-				E4C55BE2215DF34F00BF9426 /* sample.rss in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -367,6 +389,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4C55BE4215EF78D00BF9426 /* FeedHandlerModel.swift in Sources */,
+				E4C55BE62160730100BF9426 /* SettingsManager.swift in Sources */,
 				E4BC96672154452800E65EA5 /* ViewController.swift in Sources */,
 				E4BC96652154452800E65EA5 /* AppDelegate.swift in Sources */,
 			);
@@ -392,6 +416,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4C55BE8216074DC00BF9426 /* FeedHandlerModel.swift in Sources */,
+				E4C55BE7216074D400BF9426 /* SettingsManager.swift in Sources */,
 				E4BC96CB2158A5AA00E65EA5 /* FeedModel.swift in Sources */,
 				E4BC96BD21547DF500E65EA5 /* SafariExtensionStateManager.swift in Sources */,
 				E4BC969A2154455600E65EA5 /* SafariExtensionHandler.swift in Sources */,
