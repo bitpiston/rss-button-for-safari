@@ -38,20 +38,23 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     
     override func validateToolbarItem(in window: SFSafariWindow, validationHandler: @escaping ((Bool, String) -> Void)) {
         getActivePageProperties {
-            guard let url: URL = $0?.url else { return }
-            let feedsFound = self.stateManager.hasFeeds(url: url)
-            
-            #if DEBUG
-            NSLog("Info: validateToolbarItem (\(url)) with feedsFound (\(feedsFound))")
-            NSLog("Info: SafariExtensionStateManager feeds stored for \(self.stateManager.feeds.count) pages")
-            #endif
-            
-            validationHandler(feedsFound, "")
+            if let url: URL = $0?.url {
+                let feedsFound = self.stateManager.hasFeeds(url: url)
+                
+                #if DEBUG
+                NSLog("Info: validateToolbarItem (\(url)) with feedsFound (\(feedsFound))")
+                NSLog("Info: SafariExtensionStateManager feeds stored for \(self.stateManager.feeds.count) pages")
+                #endif
+                
+                validationHandler(feedsFound, "")
+            } else {
+                validationHandler(false, "")
+            }
         }
     }
     
     override func popoverViewController() -> SFSafariExtensionViewController {
-        return viewController
+        return self.viewController
     }
     
     override func popoverWillShow(in window: SFSafariWindow) {

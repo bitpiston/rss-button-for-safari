@@ -27,7 +27,9 @@ var feeds = [],
     parsed = false;
 
 document.addEventListener("DOMContentLoaded", function(event) {
-    extractFeeds();
+    if (isValidPage()) {
+        extractFeeds();
+    }
 });
 
 /*
@@ -39,11 +41,14 @@ window.addEventListener("pagehide", function(event) {
 */
 
 function isValidPage() {
-    return (window.top === window && document.domain !== "undefined" && window.location.href !== "favorites://");
+    return (window.top === window &&
+            typeof safari != 'undefined' &&
+            (document.domain !== "undefined" || document.location != null) &&
+            window.location.href !== "favorites://");
 }
 
 function extractFeeds(setParsed = true) {
-    if (!isValidPage() || parsed === true) { return };
+    if (parsed === true) { return };
     
     if (!feeds.length > 0) {
         var headLinks = document.querySelectorAll("head > link[rel='alternate']");
