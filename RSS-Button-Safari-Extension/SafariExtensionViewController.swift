@@ -26,25 +26,25 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
+        tableView.delegate = self
+        tableView.dataSource = self
         
-        self.preferredContentSize = CGSize(width: 310, height: 75)
+        preferredContentSize = CGSize(width: 310, height: 75)
     }
     
     func updatePreferredContentSize(updatingFeeds: Bool = false) {
         if updatingFeeds == true {
             //self.tableView.needsLayout = true
-            self.tableView.layoutSubtreeIfNeeded()
+            tableView.layoutSubtreeIfNeeded()
         } else {
-            self.contentWidth = self.maxCellWidth
-            self.maxCellWidth = 0
+            contentWidth = maxCellWidth
+            maxCellWidth = 0
         }
         
-        let width: CGFloat = min(max(self.contentWidth, 310), 410)
-        let height: CGFloat = self.tableView.fittingSize.height + 30
+        let width: CGFloat = min(max(contentWidth, 310), 410)
+        let height: CGFloat = tableView.fittingSize.height + 30
         
-        self.preferredContentSize = CGSize(width: width, height: height)
+        preferredContentSize = CGSize(width: width, height: height)
     }
     
     func updateFeeds(with feeds: [FeedModel]) {
@@ -52,24 +52,24 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
         let atomFeed: Bool    = feeds.contains(where: { $0.type == "Atom" })
         let unknownFeed: Bool = feeds.contains(where: { $0.type == "Unknown" })
         
-        DispatchQueue.main.async {
-            self.feeds = feeds
+        DispatchQueue.main.async { [weak self] in
+            self?.feeds = feeds
 
             if (rssFeed == true && atomFeed == true) || unknownFeed == true {
-                self.showFeedType = true
+                self?.showFeedType = true
             } else {
-                self.showFeedType = false
+                self?.showFeedType = false
             }
             
-            //shared.tableView.sizeToFit()
-            self.tableView.reloadData()
-            //self.updatePreferredContentSize(updatingFeeds: true)
+            //self?.tableView.sizeToFit()
+            self?.tableView.reloadData()
+            //self?.updatePreferredContentSize(updatingFeeds: true)
         }
     }
     
     @objc func subscribeButtonClick(_ sender: NSButton) {
-        let row = self.tableView.row(for: sender)
-        let feedHandler: FeedHandlerModel = self.settingsManager.feedHandler
+        let row = tableView.row(for: sender)
+        let feedHandler: FeedHandlerModel = settingsManager.feedHandler
 
         switch feedHandler.type {
         case FeedHandlerType.app:
@@ -106,32 +106,32 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
 extension SafariExtensionViewController: NSTableViewDataSource, NSTableViewDelegate {
     
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return self.feeds.count
+        return feeds.count
     }
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        guard self.feeds.count > row else {
+        guard feeds.count > row else {
             return nil
         }
         
         let cellIdentifier = NSUserInterfaceItemIdentifier(rawValue: "cellIdentifier")
         
-        if let cellView = tableView.makeView(withIdentifier: cellIdentifier, owner: self) as? FeedTableCellView {
-            cellView.titleTextField.stringValue = self.feeds[row].title
+        if let cellView = tableView.makeView(withIdentifier: cellIdentifier, owner: self) as? FeedTableCellView { 
+            cellView.titleTextField.stringValue = feeds[row].title
             cellView.detailsTextField.stringValue = {
-                if self.showFeedType == true {
-                    return "(\(self.feeds[row].type)) " + self.feeds[row].url
+                if showFeedType == true {
+                    return "(\(feeds[row].type)) " + feeds[row].url
                 } else {
-                    return self.feeds[row].url
+                    return feeds[row].url
                 }
             }()
             cellView.subscribeButton.target = self
             cellView.subscribeButton.action = #selector(self.subscribeButtonClick(_:))
             
-            self.maxCellWidth = max(self.maxCellWidth, cellView.fittingSize.width)
+            maxCellWidth = max(maxCellWidth, cellView.fittingSize.width)
             
-            if row == self.feeds.count - 1 {
-                self.updatePreferredContentSize()
+            if row == feeds.count - 1 {
+                updatePreferredContentSize()
             }
             
             return cellView

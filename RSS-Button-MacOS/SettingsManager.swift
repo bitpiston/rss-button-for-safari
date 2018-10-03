@@ -58,7 +58,7 @@ class SettingsManager {
             if let data = sharedUserDefaults.value(forKey: feedHandlerKey) as? Data {
                 return NSKeyedUnarchiver.unarchiveObject(with: data) as! FeedHandlerModel
             } else {
-                return self.defaultFeedHandlers[0]
+                return defaultFeedHandlers[0]
             }
         }
         set(value) {

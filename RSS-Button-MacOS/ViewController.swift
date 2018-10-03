@@ -26,14 +26,14 @@ class ViewController: NSViewController, NSWindowDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.checkExtensionState()
-        self.updateFeedHandlers()
+        checkExtensionState()
+        updateFeedHandlers()
     }
     
     override func viewWillAppear() {
         super.viewWillAppear()
         
-        self.checkExtensionState()
+        checkExtensionState()
     }
     
     override func viewDidAppear() {
@@ -61,23 +61,23 @@ class ViewController: NSViewController, NSWindowDelegate {
     }
     
     @objc func checkExtensionState() {
-        SFSafariExtensionManager.getStateOfSafariExtension(withIdentifier: extensionId) { (state, error) in
-            DispatchQueue.main.async {
+        SFSafariExtensionManager.getStateOfSafariExtension(withIdentifier: extensionId) { [unowned self] (state, error) in
+            DispatchQueue.main.async { [weak self] in
                 if let status = state?.isEnabled {
-                    self.statusTextField.textColor = status ? .systemGreen : .systemRed
-                    self.statusTextField.stringValue = status ? "● Enabled" : "● Disabled"
-                    self.informationTextField.stringValue = status ? "The extension is enabled. You can add the RSS Button to the Safari toolbar by right clicking and choosing Customize Toolbar." : "The extension is currently disabled. Please enable it from Safari preferences under the extensions tab."
-                    self.enableButton.isHidden = status
+                    self?.statusTextField.textColor = status ? .systemGreen : .systemRed
+                    self?.statusTextField.stringValue = status ? "● Enabled" : "● Disabled"
+                    self?.informationTextField.stringValue = status ? "The extension is enabled. You can add the RSS Button to the Safari toolbar by right clicking and choosing Customize Toolbar." : "The extension is currently disabled. Please enable it from Safari preferences under the extensions tab."
+                    self?.enableButton.isHidden = status
                 }
             }
         }
     }
     
     func updateFeedHandlers() {
-        var feedHandlers = self.settingsManager.defaultFeedHandlers
+        feedHandlers = settingsManager.defaultFeedHandlers
         
-        let handlers = LSCopyAllHandlersForURLScheme("feed" as CFString)?.takeUnretainedValue()
-        let identifiers = handlers as! [String]
+        let foundFeedHandlers = LSCopyAllHandlersForURLScheme("feed" as CFString)?.takeUnretainedValue()
+        let identifiers = foundFeedHandlers as! [String]
         for (index, id) in identifiers.enumerated() {
             let path = NSWorkspace.shared.absolutePathForApplication(withBundleIdentifier: id)
             let name = FileManager.default.displayName(atPath: path!)
@@ -86,20 +86,19 @@ class ViewController: NSViewController, NSWindowDelegate {
                                                  url: nil,
                                                  appId: id), at: 1 + index)
         }
-        self.feedHandlers = feedHandlers
         
-        self.readerPopUpButton.removeAllItems()
+        readerPopUpButton.removeAllItems()
         for handler in feedHandlers {
-            self.readerPopUpButton.addItem(withTitle: handler.title)
+            readerPopUpButton.addItem(withTitle: handler.title)
         }
-        self.readerPopUpButton.selectItem(withTitle: self.settingsManager.feedHandler.title)
+        readerPopUpButton.selectItem(withTitle: settingsManager.feedHandler.title)
     }
     
     @IBAction func ReaderPopUpSelected(_ sender: NSMenuItem) {
-        if let index = self.feedHandlers.index(where: {$0.title == sender.title}) {
-            self.settingsManager.feedHandler = feedHandlers[index]
+        if let index = feedHandlers.index(where: {$0.title == sender.title}) {
+            settingsManager.feedHandler = feedHandlers[index]
             #if DEBUG
-            NSLog("Info: feedHandler set (\(self.settingsManager.feedHandler.title))")
+            NSLog("Info: feedHandler set (\(settingsManager.feedHandler.title))")
             #endif
         }
     }

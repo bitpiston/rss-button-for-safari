@@ -15,7 +15,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     let viewController = SafariExtensionViewController.shared
     
     override func messageReceived(withName messageName: String, from page: SFSafariPage, userInfo: [String: Any]?) {
-        page.getPropertiesWithCompletionHandler { properties in
+        page.getPropertiesWithCompletionHandler { [unowned self] properties in
             #if DEBUG
             NSLog("Info: The extension received a message (\(messageName)) from a script injected into (\(String(describing: properties?.url))) with userInfo (\(userInfo ?? [:]))")
             #endif
@@ -37,7 +37,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     }
     
     override func validateToolbarItem(in window: SFSafariWindow, validationHandler: @escaping ((Bool, String) -> Void)) {
-        getActivePageProperties {
+        getActivePageProperties { [unowned self] in
             if let url: URL = $0?.url {
                 let feedsFound = self.stateManager.hasFeeds(url: url)
                 
@@ -54,11 +54,11 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     }
     
     override func popoverViewController() -> SFSafariExtensionViewController {
-        return self.viewController
+        return viewController
     }
     
     override func popoverWillShow(in window: SFSafariWindow) {
-        getActivePageProperties {
+        getActivePageProperties { [unowned self] in
             guard let url = $0?.url else { return }
             let feeds = self.stateManager.getFeeds(url: url)
             
