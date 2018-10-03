@@ -56,14 +56,12 @@ class SettingsManager {
     var feedHandler: FeedHandlerModel {
         get {
             if let data = sharedUserDefaults.value(forKey: feedHandlerKey) as? Data {
-                //NSKeyedUnarchiver.setClass(FeedHandlerModel.self, forClassName: "FeedHandlerModel")
                 return NSKeyedUnarchiver.unarchiveObject(with: data) as! FeedHandlerModel
             } else {
                 return self.defaultFeedHandlers[0]
             }
         }
         set(value) {
-            //NSKeyedArchiver.setClassName("FeedHandlerModel", for: FeedHandlerModel.self)
             let data = NSKeyedArchiver.archivedData(withRootObject: value)
             sharedUserDefaults.set(data, forKey: feedHandlerKey)
             sharedUserDefaults.synchronize()

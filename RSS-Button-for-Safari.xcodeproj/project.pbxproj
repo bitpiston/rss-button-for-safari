@@ -27,8 +27,10 @@
 		E4C55BE7216074D400BF9426 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C55BE52160730100BF9426 /* SettingsManager.swift */; };
 		E4C55BE8216074DC00BF9426 /* FeedHandlerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C55BE3215EF78D00BF9426 /* FeedHandlerModel.swift */; };
 		E4C55BE92160A10A00BF9426 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4BC96962154455500E65EA5 /* Cocoa.framework */; };
-		E4C55BEB2160A11C00BF9426 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C55BEA2160A11C00BF9426 /* CoreData.framework */; };
-		E4C55BEC2160A12D00BF9426 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C55BEA2160A11C00BF9426 /* CoreData.framework */; };
+		E4C55BF0216432EB00BF9426 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C55BEF216432EB00BF9426 /* SafariServices.framework */; };
+		E4C55BF12164331000BF9426 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C55BEF216432EB00BF9426 /* SafariServices.framework */; };
+		E4C55BF32164333200BF9426 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C55BF22164333200BF9426 /* Foundation.framework */; };
+		E4C55BF42164333F00BF9426 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C55BF22164333200BF9426 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +99,8 @@
 		E4C55BE3215EF78D00BF9426 /* FeedHandlerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedHandlerModel.swift; sourceTree = "<group>"; };
 		E4C55BE52160730100BF9426 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		E4C55BEA2160A11C00BF9426 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		E4C55BEF216432EB00BF9426 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
+		E4C55BF22164333200BF9426 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,8 +108,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E4C55BEB2160A11C00BF9426 /* CoreData.framework in Frameworks */,
+				E4C55BF42164333F00BF9426 /* Foundation.framework in Frameworks */,
 				E4C55BE92160A10A00BF9426 /* Cocoa.framework in Frameworks */,
+				E4C55BF0216432EB00BF9426 /* SafariServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,8 +132,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4C55BF32164333200BF9426 /* Foundation.framework in Frameworks */,
 				E4BC96972154455500E65EA5 /* Cocoa.framework in Frameworks */,
-				E4C55BEC2160A12D00BF9426 /* CoreData.framework in Frameworks */,
+				E4C55BF12164331000BF9426 /* SafariServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -194,6 +200,8 @@
 		E4BC96952154455500E65EA5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E4C55BF22164333200BF9426 /* Foundation.framework */,
+				E4C55BEF216432EB00BF9426 /* SafariServices.framework */,
 				E4C55BEA2160A11C00BF9426 /* CoreData.framework */,
 				E4BC96962154455500E65EA5 /* Cocoa.framework */,
 			);
@@ -310,6 +318,9 @@
 							com.apple.HardenedRuntime = {
 								enabled = 1;
 							};
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
 						};
 					};
 					E4BC96722154452900E65EA5 = {
@@ -423,8 +434,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4C55BE8216074DC00BF9426 /* FeedHandlerModel.swift in Sources */,
-				E4C55BE7216074D400BF9426 /* SettingsManager.swift in Sources */,
 				E4BC96CB2158A5AA00E65EA5 /* FeedModel.swift in Sources */,
+				E4C55BE7216074D400BF9426 /* SettingsManager.swift in Sources */,
 				E4BC96BD21547DF500E65EA5 /* SafariExtensionStateManager.swift in Sources */,
 				E4BC969A2154455600E65EA5 /* SafariExtensionHandler.swift in Sources */,
 				E4BC969C2154455600E65EA5 /* SafariExtensionViewController.swift in Sources */,
@@ -522,7 +533,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -577,7 +588,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -603,6 +614,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bitpiston.RSSButton4Safari;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -628,6 +640,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bitpiston.RSSButton4Safari;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -728,6 +741,7 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bitpiston.RSSButton4Safari.SafariExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -752,6 +766,7 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bitpiston.RSSButton4Safari.SafariExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

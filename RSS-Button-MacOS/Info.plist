@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
 	<key>App group</key>
 	<string>$(TeamIdentifierPrefix)group.com.bitpiston.RSSButton4Safari</string>
 	<key>CFBundleDevelopmentRegion</key>
@@ -23,7 +21,11 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>15</string>
+	<string>21</string>
+	<key>Extension bundle identifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER).SafariExtension</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.utilities</string>
 	<key>LSMinimumSystemVersion</key>

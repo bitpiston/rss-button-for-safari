@@ -17,11 +17,11 @@ class ViewController: NSViewController, NSWindowDelegate {
     @IBOutlet weak var readerPopUpButton: NSPopUpButton!
     
     var feedHandlers = [FeedHandlerModel]()
-    let extensionId = "com.bitpiston.RSSButton4Safari.SafariExtension"
+    let extensionId = (Bundle.main.infoDictionary!["Extension bundle identifier"] as? String)!
     
     let settingsManager = SettingsManager.shared
     
-    static let shared = ViewController()
+    //static let shared = ViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,31 +74,29 @@ class ViewController: NSViewController, NSWindowDelegate {
     }
     
     func updateFeedHandlers() {
-        DispatchQueue.main.async {
-            var feedHandlers = self.settingsManager.defaultFeedHandlers
-            
-            let handlers = LSCopyAllHandlersForURLScheme("feed" as CFString)?.takeUnretainedValue()
-            let identifiers = handlers as! [String]
-            for (index, id) in identifiers.enumerated() {
-                let path = NSWorkspace.shared.absolutePathForApplication(withBundleIdentifier: id)
-                let name = FileManager.default.displayName(atPath: path!)
-                feedHandlers.insert(FeedHandlerModel(title: name,
-                                                     type: FeedHandlerType.app,
-                                                     url: nil,
-                                                     appId: id), at: 1 + index)
-            }
-            self.feedHandlers = feedHandlers
-            
-            self.readerPopUpButton.removeAllItems()
-            for handler in feedHandlers {
-                self.readerPopUpButton.addItem(withTitle: handler.title)
-            }
-            self.readerPopUpButton.selectItem(withTitle: self.settingsManager.feedHandler.title)
+        var feedHandlers = self.settingsManager.defaultFeedHandlers
+        
+        let handlers = LSCopyAllHandlersForURLScheme("feed" as CFString)?.takeUnretainedValue()
+        let identifiers = handlers as! [String]
+        for (index, id) in identifiers.enumerated() {
+            let path = NSWorkspace.shared.absolutePathForApplication(withBundleIdentifier: id)
+            let name = FileManager.default.displayName(atPath: path!)
+            feedHandlers.insert(FeedHandlerModel(title: name,
+                                                 type: FeedHandlerType.app,
+                                                 url: nil,
+                                                 appId: id), at: 1 + index)
         }
+        self.feedHandlers = feedHandlers
+        
+        self.readerPopUpButton.removeAllItems()
+        for handler in feedHandlers {
+            self.readerPopUpButton.addItem(withTitle: handler.title)
+        }
+        self.readerPopUpButton.selectItem(withTitle: self.settingsManager.feedHandler.title)
     }
     
     @IBAction func ReaderPopUpSelected(_ sender: NSMenuItem) {
-        if let index = feedHandlers.index(where: {$0.title == sender.title}) {
+        if let index = self.feedHandlers.index(where: {$0.title == sender.title}) {
             self.settingsManager.feedHandler = feedHandlers[index]
             #if DEBUG
             NSLog("Info: feedHandler set (\(self.settingsManager.feedHandler.title))")
