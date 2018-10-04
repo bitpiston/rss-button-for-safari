@@ -6,6 +6,7 @@
 //  Copyright © 2018 BitPiston Studios. All rights reserved.
 //
 
+import Foundation
 import SafariServices
 
 class SafariExtensionStateManager {

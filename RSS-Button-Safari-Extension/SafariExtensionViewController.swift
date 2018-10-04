@@ -52,18 +52,18 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
         let atomFeed: Bool    = feeds.contains(where: { $0.type == "Atom" })
         let unknownFeed: Bool = feeds.contains(where: { $0.type == "Unknown" })
         
-        DispatchQueue.main.async { [weak self] in
-            self?.feeds = feeds
+        DispatchQueue.main.async {
+            self.feeds = feeds
 
             if (rssFeed == true && atomFeed == true) || unknownFeed == true {
-                self?.showFeedType = true
+                self.showFeedType = true
             } else {
-                self?.showFeedType = false
+                self.showFeedType = false
             }
             
-            //self?.tableView.sizeToFit()
-            self?.tableView.reloadData()
-            //self?.updatePreferredContentSize(updatingFeeds: true)
+            //self.tableView.sizeToFit()
+            self.tableView.reloadData()
+            //self.updatePreferredContentSize(updatingFeeds: true)
         }
     }
     

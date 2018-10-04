@@ -62,7 +62,7 @@
                                     <items>
                                         <menuItem title="Close" keyEquivalent="w" id="SF4-y4-Fw3">
                                             <connections>
-                                                <action selector="closeMenuItemClicked:" target="Voe-Tx-rLC" id="Dh1-5p-oz5"/>
+                                                <action selector="performClose:" target="Ady-hI-5gd" id="6zG-K9-FtL"/>
                                             </connections>
                                         </menuItem>
                                     </items>
@@ -170,7 +170,7 @@
                                     <items>
                                         <menuItem title="RSS Button for Safari Help" keyEquivalent="?" id="FKE-Sm-Kum">
                                             <connections>
-                                                <action selector="showHelp:" target="Ady-hI-5gd" id="y7X-2Q-9no"/>
+                                                <action selector="showHelpMenuItemClicked:" target="Voe-Tx-rLC" id="SSn-nU-88D"/>
                                             </connections>
                                         </menuItem>
                                     </items>

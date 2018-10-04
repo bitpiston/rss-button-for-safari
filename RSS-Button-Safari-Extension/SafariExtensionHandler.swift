@@ -37,13 +37,13 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     }
     
     override func validateToolbarItem(in window: SFSafariWindow, validationHandler: @escaping ((Bool, String) -> Void)) {
-        getActivePageProperties { [unowned self] in
+        getActivePageProperties { [weak self] in
             if let url: URL = $0?.url {
-                let feedsFound = self.stateManager.hasFeeds(url: url)
+                let feedsFound = self?.stateManager.hasFeeds(url: url) ?? false
                 
                 #if DEBUG
                 NSLog("Info: validateToolbarItem (\(url)) with feedsFound (\(feedsFound))")
-                NSLog("Info: SafariExtensionStateManager feeds stored for \(self.stateManager.feeds.count) pages")
+                NSLog("Info: SafariExtensionStateManager feeds stored for \(self?.stateManager.feeds.count ?? 0) pages")
                 #endif
                 
                 validationHandler(feedsFound, "")
@@ -58,15 +58,15 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     }
     
     override func popoverWillShow(in window: SFSafariWindow) {
-        getActivePageProperties { [unowned self] in
+        getActivePageProperties { [weak self] in
             guard let url = $0?.url else { return }
-            let feeds = self.stateManager.getFeeds(url: url)
+            let feeds = self?.stateManager.getFeeds(url: url) ?? [FeedModel]()
             
             #if DEBUG
             NSLog("Info: popoverWillShow (\(url)) with \(feeds.count) feeds (\(feeds))")
             #endif
             
-            self.viewController.updateFeeds(with: feeds)
+            self?.viewController.updateFeeds(with: feeds)
         }
     }
     

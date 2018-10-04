@@ -44,7 +44,7 @@ class ViewController: NSViewController, NSWindowDelegate {
         
         Timer.scheduledTimer(timeInterval: 1.0,
                              target: self,
-                             selector: #selector(ViewController.checkExtensionState),
+                             selector: #selector(checkExtensionState),
                              userInfo: nil,
                              repeats: true)
     }
@@ -61,8 +61,8 @@ class ViewController: NSViewController, NSWindowDelegate {
     }
     
     @objc func checkExtensionState() {
-        SFSafariExtensionManager.getStateOfSafariExtension(withIdentifier: extensionId) { [unowned self] (state, error) in
-            DispatchQueue.main.async { [weak self] in
+        SFSafariExtensionManager.getStateOfSafariExtension(withIdentifier: extensionId) { [weak self] (state, error) in
+            DispatchQueue.main.async {
                 if let status = state?.isEnabled {
                     self?.statusTextField.textColor = status ? .systemGreen : .systemRed
                     self?.statusTextField.stringValue = status ? "● Enabled" : "● Disabled"
@@ -74,24 +74,27 @@ class ViewController: NSViewController, NSWindowDelegate {
     }
     
     func updateFeedHandlers() {
-        feedHandlers = settingsManager.defaultFeedHandlers
-        
-        let foundFeedHandlers = LSCopyAllHandlersForURLScheme("feed" as CFString)?.takeUnretainedValue()
-        let identifiers = foundFeedHandlers as! [String]
-        for (index, id) in identifiers.enumerated() {
-            let path = NSWorkspace.shared.absolutePathForApplication(withBundleIdentifier: id)
-            let name = FileManager.default.displayName(atPath: path!)
-            feedHandlers.insert(FeedHandlerModel(title: name,
-                                                 type: FeedHandlerType.app,
-                                                 url: nil,
-                                                 appId: id), at: 1 + index)
+        DispatchQueue.main.async {
+            self.feedHandlers = self.settingsManager.defaultFeedHandlers
+            
+            if let foundFeedHandlers = LSCopyAllHandlersForURLScheme("feed" as CFString)?.takeUnretainedValue() {
+                let identifiers = foundFeedHandlers as! [String]
+                for (index, id) in identifiers.enumerated() {
+                    let path = NSWorkspace.shared.absolutePathForApplication(withBundleIdentifier: id)
+                    let name = FileManager.default.displayName(atPath: path!)
+                    self.feedHandlers.insert(FeedHandlerModel(title: name,
+                                                              type: FeedHandlerType.app,
+                                                              url: nil,
+                                                              appId: id), at: 1 + index)
+                }
+            }
+            
+            self.readerPopUpButton.removeAllItems()
+            for handler in self.feedHandlers {
+                self.readerPopUpButton.addItem(withTitle: handler.title)
+            }
+            self.readerPopUpButton.selectItem(withTitle: self.settingsManager.feedHandler.title)
         }
-        
-        readerPopUpButton.removeAllItems()
-        for handler in feedHandlers {
-            readerPopUpButton.addItem(withTitle: handler.title)
-        }
-        readerPopUpButton.selectItem(withTitle: settingsManager.feedHandler.title)
     }
     
     @IBAction func ReaderPopUpSelected(_ sender: NSMenuItem) {

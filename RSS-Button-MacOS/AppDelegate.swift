@@ -11,16 +11,15 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
     
-    @IBAction func closeMenuItemClicked(_ sender: Any) {
-        NSApplication.shared.terminate(self)
-    }
-
-    func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Insert code here to initialize your application
+    @IBAction func showHelpMenuItemClicked(_ sender: NSMenuItem) {
+        NSWorkspace.shared.open(URL(string: "https://rss-extension.bitpiston.com")!)
     }
     
-    func applicationWillTerminate(_ aNotification: Notification) {
-        // Insert code here to tear down your application
+    func applicationDidFinishLaunching(_ aNotification: Notification) {}
+    func applicationWillTerminate(_ aNotification: Notification) {}
+    
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        return true
     }
 
 }

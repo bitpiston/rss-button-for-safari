@@ -98,7 +98,6 @@
 		E4BC96CF2158A71400E65EA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SafariExtensionViewController.xib; sourceTree = "<group>"; };
 		E4C55BE3215EF78D00BF9426 /* FeedHandlerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedHandlerModel.swift; sourceTree = "<group>"; };
 		E4C55BE52160730100BF9426 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
-		E4C55BEA2160A11C00BF9426 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		E4C55BEF216432EB00BF9426 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
 		E4C55BF22164333200BF9426 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -202,7 +201,6 @@
 			children = (
 				E4C55BF22164333200BF9426 /* Foundation.framework */,
 				E4C55BEF216432EB00BF9426 /* SafariServices.framework */,
-				E4C55BEA2160A11C00BF9426 /* CoreData.framework */,
 				E4BC96962154455500E65EA5 /* Cocoa.framework */,
 			);
 			name = Frameworks;
