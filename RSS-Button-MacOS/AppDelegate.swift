@@ -12,7 +12,11 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
     
     @IBAction func showHelpMenuItemClicked(_ sender: NSMenuItem) {
-        NSWorkspace.shared.open(URL(string: "https://rss-extension.bitpiston.com")!)
+        NSWorkspace.shared.open(URL(string: Bundle.main.infoDictionary!["Help URL"] as! String)!)
+    }
+    
+    @IBAction func showPrivacyMenuItemClicked(_ sender: NSMenuItem) {
+        NSWorkspace.shared.open(URL(string: Bundle.main.infoDictionary!["Privacy URL"] as! String)!)
     }
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {}

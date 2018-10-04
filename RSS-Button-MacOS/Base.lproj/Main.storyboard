@@ -173,6 +173,12 @@
                                                 <action selector="showHelpMenuItemClicked:" target="Voe-Tx-rLC" id="SSn-nU-88D"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem title="RSS Button for Safari Privacy" id="7od-mT-hSj">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="showPrivacyMenuItemClicked:" target="Voe-Tx-rLC" id="f7X-Pl-m7x"/>
+                                            </connections>
+                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>

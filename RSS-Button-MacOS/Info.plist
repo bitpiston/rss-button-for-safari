@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>Privacy URL</key>
+	<string>https://rss-extension.bitpiston.com/#privacy</string>
+	<key>Help URL</key>
+	<string>https://rss-extension.bitpiston.com/#contact</string>
 	<key>App group</key>
 	<string>$(TeamIdentifierPrefix)group.com.bitpiston.RSSButton4Safari</string>
 	<key>CFBundleDevelopmentRegion</key>
