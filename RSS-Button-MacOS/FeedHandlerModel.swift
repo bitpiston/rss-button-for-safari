@@ -7,10 +7,11 @@
 //
 
 import Foundation
+import Cocoa
 
-enum FeedHandlerType: String {
-    case app = "app"
-    case web = "web"
+@objc enum FeedHandlerType: Int {
+    case app = 1
+    case web = 2
 }
 
 @objc(FeedHandlerModel)
@@ -35,7 +36,7 @@ class FeedHandlerModel: NSObject, NSCoding {
     
     required init(coder aDecoder: NSCoder) {
         self.title = aDecoder.decodeObject(forKey: "title") as! String
-        self.type  = FeedHandlerType(rawValue: aDecoder.decodeObject(forKey: "type") as! String)!
+        self.type  = FeedHandlerType(rawValue: aDecoder.decodeInteger(forKey: "type") as Int)!
         self.url   = aDecoder.decodeObject(forKey: "url") as? String
         self.appId = aDecoder.decodeObject(forKey: "appId") as? String
     }

@@ -2,12 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Privacy URL</key>
-	<string>https://rss-extension.bitpiston.com/#privacy</string>
-	<key>Help URL</key>
-	<string>https://rss-extension.bitpiston.com/#contact</string>
 	<key>App group</key>
-	<string>$(TeamIdentifierPrefix)group.com.bitpiston.RSSButton4Safari</string>
+	<string>$(TeamIdentifierPrefix)group.com.bitpiston.rss-button</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -25,9 +21,11 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>23</string>
+	<string>25</string>
 	<key>Extension bundle identifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER).SafariExtension</string>
+	<key>Help URL</key>
+	<string>https://rss-extension.bitpiston.com/#contact</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationCategoryType</key>
@@ -40,5 +38,7 @@
 	<string>Main</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>Privacy URL</key>
+	<string>https://rss-extension.bitpiston.com/#privacy</string>
 </dict>
 </plist>

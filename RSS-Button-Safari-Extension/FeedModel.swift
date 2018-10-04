@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Cocoa
 
 class FeedModel: NSObject {
     let title: String
