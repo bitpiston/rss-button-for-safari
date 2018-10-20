@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E4643371216764E5000B213E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E4BC96682154452900E65EA5 /* Assets.xcassets */; };
 		E4BC96652154452800E65EA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC96642154452800E65EA5 /* AppDelegate.swift */; };
 		E4BC96672154452800E65EA5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC96662154452800E65EA5 /* ViewController.swift */; };
 		E4BC96692154452900E65EA5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E4BC96682154452900E65EA5 /* Assets.xcassets */; };
@@ -338,6 +339,9 @@
 							com.apple.HardenedRuntime = {
 								enabled = 1;
 							};
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
 						};
 					};
 				};
@@ -394,6 +398,7 @@
 				E4BC96D02158A71400E65EA5 /* SafariExtensionViewController.xib in Resources */,
 				E4BC96A22154455600E65EA5 /* script.js in Resources */,
 				E4BC96BF2154CB2700E65EA5 /* ToolbarItemIcon.pdf in Resources */,
+				E4643371216764E5000B213E /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -727,6 +732,7 @@
 		E4BC96AA2154455600E65EA5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_USE_OPTIMIZATION_PROFILE = YES;
 				CODE_SIGN_ENTITLEMENTS = "RSS-Button-Safari-Extension/RSS_Button.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";
@@ -752,6 +758,7 @@
 		E4BC96AB2154455600E65EA5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_USE_OPTIMIZATION_PROFILE = YES;
 				CODE_SIGN_ENTITLEMENTS = "RSS-Button-Safari-Extension/RSS_Button.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";

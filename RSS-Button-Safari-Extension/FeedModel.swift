@@ -9,6 +9,7 @@
 import Foundation
 import Cocoa
 
+@objc(FeedModel)
 class FeedModel: NSObject {
     let title: String
     let type : String

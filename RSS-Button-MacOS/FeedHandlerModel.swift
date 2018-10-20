@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Cocoa
 
 @objc enum FeedHandlerType: Int {
     case app = 1

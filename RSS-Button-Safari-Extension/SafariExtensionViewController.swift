@@ -32,14 +32,9 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
         preferredContentSize = CGSize(width: 310, height: 75)
     }
     
-    func updatePreferredContentSize(updatingFeeds: Bool = false) {
-        if updatingFeeds == true {
-            //self.tableView.needsLayout = true
-            tableView.layoutSubtreeIfNeeded()
-        } else {
-            contentWidth = maxCellWidth
-            maxCellWidth = 0
-        }
+    func updatePreferredContentSize() -> Void {
+        contentWidth = maxCellWidth
+        maxCellWidth = 0
         
         let width: CGFloat = min(max(contentWidth, 310), 410)
         let height: CGFloat = tableView.fittingSize.height + 30
@@ -47,14 +42,14 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
         preferredContentSize = CGSize(width: width, height: height)
     }
     
-    func updateFeeds(with feeds: [FeedModel]) {
+    func updateFeeds(with feeds: [FeedModel]) -> Void {
         let rssFeed: Bool     = feeds.contains(where: { $0.type == "RSS" })
         let atomFeed: Bool    = feeds.contains(where: { $0.type == "Atom" })
         let unknownFeed: Bool = feeds.contains(where: { $0.type == "Unknown" })
         
         DispatchQueue.main.async {
             self.feeds = feeds
-
+            
             if (rssFeed == true && atomFeed == true) || unknownFeed == true {
                 self.showFeedType = true
             } else {
@@ -63,42 +58,38 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
             
             //self.tableView.sizeToFit()
             self.tableView.reloadData()
-            //self.updatePreferredContentSize(updatingFeeds: true)
         }
     }
     
-    @objc func subscribeButtonClick(_ sender: NSButton) {
+    @objc func subscribeButtonClicked(_ sender: NSButton) {
         let row = tableView.row(for: sender)
-        let feedHandler: FeedHandlerModel = settingsManager.feedHandler
-
-        switch feedHandler.type {
-        case FeedHandlerType.app:
-            if let url = URL(string: feeds[row].url) {
-                #if DEBUG
-                NSLog("Info: Opening feed (\(url)) with application (\(feedHandler.title))")
-                #endif
-
-                NSWorkspace.shared.open([url],
-                                        withAppBundleIdentifier: feedHandler.appId,
-                                        options: NSWorkspace.LaunchOptions.default,
-                                        additionalEventParamDescriptor: nil,
-                                        launchIdentifiers: nil)
-            } else {
-                NSLog("Error: Unhandled URL for feed via application (\(feedHandler.title))")
-            }
+        let feedHandler = settingsManager.feedHandler
+        
+        if let url = URL(string: String(format: feedHandler.url!, feeds[row].url)) {
+            #if DEBUG
+            NSLog("Info: Opening feed (\(url))")
+            #endif
             
-        case FeedHandlerType.web:
-            if let url = URL(string: String(format: feedHandler.url!, feeds[row].url)) {
-                #if DEBUG
-                NSLog("Info: Opening feed (\(url)) with web (\(feedHandler.title))")
-                #endif
-
-                NSWorkspace.shared.open(url)
+            let defaultFeedHandler = LSCopyDefaultHandlerForURLScheme("feed" as CFString)?.takeUnretainedValue()
+            if feedHandler.type == FeedHandlerType.app || feedHandler.title == "Default",
+                defaultFeedHandler == nil || defaultFeedHandler! as String == "com.apple.news" {
+                noAvailableFeedHandlerAlert()
             } else {
-                NSLog("Error: Unhandled URL for feed via web (\(feedHandler.title))")
+                NSWorkspace.shared.open(url)
             }
+        } else {
+            NSLog("Error: Unhandled URL for feed (\(feedHandler.title))")
         }
-
+    }
+    
+    @objc func noAvailableFeedHandlerAlert() -> Void {
+        let alert = NSAlert()
+        alert.messageText = "No default news reader available!"
+        alert.informativeText = "Subscribing to feeds requires a news reader with RSS support. Please install one or sign up for a web based news service."
+        alert.alertStyle = .warning
+        alert.addButton(withTitle: "OK")
+        alert.runModal()
+        NSLog("Error: No news reader supporting RSS or Atom feeds avaiable")
     }
     
 }
@@ -116,7 +107,7 @@ extension SafariExtensionViewController: NSTableViewDataSource, NSTableViewDeleg
         
         let cellIdentifier = NSUserInterfaceItemIdentifier(rawValue: "cellIdentifier")
         
-        if let cellView = tableView.makeView(withIdentifier: cellIdentifier, owner: self) as? FeedTableCellView { 
+        if let cellView = tableView.makeView(withIdentifier: cellIdentifier, owner: self) as? FeedTableCellView {
             cellView.titleTextField.stringValue = feeds[row].title
             cellView.detailsTextField.stringValue = {
                 if showFeedType == true {
@@ -126,7 +117,7 @@ extension SafariExtensionViewController: NSTableViewDataSource, NSTableViewDeleg
                 }
             }()
             cellView.subscribeButton.target = self
-            cellView.subscribeButton.action = #selector(self.subscribeButtonClick(_:))
+            cellView.subscribeButton.action = #selector(self.subscribeButtonClicked(_:))
             
             maxCellWidth = max(maxCellWidth, cellView.fittingSize.width)
             

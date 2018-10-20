@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Cocoa
 
 class SettingsManager {
     
