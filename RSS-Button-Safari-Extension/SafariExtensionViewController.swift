@@ -45,12 +45,14 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
     func updateFeeds(with feeds: [FeedModel]) -> Void {
         let rssFeed: Bool     = feeds.contains(where: { $0.type == "RSS" })
         let atomFeed: Bool    = feeds.contains(where: { $0.type == "Atom" })
+        let jsonFeed: Bool    = feeds.contains(where: { $0.type == "JSON" })
         let unknownFeed: Bool = feeds.contains(where: { $0.type == "Unknown" })
         
         DispatchQueue.main.async {
             self.feeds = feeds
             
-            if (rssFeed == true && atomFeed == true) || unknownFeed == true {
+            if (rssFeed == true && atomFeed == true) || (rssFeed == true && jsonFeed == true)
+                || (atomFeed == true && jsonFeed == true) || unknownFeed == true {
                 self.showFeedType = true
             } else {
                 self.showFeedType = false

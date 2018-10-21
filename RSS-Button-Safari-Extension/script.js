@@ -42,7 +42,7 @@ window.addEventListener("pagehide", function(event) {
 
 function isValidPage() {
     return (window.top === window &&
-            typeof safari != 'undefined' &&
+            typeof safari != "undefined" &&
             (document.domain !== "undefined" || document.location != null) &&
             window.location.href !== "favorites://");
 }
@@ -61,14 +61,13 @@ function extractFeeds(setParsed = true) {
                 var type = link.attributes.getNamedItem("type").value;
                 
                 if (type !== null) {
-                    if (type == "application/rss+xml" || type == "application/atom+xml" || type == "text/xml") {
+                    if (type == "application/rss+xml" || type == "application/atom+xml" || type == "text/xml"
+                        || type == "application/feed+json" || type == "application/json") {
                         var href  = link.attributes.getNamedItem("href").value,
                             title = link.attributes.getNamedItem("title").value,
                             type  = typeFromString(type);
 
-                        if (title) {
-                            title = toTitleCase(title);
-                        } else {
+                        if (!title) {
                             title = titleFromType(typeValue);
                         }
                         
@@ -95,13 +94,20 @@ function protocol(url) {
 }
 
 function typeFromString(string) {
-    var type;
+    var type,
+        types = {
+        "rss" : "RSS",
+        "atom": "Atom",
+        "json": "JSON",
+    };
     
-    if (string.indexOf("rss") != -1) {
-        type = "RSS";
-    } else if (string.indexOf("atom") != -1) {
-        type = "Atom";
-    } else {
+    for (var key in types) {
+        if (string.indexOf(key) != -1) {
+            type = types[key];
+        }
+    }
+    
+    if (!type) {
         type = "Unknown";
     }
     
@@ -109,23 +115,24 @@ function typeFromString(string) {
 }
 
 function titleFromType(type) {
-    var title;
+    var title,
+        types = {
+        "rss" : "RSS Feed",
+        "atom": "Atom Feed",
+        "json": "JSON Feed",
+    };
     
-    if (type.indexOf("rss") != -1) {
-        title = "RSS Feed";
-    } else if (type.indexOf("atom") != -1) {
-        title = "Atom Feed";
-    } else {
-        title = "Feed";
+    for (var key in types) {
+        if (string.indexOf(key) != -1) {
+            title = types[key];
+        }
+    }
+    
+    if (!title) {
+        title = "Unknown Feed";
     }
     
     return title;
-}
-
-function toTitleCase(str) {
-    return str.replace(/\w\S*/g, function(txt) {
-       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-    });
 }
 
 function _getBaseUrl() {
