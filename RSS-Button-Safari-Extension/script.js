@@ -54,26 +54,33 @@ function extractFeeds(setParsed = true) {
         var headLinks = document.querySelectorAll("head > link[rel='alternate']");
         
         for (var i = 0; i < headLinks.length; i++) {
-            console.log("loop: " + i);
             var link = headLinks[i];
             
-            if (link.attributes.getNamedItem("rel") !== null && link.attributes.getNamedItem("rel").value == "alternate") {
+            if (link.attributes.getNamedItem("rel") !== null &&
+                link.attributes.getNamedItem("rel").value == "alternate" &&
+                link.attributes.getNamedItem("type") !== null &&
+                link.attributes.getNamedItem("href") !== null) {
                 var type = link.attributes.getNamedItem("type").value;
                 
-                if (type !== null) {
-                    if (type == "application/rss+xml" || type == "application/atom+xml" || type == "text/xml"
-                        || type == "application/feed+json" || type == "application/json") {
-                        var href  = link.attributes.getNamedItem("href").value,
-                            title = link.attributes.getNamedItem("title").value,
-                            type  = typeFromString(type);
+                if (type == "application/rss+xml" ||
+                    type == "application/atom+xml" ||
+                    type == "text/xml" ||
+                    type == "application/feed+json" ||
+                    type == "application/json") {
+                    var href  = link.attributes.getNamedItem("href").value,
+                        type  = typeFromString(type),
+                        title;
 
-                        if (!title) {
-                            title = titleFromType(typeValue);
-                        }
-                        
-                        if (href) {
-                            feeds.push({url: _fullUrl(href), title: title, type: type});
-                        }
+                    if (link.attributes.getNamedItem("title") !== null) {
+                        title = link.attributes.getNamedItem("title").value;
+                    }
+                    
+                    if (!title) {
+                        title = titleFromType(type);
+                    }
+                    
+                    if (href) {
+                        feeds.push({url: _fullUrl(href), title: title, type: type});
                     }
                 }
             }
@@ -117,13 +124,13 @@ function typeFromString(string) {
 function titleFromType(type) {
     var title,
         types = {
-        "rss" : "RSS Feed",
-        "atom": "Atom Feed",
-        "json": "JSON Feed",
+        "RSS" : "RSS Feed",
+        "Atom": "Atom Feed",
+        "JSON": "JSON Feed",
     };
     
     for (var key in types) {
-        if (string.indexOf(key) != -1) {
+        if (type.indexOf(key) != -1) {
             title = types[key];
         }
     }
