@@ -66,18 +66,44 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
     @objc func subscribeButtonClicked(_ sender: NSButton) {
         let row = tableView.row(for: sender)
         let feedHandler = settingsManager.feedHandler
+        let feedUrl = feeds[row].url
         
-        if let url = URL(string: String(format: feedHandler.url!, feeds[row].url)) {
+        // Prepare to append feed: URL scheme. We need to remove http:// for applications like Reeder that don't like protocols.
+        // Unfortunately in Reeder's case this means https feeds don't work but some is better than none?
+        //if feedHandler.type == FeedHandlerType.app || feedHandler.title == "Default" {
+        //    feedUrl = feedUrl.replacingOccurrences(of: "http://", with: "")
+        //}
+        
+        // Warn Reeder users for now?
+        // Stripes users will likely require warning as well as it appears to fail to open and instead the default app fires.
+        if feedHandler.type == FeedHandlerType.app,
+            feedHandler.appId == "com.reederapp.rkit2.mac" || feedHandler.appId == "com.ttitt.stripes" {
+            let path = NSWorkspace.shared.absolutePathForApplication(withBundleIdentifier: feedHandler.appId!)
+            let name = FileManager.default.displayName(atPath: path!)
+            unsupportedProtocolAlert(withAppName: name, withFeedUrl: feedUrl)
+        }
+        
+        if let url = URL(string: String(format: feedHandler.url!, feedUrl)) {
             #if DEBUG
             NSLog("Info: Opening feed (\(url))")
             #endif
             
             let defaultFeedHandler = LSCopyDefaultHandlerForURLScheme("feed" as CFString)?.takeUnretainedValue()
-            if feedHandler.type == FeedHandlerType.app || feedHandler.title == "Default",
-                defaultFeedHandler == nil || defaultFeedHandler! as String == "com.apple.news" {
+            
+            //if feedHandler.type == FeedHandlerType.app || feedHandler.title == "Default",
+            //    defaultFeedHandler == nil || defaultFeedHandler! as String == "com.apple.news" {
+            if feedHandler.type == FeedHandlerType.app && feedHandler.appId == "com.apple.news" ||
+                feedHandler.title == "Default" && defaultFeedHandler! as String == "com.apple.news" {
                 noAvailableFeedHandlerAlert()
             } else {
-                NSWorkspace.shared.open(url)
+                if feedHandler.type == FeedHandlerType.app {
+                   NSWorkspace.shared.open([url], withAppBundleIdentifier: feedHandler.appId,
+                                            options: NSWorkspace.LaunchOptions.default,
+                                            additionalEventParamDescriptor: nil,
+                                            launchIdentifiers: nil)
+                } else {
+                    NSWorkspace.shared.open(url)
+                }
             }
         } else {
             NSLog("Error: Unhandled URL for feed (\(feedHandler.title))")
@@ -92,6 +118,17 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
         alert.addButton(withTitle: "OK")
         alert.runModal()
         NSLog("Error: No news reader supporting RSS or Atom feeds avaiable")
+    }
+    
+    @objc func unsupportedProtocolAlert(withAppName appName: String,
+                                        withFeedUrl feedUrl: String) -> Void {
+        let alert = NSAlert()
+        alert.messageText = "\(appName) is unable to open the feed"
+        alert.informativeText = "\(appName) currently does not support opening feeds automatically. You will need to manually subscribe from within \(appName).\n\nYou can copy and paste the URL below:\n\(feedUrl)"
+        alert.alertStyle = .warning
+        alert.addButton(withTitle: "OK")
+        alert.runModal()
+        NSLog("Error: Attempted to open a feed with \(appName) which is bugged")
     }
     
 }

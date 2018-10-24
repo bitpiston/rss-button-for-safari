@@ -77,7 +77,6 @@ class ViewController: NSViewController, NSWindowDelegate {
         DispatchQueue.main.async {
             self.feedHandlers = self.settingsManager.defaultFeedHandlers
             
-            /*
             // Sandboxed applications do not have access to launch services to set the default scheme so
             // unless that changes in the future listing all installed feed readers to choose from is moot.
             if let foundFeedHandlers = LSCopyAllHandlersForURLScheme("feed" as CFString)?.takeUnretainedValue() {
@@ -94,11 +93,11 @@ class ViewController: NSViewController, NSWindowDelegate {
                                                               appId: id), at: 0 + index)
                 }
             }
-            */
             
             let defaultFeedHandler = LSCopyDefaultHandlerForURLScheme("feed" as CFString)?.takeUnretainedValue()
             
             // Display the default news reader by name if available and supported
+            /*
             if defaultFeedHandler != nil, defaultFeedHandler! as String != "com.apple.news" {
                 let id = defaultFeedHandler! as String
                 let path = NSWorkspace.shared.absolutePathForApplication(withBundleIdentifier: id)
@@ -108,6 +107,7 @@ class ViewController: NSViewController, NSWindowDelegate {
                                                           url: "feed:%@",
                                                           appId: id), at: 1)
             }
+            */
             
             self.readerPopUpButton.removeAllItems()
             
@@ -119,8 +119,10 @@ class ViewController: NSViewController, NSWindowDelegate {
             let feedHandler = self.settingsManager.feedHandler
             
             // Warn if no supported news reader is available
-            if feedHandler.type == FeedHandlerType.app || feedHandler.title == "Default",
-                defaultFeedHandler == nil || defaultFeedHandler! as String == "com.apple.news" {
+            //if feedHandler.type == FeedHandlerType.app || feedHandler.title == "Default",
+            //    defaultFeedHandler == nil || defaultFeedHandler! as String == "com.apple.news" {
+            if feedHandler.type == FeedHandlerType.app && feedHandler.appId == "com.apple.news" ||
+                feedHandler.title == "Default" && defaultFeedHandler! as String == "com.apple.news" {
                 self.readerPopUpButton.selectItem(at: -1)
                 self.unsupportedFeedHandlerAlert()
             } else {
@@ -148,6 +150,8 @@ class ViewController: NSViewController, NSWindowDelegate {
             settingsManager.feedHandler = feedHandler
             
             /*
+            // Sandboxed applications do not have access to launch services to set the default scheme so
+            // unless that changes in the future listing all installed feed readers to choose from is moot.
             if feedHandler.type == FeedHandlerType.app {
                 let retval = LSSetDefaultHandlerForURLScheme("feed" as CFString, feedHandler.appId! as CFString)
                 if retval != 0 {
