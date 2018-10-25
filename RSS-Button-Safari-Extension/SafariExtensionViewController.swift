@@ -74,13 +74,11 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
         //    feedUrl = feedUrl.replacingOccurrences(of: "http://", with: "")
         //}
         
-        // Warn Reeder users for now?
-        // Stripes users will likely require warning as well as it appears to fail to open and instead the default app fires.
-        if feedHandler.type == FeedHandlerType.app,
-            feedHandler.appId == "com.reederapp.rkit2.mac" || feedHandler.appId == "com.ttitt.stripes" {
+        // Warn Reeder users for now
+        if feedHandler.type == FeedHandlerType.app, feedHandler.appId == "com.reederapp.rkit2.mac" {
             let path = NSWorkspace.shared.absolutePathForApplication(withBundleIdentifier: feedHandler.appId!)
             let name = FileManager.default.displayName(atPath: path!)
-            unsupportedProtocolAlert(withAppName: name, withFeedUrl: feedUrl)
+            unsupportedFeedHandlerAlert(withAppName: name, withFeedUrl: feedUrl)
         }
         
         if let url = URL(string: String(format: feedHandler.url!, feedUrl)) {
@@ -112,7 +110,7 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
     
     @objc func noAvailableFeedHandlerAlert() -> Void {
         let alert = NSAlert()
-        alert.messageText = "No default news reader available!"
+        alert.messageText = "No news reader available!"
         alert.informativeText = "Subscribing to feeds requires a news reader with RSS support. Please install one or sign up for a web based news service."
         alert.alertStyle = .warning
         alert.addButton(withTitle: "OK")
@@ -120,7 +118,7 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
         NSLog("Error: No news reader supporting RSS or Atom feeds avaiable")
     }
     
-    @objc func unsupportedProtocolAlert(withAppName appName: String,
+    @objc func unsupportedFeedHandlerAlert(withAppName appName: String,
                                         withFeedUrl feedUrl: String) -> Void {
         let alert = NSAlert()
         alert.messageText = "\(appName) is unable to open the feed"
