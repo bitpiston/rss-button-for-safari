@@ -12,8 +12,6 @@
 		E4BC96672154452800E65EA5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC96662154452800E65EA5 /* ViewController.swift */; };
 		E4BC96692154452900E65EA5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E4BC96682154452900E65EA5 /* Assets.xcassets */; };
 		E4BC966C2154452900E65EA5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4BC966A2154452900E65EA5 /* Main.storyboard */; };
-		E4BC96782154452900E65EA5 /* RSS_Button_for_SafariTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC96772154452900E65EA5 /* RSS_Button_for_SafariTests.swift */; };
-		E4BC96832154452900E65EA5 /* RSS_Button_for_SafariUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC96822154452900E65EA5 /* RSS_Button_for_SafariUITests.swift */; };
 		E4BC96972154455500E65EA5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4BC96962154455500E65EA5 /* Cocoa.framework */; };
 		E4BC969A2154455600E65EA5 /* SafariExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC96992154455600E65EA5 /* SafariExtensionHandler.swift */; };
 		E4BC969C2154455600E65EA5 /* SafariExtensionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC969B2154455600E65EA5 /* SafariExtensionViewController.swift */; };
@@ -81,11 +79,7 @@
 		E4BC966D2154452900E65EA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E4BC966E2154452900E65EA5 /* RSS_Button_for_Safari.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RSS_Button_for_Safari.entitlements; sourceTree = "<group>"; };
 		E4BC96732154452900E65EA5 /* RSS-Button-for-SafariTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RSS-Button-for-SafariTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E4BC96772154452900E65EA5 /* RSS_Button_for_SafariTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSS_Button_for_SafariTests.swift; sourceTree = "<group>"; };
-		E4BC96792154452900E65EA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E4BC967E2154452900E65EA5 /* RSS-Button-for-SafariUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RSS-Button-for-SafariUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E4BC96822154452900E65EA5 /* RSS_Button_for_SafariUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSS_Button_for_SafariUITests.swift; sourceTree = "<group>"; };
-		E4BC96842154452900E65EA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E4BC96942154455500E65EA5 /* RSS Button.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "RSS Button.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4BC96962154455500E65EA5 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		E4BC96992154455600E65EA5 /* SafariExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariExtensionHandler.swift; sourceTree = "<group>"; };
@@ -145,8 +139,6 @@
 			isa = PBXGroup;
 			children = (
 				E4BC96632154452800E65EA5 /* RSS-Button-MacOS */,
-				E4BC96762154452900E65EA5 /* RSS-Button-for-Safari-Tests */,
-				E4BC96812154452900E65EA5 /* RSS-Button-for-Safari-UITests */,
 				E4BC96982154455500E65EA5 /* RSS-Button-Safari-Extension */,
 				E4BC96952154455500E65EA5 /* Frameworks */,
 				E4BC96622154452800E65EA5 /* Products */,
@@ -177,24 +169,6 @@
 				E4BC966E2154452900E65EA5 /* RSS_Button_for_Safari.entitlements */,
 			);
 			path = "RSS-Button-MacOS";
-			sourceTree = "<group>";
-		};
-		E4BC96762154452900E65EA5 /* RSS-Button-for-Safari-Tests */ = {
-			isa = PBXGroup;
-			children = (
-				E4BC96772154452900E65EA5 /* RSS_Button_for_SafariTests.swift */,
-				E4BC96792154452900E65EA5 /* Info.plist */,
-			);
-			path = "RSS-Button-for-Safari-Tests";
-			sourceTree = "<group>";
-		};
-		E4BC96812154452900E65EA5 /* RSS-Button-for-Safari-UITests */ = {
-			isa = PBXGroup;
-			children = (
-				E4BC96822154452900E65EA5 /* RSS_Button_for_SafariUITests.swift */,
-				E4BC96842154452900E65EA5 /* Info.plist */,
-			);
-			path = "RSS-Button-for-Safari-UITests";
 			sourceTree = "<group>";
 		};
 		E4BC96952154455500E65EA5 /* Frameworks */ = {
@@ -420,7 +394,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E4BC96782154452900E65EA5 /* RSS_Button_for_SafariTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,7 +401,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E4BC96832154452900E65EA5 /* RSS_Button_for_SafariUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

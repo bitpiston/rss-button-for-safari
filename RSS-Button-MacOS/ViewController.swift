@@ -67,7 +67,7 @@ class ViewController: NSViewController, NSWindowDelegate {
                     self?.statusTextField.textColor = status ? .systemGreen : .systemRed
                     self?.statusTextField.stringValue = status ? "● Enabled" : "● Disabled"
                     self?.informationTextField.stringValue = status ? "The extension is enabled. You can add the RSS Button to the Safari toolbar by right clicking and choosing Customize Toolbar." : "The extension is currently disabled. Please enable it from Safari preferences under the extensions tab."
-                    self?.enableButton.isHidden = status
+                    //self?.enableButton.isHidden = status
                 }
             }
         }
