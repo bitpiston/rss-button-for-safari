@@ -86,12 +86,12 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
             NSLog("Info: Opening feed (\(url))")
             #endif
             
-            let defaultFeedHandler = LSCopyDefaultHandlerForURLScheme("feed" as CFString)?.takeUnretainedValue()
+            let defaultFeedHandler = LSCopyDefaultHandlerForURLScheme("feed" as CFString)?.takeRetainedValue()
             
             //if feedHandler.type == FeedHandlerType.app || feedHandler.title == "Default",
             //    defaultFeedHandler == nil || defaultFeedHandler! as String == "com.apple.news" {
             if feedHandler.type == FeedHandlerType.app && feedHandler.appId == "com.apple.news" ||
-                feedHandler.title == "Default" && defaultFeedHandler! as String == "com.apple.news" {
+                feedHandler.title == "Default" && defaultFeedHandler != nil && defaultFeedHandler! as String == "com.apple.news" {
                 noAvailableFeedHandlerAlert()
             } else {
                 if feedHandler.type == FeedHandlerType.app {
