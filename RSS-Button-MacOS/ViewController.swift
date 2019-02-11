@@ -84,9 +84,8 @@ class ViewController: NSViewController, NSWindowDelegate {
                 
                 for (index, id) in identifiers.enumerated() {
                     if id == "com.apple.news" { continue }
-                    
-                    let path = NSWorkspace.shared.absolutePathForApplication(withBundleIdentifier: id)
-                    let name = FileManager.default.displayName(atPath: path!)
+                    guard let path = NSWorkspace.shared.absolutePathForApplication(withBundleIdentifier: id) else { continue }
+                    let name = FileManager.default.displayName(atPath: path)
                     self.feedHandlers.insert(FeedHandlerModel(title: name,
                                                               type: FeedHandlerType.app,
                                                               url: "feed:%@",
