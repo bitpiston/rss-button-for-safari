@@ -48,7 +48,8 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
         let jsonFeed: Bool    = feeds.contains(where: { $0.type == "JSON" })
         let unknownFeed: Bool = feeds.contains(where: { $0.type == "Unknown" })
         
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
             self.feeds = feeds
             
             if (rssFeed == true && atomFeed == true) || (rssFeed == true && jsonFeed == true)
