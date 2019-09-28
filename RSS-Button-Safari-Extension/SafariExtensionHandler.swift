@@ -15,7 +15,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     let viewController = SafariExtensionViewController.shared
     
     override func messageReceived(withName messageName: String, from page: SFSafariPage, userInfo: [String: Any]?) {
-        page.getPropertiesWithCompletionHandler { [unowned self] properties in
+        page.getPropertiesWithCompletionHandler { properties in
             #if DEBUG
             NSLog("Info: The extension received a message (\(messageName)) from a script injected into (\(String(describing: properties?.url))) with userInfo (\(userInfo ?? [:]))")
             #endif
@@ -37,13 +37,13 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     }
     
     override func validateToolbarItem(in window: SFSafariWindow, validationHandler: @escaping ((Bool, String) -> Void)) {
-        getActivePageProperties { [weak self] in
+        getActivePageProperties {
             if let url: URL = $0?.url {
-                let feedsFound = self?.stateManager.hasFeeds(url: url) ?? false
+                let feedsFound = self.stateManager.hasFeeds(url: url)
                 
                 #if DEBUG
                 NSLog("Info: validateToolbarItem (\(url)) with feedsFound (\(feedsFound))")
-                NSLog("Info: SafariExtensionStateManager feeds stored for \(self?.stateManager.feeds.count ?? 0) pages")
+                NSLog("Info: SafariExtensionStateManager feeds stored for \(self.stateManager.feeds.count) pages")
                 #endif
                 
                 validationHandler(feedsFound, "")
@@ -58,15 +58,15 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     }
     
     override func popoverWillShow(in window: SFSafariWindow) {
-        getActivePageProperties { [weak self] in
+        getActivePageProperties {
             guard let url = $0?.url else { return }
-            let feeds = self?.stateManager.getFeeds(url: url) ?? [FeedModel]()
+            let feeds = self.stateManager.getFeeds(url: url) 
             
             #if DEBUG
             NSLog("Info: popoverWillShow (\(url)) with \(feeds.count) feeds (\(feeds))")
             #endif
             
-            self?.viewController.updateFeeds(with: feeds)
+            self.viewController.updateFeeds(with: feeds)
         }
     }
     
