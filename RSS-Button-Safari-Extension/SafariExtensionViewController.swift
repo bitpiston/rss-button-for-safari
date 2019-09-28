@@ -72,21 +72,16 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
         NSLog("Info: Subscribe button clicked for feed (\(feedUrl)) with feed handler (\(String(describing: feedHandler.appId)))")
         #endif
         
-        // Prepare to append feed: URL scheme. We need to remove http:// for applications like Reeder that don't like protocols.
-        // Unfortunately in Reeder's case this means https feeds don't work but some is better than none?
-        //if feedHandler.type == FeedHandlerType.app || feedHandler.title == "Default" {
-        //    feedUrl = feedUrl.replacingOccurrences(of: "http://", with: "")
-        //}
-        
-        // Warn Reeder users for now
-        // v4: com.reederapp.macos
-        // v3: com.reederapp.rkit2.mac
-        if feedHandler.type == FeedHandlerType.app, feedHandler.appId == "com.reederapp.rkit2.mac" ||
-            feedHandler.appId == "com.reederapp.macos" {
+        // Warn of known unsupported or bugged readers
+        let unsupportedHandlers = [
+            "com.reederapp.rkit2.mac", // Reeder v3
+            //"com.reederapp.macos", // Reeder v4 (fixed in 4.1.5?)
+            "com.mentalfaculty.cream.mac"
+        ]
+        if feedHandler.type == FeedHandlerType.app, unsupportedHandlers.contains(feedHandler.appId!) {
             let path = NSWorkspace.shared.absolutePathForApplication(withBundleIdentifier: feedHandler.appId!)
             let name = FileManager.default.displayName(atPath: path!)
             unsupportedFeedHandlerAlert(withAppName: name, withFeedUrl: feedUrl)
-            NSLog("Error: Unsupported feed handler (\(String(describing: feedHandler.appId))) for feed (\(feedUrl))")
         } else {
             if let url = URL(string: String(format: feedHandler.url!, feedUrl)) {
                 #if DEBUG
@@ -95,8 +90,6 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
                 
                 let defaultFeedHandler = LSCopyDefaultHandlerForURLScheme("feed" as CFString)?.takeRetainedValue()
                 
-                //if feedHandler.type == FeedHandlerType.app || feedHandler.title == "Default",
-                //    defaultFeedHandler == nil || defaultFeedHandler! as String == "com.apple.news" {
                 if feedHandler.type == FeedHandlerType.app && feedHandler.appId == "com.apple.news" ||
                     feedHandler.title == "Default" && defaultFeedHandler != nil && defaultFeedHandler! as String == "com.apple.news" {
                     noAvailableFeedHandlerAlert()
