@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14868"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -220,30 +220,30 @@
             <objects>
                 <viewController showSeguePresentationStyle="single" id="XfG-lQ-9wD" customClass="ViewController" customModule="RSS_Button_for_Safari" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="300"/>
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="352"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V3X-Og-zhb">
-                                <rect key="frame" x="232" y="172" width="101" height="17"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="V3X-Og-zhb">
+                                <rect key="frame" x="232" y="224" width="76" height="17"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="17" id="wip-XF-u8m"/>
+                                </constraints>
                                 <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="● Unknown" id="RHA-6c-ylW">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Inz-Z9-QFp">
-                                <rect key="frame" x="18" y="211" width="444" height="17"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Inz-Z9-QFp">
+                                <rect key="frame" x="18" y="263" width="444" height="17"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="RSS Button for Safari" id="qED-hH-pes">
                                     <font key="font" metaFont="systemSemibold" size="13"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TiG-D0-q9I">
-                                <rect key="frame" x="146" y="90" width="188" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TiG-D0-q9I">
+                                <rect key="frame" x="146" y="142" width="188" height="32"/>
                                 <buttonCell key="cell" type="push" title="Open Safari Preferences" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="QLQ-t7-bW2">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -252,9 +252,8 @@
                                     <action selector="enableButtonClicked:" target="XfG-lQ-9wD" id="4fJ-dJ-nEe"/>
                                 </connections>
                             </button>
-                            <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bUZ-18-RKj">
-                                <rect key="frame" x="166" y="17" width="150" height="25"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bUZ-18-RKj">
+                                <rect key="frame" x="203" y="69" width="75" height="25"/>
                                 <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="pTV-pp-Khw" id="dgi-BK-2rY">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="menu"/>
@@ -268,41 +267,90 @@
                                     <action selector="readerPopUpButtonSelected:" target="XfG-lQ-9wD" id="noD-ca-tX6"/>
                                 </connections>
                             </popUpButton>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qey-7b-McA">
-                                <rect key="frame" x="79" y="49" width="323" height="17"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qey-7b-McA">
+                                <rect key="frame" x="79" y="101" width="323" height="17"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="17" id="v0i-Ux-0TV"/>
+                                </constraints>
                                 <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Choose your prefered news reader to open feeds in:" id="u0k-hw-kV5">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4bH-9M-t0F">
-                                <rect key="frame" x="18" y="126" width="444" height="42"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="4bH-9M-t0F">
+                                <rect key="frame" x="18" y="178" width="444" height="42"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="RB9-he-0fD"/>
+                                </constraints>
                                 <textFieldCell key="cell" selectable="YES" alignment="center" id="laM-00-XoG">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fbj-lN-egk">
-                                <rect key="frame" x="180" y="172" width="47" height="17"/>
-                                <autoresizingMask key="autoresizingMask"/>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Fbj-lN-egk">
+                                <rect key="frame" x="180" y="224" width="47" height="17"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" title="Status:" id="WYz-YT-RdJ">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5D9-kQ-vsz">
-                                <rect key="frame" x="208" y="236" width="64" height="64"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5D9-kQ-vsz">
+                                <rect key="frame" x="208" y="288" width="64" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="FEm-mU-Bc0"/>
+                                    <constraint firstAttribute="width" constant="64" id="ktO-h8-3Oh"/>
+                                </constraints>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSApplicationIcon" id="K8N-bh-5PP"/>
                             </imageView>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Q7a-QN-CE4">
+                                <rect key="frame" x="99" y="16" width="283" height="18"/>
+                                <buttonCell key="cell" type="check" title="Badge toolbar button with number of feeds" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="3WZ-3H-jJL">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="badgeButtonToggleClicked:" target="XfG-lQ-9wD" id="qbv-Xx-SkF"/>
+                                </connections>
+                            </button>
+                            <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="4Bv-of-SQY">
+                                <rect key="frame" x="12" y="48" width="456" height="5"/>
+                            </box>
                         </subviews>
+                        <constraints>
+                            <constraint firstItem="4bH-9M-t0F" firstAttribute="trailing" secondItem="Inz-Z9-QFp" secondAttribute="trailing" id="1lR-0r-5Tn"/>
+                            <constraint firstItem="4bH-9M-t0F" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" symbolic="YES" id="6Ui-UB-ufs"/>
+                            <constraint firstItem="4bH-9M-t0F" firstAttribute="centerX" secondItem="5D9-kQ-vsz" secondAttribute="centerX" id="7Yc-Kc-ZUD"/>
+                            <constraint firstItem="4Bv-of-SQY" firstAttribute="top" secondItem="bUZ-18-RKj" secondAttribute="bottom" constant="21" id="9GQ-vI-wnp"/>
+                            <constraint firstItem="V3X-Og-zhb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Fbj-lN-egk" secondAttribute="trailing" symbolic="YES" id="AUN-uG-mv8"/>
+                            <constraint firstItem="V3X-Og-zhb" firstAttribute="baseline" secondItem="Fbj-lN-egk" secondAttribute="baseline" id="Ab8-dy-xGQ"/>
+                            <constraint firstItem="V3X-Og-zhb" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="234" id="C4u-ci-KD8"/>
+                            <constraint firstItem="4bH-9M-t0F" firstAttribute="centerX" secondItem="4Bv-of-SQY" secondAttribute="centerX" id="FnY-cZ-okg"/>
+                            <constraint firstItem="4bH-9M-t0F" firstAttribute="top" secondItem="V3X-Og-zhb" secondAttribute="bottom" constant="4" id="LU4-Mz-HFg"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="V3X-Og-zhb" secondAttribute="trailing" constant="20" symbolic="YES" id="LqE-6h-Nce"/>
+                            <constraint firstItem="Fbj-lN-egk" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="182" id="Sv9-uu-mRW"/>
+                            <constraint firstItem="4Bv-of-SQY" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="12" id="V8b-lG-A5B"/>
+                            <constraint firstItem="V3X-Og-zhb" firstAttribute="top" secondItem="Inz-Z9-QFp" secondAttribute="bottom" constant="22" id="Wte-Lu-tTo"/>
+                            <constraint firstAttribute="bottom" secondItem="4Bv-of-SQY" secondAttribute="bottom" constant="50" id="YUD-qi-SLw"/>
+                            <constraint firstItem="Q7a-QN-CE4" firstAttribute="top" secondItem="4Bv-of-SQY" secondAttribute="bottom" constant="18" id="Zxr-TS-Yab"/>
+                            <constraint firstAttribute="trailing" secondItem="4Bv-of-SQY" secondAttribute="trailing" constant="12" id="ZyS-Ey-Oxx"/>
+                            <constraint firstItem="V3X-Og-zhb" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="111" id="ayE-U4-znj"/>
+                            <constraint firstItem="Inz-Z9-QFp" firstAttribute="top" secondItem="5D9-kQ-vsz" secondAttribute="bottom" constant="8" symbolic="YES" id="cWR-lN-aIB"/>
+                            <constraint firstItem="5D9-kQ-vsz" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="e1f-9s-BTa"/>
+                            <constraint firstItem="4bH-9M-t0F" firstAttribute="centerX" secondItem="TiG-D0-q9I" secondAttribute="centerX" id="gdF-DB-Z9g"/>
+                            <constraint firstItem="TiG-D0-q9I" firstAttribute="top" secondItem="4bH-9M-t0F" secondAttribute="bottom" constant="8" symbolic="YES" id="kxv-q7-H4b"/>
+                            <constraint firstItem="4bH-9M-t0F" firstAttribute="leading" secondItem="Inz-Z9-QFp" secondAttribute="leading" id="oT0-Ee-hrM"/>
+                            <constraint firstItem="V3X-Og-zhb" firstAttribute="firstBaseline" secondItem="Fbj-lN-egk" secondAttribute="firstBaseline" id="qIE-BX-i3y"/>
+                            <constraint firstItem="4Bv-of-SQY" firstAttribute="centerX" secondItem="Q7a-QN-CE4" secondAttribute="centerX" id="wMC-xe-Iyd"/>
+                            <constraint firstItem="qey-7b-McA" firstAttribute="top" secondItem="TiG-D0-q9I" secondAttribute="bottom" constant="31" id="yQ8-ij-zbt"/>
+                            <constraint firstItem="4bH-9M-t0F" firstAttribute="centerX" secondItem="qey-7b-McA" secondAttribute="centerX" id="yTl-ux-T3m"/>
+                            <constraint firstItem="4bH-9M-t0F" firstAttribute="centerX" secondItem="bUZ-18-RKj" secondAttribute="centerX" id="zR4-qB-9Xl"/>
+                        </constraints>
                     </view>
                     <connections>
+                        <outlet property="badgeButtonToggle" destination="Q7a-QN-CE4" id="Gaf-zG-NFI"/>
                         <outlet property="enableButton" destination="TiG-D0-q9I" id="Kn1-DQ-Lzh"/>
                         <outlet property="informationTextField" destination="4bH-9M-t0F" id="QrI-fv-Udv"/>
                         <outlet property="readerPopUpButton" destination="bUZ-18-RKj" id="D04-cl-SZ6"/>
@@ -311,10 +359,10 @@
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="662.5"/>
+            <point key="canvasLocation" x="75" y="688"/>
         </scene>
     </scenes>
     <resources>
-        <image name="NSApplicationIcon" width="128" height="128"/>
+        <image name="NSApplicationIcon" width="32" height="32"/>
     </resources>
 </document>

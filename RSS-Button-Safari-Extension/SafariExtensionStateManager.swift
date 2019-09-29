@@ -27,4 +27,8 @@ class SafariExtensionStateManager {
         return self.feeds[url]?.isEmpty ?? true ? false : true
     }
     
+    func countFeeds(url: URL) -> Int {
+        return self.feeds[url]?.count ?? 0
+    }
+    
 }

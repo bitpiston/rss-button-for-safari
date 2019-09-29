@@ -13,6 +13,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     
     let stateManager = SafariExtensionStateManager.shared
     let viewController = SafariExtensionViewController.shared
+    let settingsManager = SettingsManager.shared
     
     override func messageReceived(withName messageName: String, from page: SFSafariPage, userInfo: [String: Any]?) {
         page.getPropertiesWithCompletionHandler { properties in
@@ -39,14 +40,16 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     override func validateToolbarItem(in window: SFSafariWindow, validationHandler: @escaping ((Bool, String) -> Void)) {
         getActivePageProperties {
             if let url: URL = $0?.url {
-                let feedsFound = self.stateManager.hasFeeds(url: url)
+                let feedCount  = self.stateManager.countFeeds(url: url)
+                let feedsFound = feedCount > 0 ? true : false
+                let badgeText  = self.settingsManager.badgeButton && feedsFound ? String(feedCount) : ""
                 
                 #if DEBUG
                 NSLog("Info: validateToolbarItem (\(url)) with feedsFound (\(feedsFound))")
                 NSLog("Info: SafariExtensionStateManager feeds stored for \(self.stateManager.feeds.count) pages")
                 #endif
                 
-                validationHandler(feedsFound, "")
+                validationHandler(feedsFound, badgeText)
             } else {
                 validationHandler(false, "")
             }

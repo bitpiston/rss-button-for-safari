@@ -15,6 +15,8 @@ class ViewController: NSViewController, NSWindowDelegate {
     @IBOutlet weak var informationTextField: NSTextField!
     @IBOutlet weak var enableButton: NSButton!
     @IBOutlet weak var readerPopUpButton: NSPopUpButton!
+    @IBOutlet weak var badgeButtonToggle: NSButton!
+    
     
     var feedHandlers = [FeedHandlerModel]()
     let extensionId = (Bundle.main.infoDictionary!["Extension bundle identifier"] as? String)!
@@ -28,6 +30,12 @@ class ViewController: NSViewController, NSWindowDelegate {
         
         checkExtensionState()
         updateFeedHandlers()
+        
+        if self.settingsManager.badgeButton {
+            self.badgeButtonToggle.state = NSControl.StateValue.on
+        } else {
+            self.badgeButtonToggle.state = NSControl.StateValue.off
+        }
     }
     
     override func viewWillAppear() {
@@ -146,7 +154,7 @@ class ViewController: NSViewController, NSWindowDelegate {
     
     @IBAction func readerPopUpButtonSelected(_ sender: NSMenuItem) {
         if let feedHandler = feedHandlers.first(where: {$0.title == sender.title}) {
-            settingsManager.feedHandler = feedHandler
+            self.settingsManager.feedHandler = feedHandler
             
             /*
             // Sandboxed applications do not have access to launch services to set the default scheme so
@@ -169,4 +177,13 @@ class ViewController: NSViewController, NSWindowDelegate {
         SFSafariApplication.showPreferencesForExtension(withIdentifier: extensionId)
     }
     
+    @IBAction func badgeButtonToggleClicked(_ sender: NSButton) {
+        let value = sender.state.rawValue == 0 ? false : true
+        
+        self.settingsManager.badgeButton = value
+        
+        #if DEBUG
+       NSLog("Info: badgeButton set (\(value))")
+       #endif
+    }
 }

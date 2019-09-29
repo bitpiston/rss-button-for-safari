@@ -15,6 +15,7 @@ class SettingsManager {
     let sharedUserDefaults = UserDefaults(suiteName: Bundle.main.infoDictionary!["App group"] as? String)!
     let feedHandlerKey = "feedHandler"
     let defaultFeedHandlers: [FeedHandlerModel]
+    let badgeButtonKey = "badgeButton"
     
     init() {
         self.defaultFeedHandlers = [
@@ -69,6 +70,15 @@ class SettingsManager {
             let data = NSKeyedArchiver.archivedData(withRootObject: value)
             sharedUserDefaults.set(data, forKey: feedHandlerKey)
             sharedUserDefaults.synchronize()
+        }
+    }
+    
+    var badgeButton: Bool {
+        get {
+            return sharedUserDefaults.value(forKey: badgeButtonKey) as? Bool ?? false
+        }
+        set(value) {
+            sharedUserDefaults.set(value, forKey: badgeButtonKey)
         }
     }
 }
