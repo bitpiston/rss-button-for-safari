@@ -76,10 +76,6 @@ function extractFeeds(setParsed = true) {
     }
 }
 
-function protocol(url) {
-    return url.split(":")[0];
-}
-
 function typeFromString(string) {
     var type,
         types = {
@@ -143,7 +139,7 @@ function _getBaseUrl() {
     }
     
     if (baseUrl === undefined) {
-        baseUrl = protocol(document.URL) + "://" + document.domain + "/"
+        baseUrl = document.URL.split(":")[0] + "://" + document.domain + "/"
     }
     
     return baseUrl;
@@ -151,6 +147,12 @@ function _getBaseUrl() {
 
 function _fullUrl(url) {
     var trimmedUrl = url.trim();
+    var protocolRelative = trimmedUrl.substr(0,2);
+    
+    if (protocolRelative === "//") {
+        trimmedUrl = document.URL.split(":")[0] + ":" + trimmedUrl;
+    }
+    
     var protocol = trimmedUrl.substr(0,4);
     
     if (protocol !== "http" && protocol !== "feed") {
