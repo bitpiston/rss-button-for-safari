@@ -19,14 +19,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
 });
 
-/*
-window.addEventListener("pagehide", function(event) {
-    if (isValidPage() && !event.persisted) {
-        safari.extension.dispatchMessage("pageUnloaded");
-    }
-});
-*/
-
 function isValidPage() {
     return (window.top === window &&
             typeof safari != "undefined" &&
@@ -38,7 +30,8 @@ function extractFeeds(setParsed = true) {
     if (parsed === true) { return };
     
     if (!feeds.length > 0) {
-        var headLinks = document.querySelectorAll("head > link[rel='alternate']");
+        var headLinks = document.querySelectorAll("link[rel='alternate']");
+        // this should be "head > link[rel='alternate']" but many sites including slashdot have it in the body
         
         for (var i = 0; i < headLinks.length; i++) {
             var link = headLinks[i];
