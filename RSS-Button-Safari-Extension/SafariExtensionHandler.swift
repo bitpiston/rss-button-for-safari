@@ -42,7 +42,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
             if let url: URL = $0?.url {
                 let feedCount  = self.stateManager.countFeeds(url: url)
                 let feedsFound = feedCount > 0 ? true : false
-                let badgeText  = self.settingsManager.badgeButton && feedsFound ? String(feedCount) : ""
+                let badgeText  = self.settingsManager.getBadgeButtonState() && feedsFound ? String(feedCount) : ""
                 
                 #if DEBUG
                 NSLog("Info: validateToolbarItem (\(url)) with feedsFound (\(feedsFound))")

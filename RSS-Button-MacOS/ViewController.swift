@@ -17,10 +17,9 @@ class ViewController: NSViewController, NSWindowDelegate {
     @IBOutlet weak var readerPopUpButton: NSPopUpButton!
     @IBOutlet weak var badgeButtonToggle: NSButton!
     
+    var feedHandlers    = [FeedHandlerModel]()
     
-    var feedHandlers = [FeedHandlerModel]()
-    let extensionId = (Bundle.main.infoDictionary!["Extension bundle identifier"] as? String)!
-    
+    let extensionId     = (Bundle.main.infoDictionary!["Extension bundle identifier"] as? String)!
     let settingsManager = SettingsManager.shared
     
     //static let shared = ViewController()
@@ -30,12 +29,7 @@ class ViewController: NSViewController, NSWindowDelegate {
         
         checkExtensionState()
         updateFeedHandlers()
-        
-        if self.settingsManager.badgeButton {
-            self.badgeButtonToggle.state = NSControl.StateValue.on
-        } else {
-            self.badgeButtonToggle.state = NSControl.StateValue.off
-        }
+        updateSettings()
     }
     
     override func viewWillAppear() {
@@ -85,91 +79,87 @@ class ViewController: NSViewController, NSWindowDelegate {
         DispatchQueue.main.async {
             self.feedHandlers = self.settingsManager.defaultFeedHandlers
             
-            // Sandboxed applications do not have access to launch services to set the default scheme so
-            // unless that changes in the future listing all installed feed readers to choose from is moot.
+            // Sandboxed applications do not have access to launch services to set the default application so
+            // we will have to launch apps directly
             if let foundFeedHandlers = LSCopyAllHandlersForURLScheme("feed" as CFString)?.takeRetainedValue() {
                 let identifiers = foundFeedHandlers as! [String]
                 
                 for (index, id) in identifiers.enumerated() {
-                    if id == "com.apple.news" { continue }
-                    guard let path = NSWorkspace.shared.absolutePathForApplication(withBundleIdentifier: id) else { continue }
-                    let name = FileManager.default.displayName(atPath: path)
-                    self.feedHandlers.insert(FeedHandlerModel(title: name,
-                                                              type: FeedHandlerType.app,
-                                                              url: "feed:%@",
-                                                              appId: id), at: 0 + index)
+                    // Make sure the application exists as old cruft can remain in launch services
+                    guard let path = NSWorkspace.shared.absolutePathForApplication(withBundleIdentifier: id) else {
+                        #if DEBUG
+                        NSLog("Info: bad feed handler with no path detected and skipped (\(id))")
+                        #endif
+                        continue
+                    }
+                    
+                    if FileManager.default.fileExists(atPath: path) {
+                        let name = FileManager.default.displayName(atPath: path)
+                        //let bundle = Bundle(path: path)
+                        //let bundleName = bundle?.object(forInfoDictionaryKey: "CFBundleName") as? String
+                        //let version = bundle?.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+                        self.feedHandlers.insert(FeedHandlerModel(title: name,
+                                                                  type: FeedHandlerType.app,
+                                                                  url: "feed:%@",
+                                                                  appId: id), at: 0 + index)
+                        #if DEBUG
+                        NSLog("Info: found valid feed handler (\(id))")
+                        #endif
+                    }
+                    
+                    #if DEBUG
+                    if !FileManager.default.fileExists(atPath: path) {
+                        NSLog("Info: bad feed handler that does not exist detected and skipped (\(id))")
+                    }
+                    #endif
                 }
             }
-            
-            let defaultFeedHandler = LSCopyDefaultHandlerForURLScheme("feed" as CFString)?.takeRetainedValue()
-            
-            // Display the default news reader by name if available and supported
-            /*
-            if defaultFeedHandler != nil, defaultFeedHandler! as String != "com.apple.news" {
-                let id = defaultFeedHandler! as String
-                let path = NSWorkspace.shared.absolutePathForApplication(withBundleIdentifier: id)
-                let name = FileManager.default.displayName(atPath: path!)
-                self.feedHandlers.insert(FeedHandlerModel(title: name,
-                                                          type: FeedHandlerType.app,
-                                                          url: "feed:%@",
-                                                          appId: id), at: 1)
-            }
-            */
             
             self.readerPopUpButton.removeAllItems()
             
             for handler in self.feedHandlers {
-                if handler.title == "Default" { continue }
+                if handler.title == "Default" || handler.appId == "com.apple.news" { continue }
+                
                 self.readerPopUpButton.addItem(withTitle: handler.title)
             }
             
-            let feedHandler = self.settingsManager.feedHandler
+            let defaultFeedHandler = LSCopyDefaultHandlerForURLScheme("feed" as CFString)?.takeRetainedValue()
+            let feedHandler = self.settingsManager.getFeedHandler()
             
-            // Warn if no supported news reader is available
-            //if feedHandler.type == FeedHandlerType.app || feedHandler.title == "Default",
-            //    defaultFeedHandler == nil || defaultFeedHandler! as String == "com.apple.news" {
-            if feedHandler.type == FeedHandlerType.app && feedHandler.appId == "com.apple.news" ||
-                feedHandler.title == "Default" && defaultFeedHandler != nil && defaultFeedHandler! as String == "com.apple.news" {
-                self.readerPopUpButton.selectItem(at: -1)
-                self.unsupportedFeedHandlerAlert()
-            } else {
-                if feedHandler.title == "Default" {
-                    self.readerPopUpButton.selectItem(at: 0)
+            #if DEBUG
+            NSLog("Info: default feed handler from launch services (\(String(describing: defaultFeedHandler)))")
+            NSLog("Info: Saved feed handler from preferences (\(String(describing: feedHandler.title)), \(String(describing: feedHandler.appId)))")
+            #endif
+            
+            // Set the default feed handler if none already selected unless apple news
+            if feedHandler.type == FeedHandlerType.web && feedHandler.title == "Default" {
+                if defaultFeedHandler != nil && defaultFeedHandler! as String != "com.apple.news",
+                   let feedHandlerToSet = self.feedHandlers.first(where: {$0.title == defaultFeedHandler! as String}) {
+                    self.readerPopUpButton.selectItem(withTitle: feedHandlerToSet.title)
+                    self.settingsManager.setFeedHandler(feedHandler: feedHandlerToSet)
                 } else {
-                    self.readerPopUpButton.selectItem(withTitle: feedHandler.title)
+                    let feedHandlerTitleToSet = self.readerPopUpButton.itemTitle(at: 0)
+                    let feedHandlerToSet = self.feedHandlers.first(where: {$0.title == feedHandlerTitleToSet})
+                    self.readerPopUpButton.selectItem(at: 0)
+                    self.settingsManager.setFeedHandler(feedHandler: feedHandlerToSet!)
                 }
+            } else {
+                self.readerPopUpButton.selectItem(withTitle: feedHandler.title)
             }
         }
     }
     
-    func unsupportedFeedHandlerAlert() -> Void {
-        let alert = NSAlert()
-        alert.messageText = "No default news reader available!"
-        alert.informativeText = "Subscribing to feeds requires a news reader with RSS support. Please install one or sign up for a web based news service."
-        alert.alertStyle = .warning
-        alert.addButton(withTitle: "OK")
-        alert.runModal()
-        NSLog("Error: No news reader supporting RSS or Atom feeds avaiable")
+    func updateSettings() -> Void {
+        if self.settingsManager.getBadgeButtonState() {
+            self.badgeButtonToggle.state = NSControl.StateValue.on
+        } else {
+            self.badgeButtonToggle.state = NSControl.StateValue.off
+        }
     }
     
     @IBAction func readerPopUpButtonSelected(_ sender: NSMenuItem) {
-        if let feedHandler = feedHandlers.first(where: {$0.title == sender.title}) {
-            self.settingsManager.feedHandler = feedHandler
-            
-            /*
-            // Sandboxed applications do not have access to launch services to set the default scheme so
-            // unless that changes in the future listing all installed feed readers to choose from is moot.
-            if feedHandler.type == FeedHandlerType.app {
-                let retval = LSSetDefaultHandlerForURLScheme("feed" as CFString, feedHandler.appId! as CFString)
-                if retval != 0 {
-                    NSLog("Debug: Failed to set default URL Scheme for news reader.")
-                }
-            }
-            */
-            
-            #if DEBUG
-            NSLog("Info: feedHandler set (\(settingsManager.feedHandler.title))")
-            #endif
+        if let feedHandler = self.feedHandlers.first(where: {$0.title == sender.title}) {
+            self.settingsManager.setFeedHandler(feedHandler: feedHandler)
         }
     }
     
@@ -180,10 +170,6 @@ class ViewController: NSViewController, NSWindowDelegate {
     @IBAction func badgeButtonToggleClicked(_ sender: NSButton) {
         let value = sender.state.rawValue == 0 ? false : true
         
-        self.settingsManager.badgeButton = value
-        
-        #if DEBUG
-       NSLog("Info: badgeButton set (\(value))")
-       #endif
+        self.settingsManager.setBadgeButtonState(enabled: value)
     }
 }

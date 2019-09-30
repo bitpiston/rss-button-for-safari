@@ -15,7 +15,7 @@ class SettingsManager {
     let sharedUserDefaults = UserDefaults(suiteName: Bundle.main.infoDictionary!["App group"] as? String)!
     let feedHandlerKey = "feedHandler"
     let defaultFeedHandlers: [FeedHandlerModel]
-    let badgeButtonKey = "badgeButton"
+    let badgeButtonKey = "badgeButtonState"
     
     init() {
         self.defaultFeedHandlers = [
@@ -56,6 +56,9 @@ class SettingsManager {
                              url: "https://bazqux.com/add?url=%@",
                              appId: nil)
         ]
+        
+        //sharedUserDefaults.removeObject(forKey: feedHandlerKey)
+        //sharedUserDefaults.synchronize()
     }
     
     var feedHandler: FeedHandlerModel {
@@ -73,12 +76,36 @@ class SettingsManager {
         }
     }
     
-    var badgeButton: Bool {
+    var badgeButtonState: Bool {
         get {
             return sharedUserDefaults.value(forKey: badgeButtonKey) as? Bool ?? false
         }
         set(value) {
             sharedUserDefaults.set(value, forKey: badgeButtonKey)
         }
+    }
+    
+    func setFeedHandler(feedHandler: FeedHandlerModel) -> Void {
+        self.feedHandler = feedHandler
+        
+        #if DEBUG
+        NSLog("Info: feedHandler set (\(feedHandler.title))")
+        #endif
+    }
+    
+    func getFeedHandler() -> FeedHandlerModel {
+        return self.feedHandler
+    }
+    
+    func setBadgeButtonState(enabled: Bool) -> Void {
+        self.badgeButtonState = enabled
+        
+        #if DEBUG
+        NSLog("Info: badgeButtonState set (\(enabled))")
+        #endif
+    }
+    
+    func getBadgeButtonState() -> Bool {
+        return self.badgeButtonState
     }
 }

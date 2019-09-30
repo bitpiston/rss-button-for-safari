@@ -66,7 +66,7 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
     
     @objc func subscribeButtonClicked(_ sender: NSButton) {
         let row = tableView.row(for: sender)
-        let feedHandler = settingsManager.feedHandler
+        let feedHandler = settingsManager.getFeedHandler()
         let feedUrl = feeds[row].url
         
         #if DEBUG
