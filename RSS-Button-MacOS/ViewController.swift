@@ -85,6 +85,7 @@ class ViewController: NSViewController, NSWindowDelegate {
                 let identifiers = foundFeedHandlers as! [String]
                 
                 for (index, id) in identifiers.enumerated() {
+                    if id == "com.apple.news" { continue }
                     // Make sure the application exists as old cruft can remain in launch services
                     guard let path = NSWorkspace.shared.absolutePathForApplication(withBundleIdentifier: id) else {
                         #if DEBUG
@@ -115,13 +116,20 @@ class ViewController: NSViewController, NSWindowDelegate {
                 }
             }
             
-            self.readerPopUpButton.removeAllItems()
+            let readerMenu = NSMenu()
+            readerMenu.addItem(withTitle: "None Selected", action: nil, keyEquivalent: "")
             
-            for handler in self.feedHandlers {
-                if handler.title == "Default" || handler.appId == "com.apple.news" { continue }
+            for type in FeedHandlerType.allCases {
+                readerMenu.addItem(NSMenuItem.separator())
                 
-                self.readerPopUpButton.addItem(withTitle: handler.title)
+                for handler in self.feedHandlers.filter({$0.type == type}) {
+                    if handler.type == FeedHandlerType.web && (handler.title == "None" || handler.title == "Default") { continue }
+                    
+                    readerMenu.addItem(withTitle: handler.title, action: nil, keyEquivalent: "")
+                }
             }
+            
+            self.readerPopUpButton.menu = readerMenu
             
             let defaultFeedHandler = LSCopyDefaultHandlerForURLScheme("feed" as CFString)?.takeRetainedValue()
             let feedHandler = self.settingsManager.getFeedHandler()
@@ -132,16 +140,19 @@ class ViewController: NSViewController, NSWindowDelegate {
             #endif
             
             // Set the default feed handler if none already selected unless apple news
-            if feedHandler.type == FeedHandlerType.web && feedHandler.title == "Default" {
+            if !self.settingsManager.isFeedHandlerSet() {
                 if defaultFeedHandler != nil && defaultFeedHandler! as String != "com.apple.news",
-                   let feedHandlerToSet = self.feedHandlers.first(where: {$0.title == defaultFeedHandler! as String}) {
-                    self.readerPopUpButton.selectItem(withTitle: feedHandlerToSet.title)
-                    self.settingsManager.setFeedHandler(feedHandler: feedHandlerToSet)
+                    let feedHandlerToSet = self.feedHandlers.first(where: {$0.appId == defaultFeedHandler! as String}) {
+                    if self.settingsManager.isSupportedFeedHandler() {
+                        self.readerPopUpButton.selectItem(withTitle: feedHandlerToSet.title)
+                        self.settingsManager.setFeedHandler(feedHandler: feedHandlerToSet)
+                    }
                 } else {
-                    let feedHandlerTitleToSet = self.readerPopUpButton.itemTitle(at: 0)
-                    let feedHandlerToSet = self.feedHandlers.first(where: {$0.title == feedHandlerTitleToSet})
-                    self.readerPopUpButton.selectItem(at: 0)
-                    self.settingsManager.setFeedHandler(feedHandler: feedHandlerToSet!)
+                    if self.feedHandlers.filter({$0.type == FeedHandlerType.app}).count > 0 {
+                        self.settingsManager.noFeedHandlerConfiguredAlert()
+                    } else {
+                        self.settingsManager.noFeedHandlersAlert()
+                    }
                 }
             } else {
                 self.readerPopUpButton.selectItem(withTitle: feedHandler.title)
@@ -160,6 +171,12 @@ class ViewController: NSViewController, NSWindowDelegate {
     @IBAction func readerPopUpButtonSelected(_ sender: NSMenuItem) {
         if let feedHandler = self.feedHandlers.first(where: {$0.title == sender.title}) {
             self.settingsManager.setFeedHandler(feedHandler: feedHandler)
+            
+            if !self.settingsManager.isSupportedFeedHandler() {
+                self.settingsManager.unsupportedFeedHandlerAlert(withFeedUrl: nil)
+            }
+        } else {
+            self.settingsManager.setFeedHandler(feedHandler: self.settingsManager.defaultFeedHandlers[0])
         }
     }
     

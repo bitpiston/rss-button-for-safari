@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Cocoa
 
 class SettingsManager {
     
@@ -16,10 +17,15 @@ class SettingsManager {
     let feedHandlerKey = "feedHandler"
     let defaultFeedHandlers: [FeedHandlerModel]
     let badgeButtonKey = "badgeButtonState"
+    let unsupportedHandlers = [
+        "com.mentalfaculty.cream.mac",
+        "com.reederapp.rkit2.mac", // Reeder v3
+        //"com.reederapp.macos", // Reeder v4 (fixed in 4.1.5?)
+    ]
     
     init() {
         self.defaultFeedHandlers = [
-            FeedHandlerModel(title: "Default",
+            FeedHandlerModel(title: "None", // Previously "Default"
                              type: FeedHandlerType.web,
                              url: "feed:%@",
                              appId: nil),
@@ -57,8 +63,8 @@ class SettingsManager {
                              appId: nil)
         ]
         
-        //sharedUserDefaults.removeObject(forKey: feedHandlerKey)
-        //sharedUserDefaults.synchronize()
+        sharedUserDefaults.removeObject(forKey: feedHandlerKey)
+        sharedUserDefaults.synchronize()
     }
     
     var feedHandler: FeedHandlerModel {
@@ -107,5 +113,66 @@ class SettingsManager {
     
     func getBadgeButtonState() -> Bool {
         return self.badgeButtonState
+    }
+    
+    func isFeedHandlerSet() -> Bool {
+        let title = self.feedHandler.title
+        let type  = self.feedHandler.type
+        let appId = self.feedHandler.appId
+        
+        return type == FeedHandlerType.app && appId == "com.apple.news" ||
+            type == FeedHandlerType.web && (title == "None" || title == "Default") ? false : true
+    }
+    
+    func isSupportedFeedHandler() -> Bool {
+        let type  = self.feedHandler.type
+        let appId = self.feedHandler.appId
+        
+        return type == FeedHandlerType.app && self.unsupportedHandlers.contains(appId!) ? false : true
+    }
+    
+    @objc func noFeedHandlerConfiguredAlert(fromExtension: Bool = false) -> Void {
+        let alert = NSAlert()
+        alert.messageText = "No news reader configured"
+        if fromExtension {
+            alert.informativeText = "You must choose a news reader application or web service from within the RSS Button for Safari application to subscribe to feeds."
+        } else {
+            alert.informativeText = "You must choose a news reader application or web service to subscribe to feeds."
+        }
+        alert.alertStyle = .warning
+        alert.addButton(withTitle: "OK")
+        alert.runModal()
+        NSLog("Error: No news reader configured")
+    }
+    
+    @objc func noFeedHandlersAlert(fromExtension: Bool = false) -> Void {
+        let alert = NSAlert()
+        alert.messageText = "No news reader available"
+        if fromExtension {
+            alert.informativeText = "Subscribing to feeds requires a news reader with RSS support for MacOS. Please install one or if you prefer choose a web news service within the RSS Button for Safari application."
+        } else {
+            alert.informativeText = "Subscribing to feeds requires a news reader with RSS support for MacOS. Please install one or if you prefer choose a web based news service."
+        }
+        alert.alertStyle = .warning
+        alert.addButton(withTitle: "OK")
+        alert.runModal()
+        NSLog("Error: No news reader avaiable")
+    }
+    
+    @objc func unsupportedFeedHandlerAlert(withFeedUrl feedUrl: String?) -> Void {
+        let appName = self.feedHandler.title
+        let alert = NSAlert()
+        var message = "\(appName) currently does not support opening feeds automatically. You will need to manually subscribe to feeds from within \(appName)."
+        if feedUrl != nil {
+            message = message + "\n\nYou can copy and paste the URL below:\n\n\(feedUrl!)"
+            alert.messageText = "\(appName) is unable to open the feed"
+        } else {
+            alert.messageText = "\(appName) does not support opening feeds"
+        }
+        alert.informativeText = message
+        alert.alertStyle = .warning
+        alert.addButton(withTitle: "OK")
+        alert.runModal()
+        NSLog("Error: Attempted to open a feed with \(appName) which is bugged")
     }
 }

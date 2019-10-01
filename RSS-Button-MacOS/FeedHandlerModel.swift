@@ -8,7 +8,7 @@
 
 import Foundation
 
-@objc enum FeedHandlerType: Int {
+@objc enum FeedHandlerType: Int, CaseIterable {
     case app = 1
     case web = 2
 }

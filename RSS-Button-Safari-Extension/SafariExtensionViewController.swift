@@ -73,64 +73,28 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
         NSLog("Info: Subscribe button clicked for feed (\(feedUrl)) with feed handler (\(String(describing: feedHandler.appId)))")
         #endif
         
-        // Warn of known unsupported or bugged readers
-        let unsupportedHandlers = [
-            "com.reederapp.rkit2.mac", // Reeder v3
-            //"com.reederapp.macos", // Reeder v4 (fixed in 4.1.5?)
-            "com.mentalfaculty.cream.mac"
-        ]
-        if feedHandler.type == FeedHandlerType.app, unsupportedHandlers.contains(feedHandler.appId!) {
-            let path = NSWorkspace.shared.absolutePathForApplication(withBundleIdentifier: feedHandler.appId!)
-            let name = FileManager.default.displayName(atPath: path!)
-            unsupportedFeedHandlerAlert(withAppName: name, withFeedUrl: feedUrl)
-        } else {
-            if let url = URL(string: String(format: feedHandler.url!, feedUrl)) {
-                #if DEBUG
-                NSLog("Info: Opening feed (\(url))")
-                #endif
-                
-                let defaultFeedHandler = LSCopyDefaultHandlerForURLScheme("feed" as CFString)?.takeRetainedValue()
-                
-                if feedHandler.type == FeedHandlerType.app && feedHandler.appId == "com.apple.news" ||
-                    feedHandler.title == "Default" && defaultFeedHandler != nil && defaultFeedHandler! as String == "com.apple.news" {
-                    noAvailableFeedHandlerAlert()
-                } else {
-                    if feedHandler.type == FeedHandlerType.app {
-                        NSWorkspace.shared.open([url], withAppBundleIdentifier: feedHandler.appId,
-                                                options: NSWorkspace.LaunchOptions.default,
-                                                additionalEventParamDescriptor: nil,
-                                                launchIdentifiers: nil)
-                    } else {
-                        NSWorkspace.shared.open(url)
-                    }
-                }
+        if let url = URL(string: String(format: feedHandler.url!, feedUrl)) {
+            #if DEBUG
+            NSLog("Info: Opening feed (\(url))")
+            #endif
+
+            // Warn of known unsupported or bugged readers
+            if !self.settingsManager.isFeedHandlerSet() {
+                self.settingsManager.noFeedHandlerConfiguredAlert()
+            } else if !self.settingsManager.isSupportedFeedHandler() {
+                self.settingsManager.unsupportedFeedHandlerAlert(withFeedUrl: feedUrl)
             } else {
-                NSLog("Error: Unhandled URL for feed (\(feedHandler.title))")
+                let applicationId = feedHandler.type == FeedHandlerType.web ? "com.apple.safari" : feedHandler.appId
+
+                NSWorkspace.shared.open([url], withAppBundleIdentifier: applicationId,
+                                        options: NSWorkspace.LaunchOptions.default,
+                                        additionalEventParamDescriptor: nil,
+                                        launchIdentifiers: nil)
             }
+        } else {
+            NSLog("Error: Invalid URL for feed")
         }
     }
-    
-    @objc func noAvailableFeedHandlerAlert() -> Void {
-        let alert = NSAlert()
-        alert.messageText = "No news reader available!"
-        alert.informativeText = "Subscribing to feeds requires a news reader with RSS support. Please install one or sign up for a web based news service."
-        alert.alertStyle = .warning
-        alert.addButton(withTitle: "OK")
-        alert.runModal()
-        NSLog("Error: No news reader supporting RSS or Atom feeds avaiable")
-    }
-    
-    @objc func unsupportedFeedHandlerAlert(withAppName appName: String,
-                                        withFeedUrl feedUrl: String) -> Void {
-        let alert = NSAlert()
-        alert.messageText = "\(appName) is unable to open the feed"
-        alert.informativeText = "\(appName) currently does not support opening feeds automatically. You will need to manually subscribe from within \(appName).\n\nYou can copy and paste the URL below:\n\(feedUrl)"
-        alert.alertStyle = .warning
-        alert.addButton(withTitle: "OK")
-        alert.runModal()
-        NSLog("Error: Attempted to open a feed with \(appName) which is bugged")
-    }
-    
 }
 
 extension SafariExtensionViewController: NSTableViewDataSource, NSTableViewDelegate {
