@@ -252,12 +252,12 @@
                                     <action selector="enableButtonClicked:" target="XfG-lQ-9wD" id="4fJ-dJ-nEe"/>
                                 </connections>
                             </button>
-                            <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bUZ-18-RKj">
+                            <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bUZ-18-RKj" customClass="MenuWithSections">
                                 <rect key="frame" x="203" y="69" width="75" height="25"/>
-                                <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="pTV-pp-Khw" id="dgi-BK-2rY">
+                                <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" autoenablesItems="NO" selectedItem="pTV-pp-Khw" id="dgi-BK-2rY">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="menu"/>
-                                    <menu key="menu" id="BmH-Hs-m9g">
+                                    <menu key="menu" autoenablesItems="NO" id="BmH-Hs-m9g">
                                         <items>
                                             <menuItem title="Item 1" state="on" id="pTV-pp-Khw"/>
                                         </items>
@@ -268,11 +268,11 @@
                                 </connections>
                             </popUpButton>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qey-7b-McA">
-                                <rect key="frame" x="79" y="101" width="323" height="17"/>
+                                <rect key="frame" x="33" y="101" width="415" height="17"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="17" id="v0i-Ux-0TV"/>
                                 </constraints>
-                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Choose your prefered news reader to open feeds in:" id="u0k-hw-kV5">
+                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Choose your prefered news reader or web service to open feeds in:" id="u0k-hw-kV5">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
