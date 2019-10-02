@@ -63,8 +63,10 @@ class SettingsManager {
                              appId: nil)
         ]
         
-        sharedUserDefaults.removeObject(forKey: feedHandlerKey)
-        sharedUserDefaults.synchronize()
+        //#if DEBUG
+        //sharedUserDefaults.removeObject(forKey: feedHandlerKey)
+        //sharedUserDefaults.synchronize()
+        //#endif
     }
     
     var feedHandler: FeedHandlerModel {
