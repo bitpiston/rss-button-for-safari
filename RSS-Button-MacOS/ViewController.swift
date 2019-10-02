@@ -117,6 +117,7 @@ class ViewController: NSViewController, NSWindowDelegate {
             }
             
             let readerMenu = NSMenu()
+            
             readerMenu.addItem(withTitle: "None Selected", action: nil, keyEquivalent: "")
             
             for type in FeedHandlerType.allCases {

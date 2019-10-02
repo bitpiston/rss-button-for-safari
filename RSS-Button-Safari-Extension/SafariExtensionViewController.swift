@@ -94,6 +94,8 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
         } else {
             NSLog("Error: Invalid URL for feed")
         }
+        
+        self.dismissPopover()
     }
 }
 
