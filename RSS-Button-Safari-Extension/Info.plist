@@ -65,10 +65,10 @@
 		</dict>
 	</dict>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2018-2019 BitPiston Studios
+	<string>Copyright © 2018-2020 BitPiston Studios
 
 Safari is a trademark of Apple Inc. Inspired by Syndicate by Reda Lemeden.</string>
 	<key>NSHumanReadableDescription</key>
-	<string>A button in the Safari toolbar for viewing and subscribing to RSS feeds</string>
+	<string>A button in the Safari toolbar for discovering and subscribing to RSS feeds</string>
 </dict>
 </plist>
