@@ -124,7 +124,7 @@ class ViewController: NSViewController, NSWindowDelegate {
                 readerMenu.addItem(NSMenuItem.separator())
                 
                 for handler in self.feedHandlers.filter({$0.type == type}) {
-                    if handler.type == FeedHandlerType.web && (handler.title == "None" || handler.title == "Default") { continue }
+                    if handler.type == FeedHandlerType.none { continue }
                     
                     readerMenu.addItem(withTitle: handler.title, action: nil, keyEquivalent: "")
                 }

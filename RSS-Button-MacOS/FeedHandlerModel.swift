@@ -9,8 +9,10 @@
 import Foundation
 
 @objc enum FeedHandlerType: Int, CaseIterable {
-    case app = 1
-    case web = 2
+    case none = 0
+    case app  = 1
+    case web  = 2
+    case copy = 3
 }
 
 @objc(FeedHandlerModel)

@@ -21,14 +21,17 @@ class SettingsManager {
         "org.mozilla.thunderbird",
         "com.mentalfaculty.cream.mac",
         "com.reederapp.rkit2.mac",     // Reeder v3
-        //"com.reederapp.macos",         // Reeder v4 (fixed in 4.1.5)
     ]
     
     init() {
         self.defaultFeedHandlers = [
             FeedHandlerModel(title: "None", // Previously "Default"
-                             type: FeedHandlerType.web,
-                             url: "feed:%@",
+                             type: FeedHandlerType.none,
+                             url: nil,
+                             appId: nil),
+            FeedHandlerModel(title: "Copy to Clipboard",
+                             type: FeedHandlerType.copy,
+                             url: "%@",
                              appId: nil),
             FeedHandlerModel(title: "Feedbin",
                              type: FeedHandlerType.web,
@@ -123,7 +126,8 @@ class SettingsManager {
         let type  = self.feedHandler.type
         let appId = self.feedHandler.appId
         
-        return type == FeedHandlerType.app && appId == "com.apple.news" ||
+        return type == FeedHandlerType.none ||
+            type == FeedHandlerType.app && appId == "com.apple.news" ||
             type == FeedHandlerType.web && (title == "None" || title == "Default") ? false : true
     }
     
@@ -138,9 +142,9 @@ class SettingsManager {
         let alert = NSAlert()
         alert.messageText = "No news reader configured"
         if fromExtension {
-            alert.informativeText = "You must choose a news reader application or web service from within the RSS Button for Safari application to subscribe to feeds."
+            alert.informativeText = "You must choose a news reader from within the RSS Button for Safari application to subscribe to feeds."
         } else {
-            alert.informativeText = "You must choose a news reader application or web service to subscribe to feeds."
+            alert.informativeText = "You must choose a news reader to subscribe to feeds."
         }
         alert.alertStyle = .warning
         alert.addButton(withTitle: "OK")
@@ -165,9 +169,9 @@ class SettingsManager {
     @objc func unsupportedFeedHandlerAlert(withFeedUrl feedUrl: String?) -> Void {
         let appName = self.feedHandler.title
         let alert = NSAlert()
-        var message = "\(appName) currently does not support opening feeds automatically. You will need to manually subscribe to feeds from within \(appName)."
+        var message = "\(appName) currently does not support opening feeds automatically. You will need to choose the copy to clipboard option in the RSS Button for Safari application and manually subscribe to feeds from within \(appName)."
         if feedUrl != nil {
-            message = message + "\n\nYou can copy and paste the URL below:\n\n\(feedUrl!)"
+            message = message + "\n\nYou can also copy and paste the URL below:\n\n\(feedUrl!)"
             alert.messageText = "\(appName) is unable to open the feed"
         } else {
             alert.messageText = "\(appName) does not support opening feeds"

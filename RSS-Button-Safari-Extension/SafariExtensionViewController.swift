@@ -83,6 +83,10 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
                 self.settingsManager.noFeedHandlerConfiguredAlert()
             } else if !self.settingsManager.isSupportedFeedHandler() {
                 self.settingsManager.unsupportedFeedHandlerAlert(withFeedUrl: feedUrl)
+            } else if feedHandler.type == FeedHandlerType.copy {
+                let pasteBoard = NSPasteboard.general
+                pasteBoard.clearContents()
+                pasteBoard.setString(url.absoluteString, forType: .string)
             } else {
                 let applicationId = feedHandler.type == FeedHandlerType.web ? "com.apple.safari" : feedHandler.appId
 
