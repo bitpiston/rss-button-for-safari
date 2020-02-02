@@ -23,8 +23,8 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
             
             switch messageName {
             case "extractedFeeds":
-                guard let url: URL = properties?.url else { return }
-                let feeds = self.decodeJSONFeeds(data: userInfo?["feeds"] as? [FeedDictionary])
+                guard let url: URL = properties?.url, userInfo?["feeds"] != nil else { return }
+                let feeds = self.decodeJSONFeeds(data: userInfo!["feeds"] as? [FeedDictionary])
                 
                 if !feeds.isEmpty {
                     self.stateManager.setFeeds(url: url, feeds: feeds)
