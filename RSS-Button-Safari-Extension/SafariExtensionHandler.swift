@@ -78,6 +78,8 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
         
         if data != nil {
             for (index, values) in data!.enumerated() {
+                if values["title"] == nil || values["type"] == nil || values["url"] == nil { continue }
+                
                 let feed = FeedModel(title: values["title"] as! String,
                                      type : values["type"]  as! String,
                                      url  : values["url"]   as! String)
