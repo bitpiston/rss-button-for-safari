@@ -18,6 +18,7 @@ class SettingsManager {
     let defaultFeedHandlers: [FeedHandlerModel]
     let badgeButtonKey = "badgeButtonState"
     let unsupportedHandlers = [
+        "com.newsbar-app",
         "org.mozilla.thunderbird",
         "com.mentalfaculty.cream.mac",
         "com.reederapp.rkit2.mac",     // Reeder v3
