@@ -73,23 +73,22 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
         NSLog("Info: Subscribe button clicked for feed (\(feedUrl)) with feed handler (\(String(describing: feedHandler.appId)))")
         #endif
         
-        if let url = URL(string: String(format: feedHandler.url!, feedUrl)) {
+        // Warn of known unsupported or bugged readers
+        if !self.settingsManager.isFeedHandlerSet() {
+            self.settingsManager.noFeedHandlerConfiguredAlert(fromExtension: true)
+        } else if !self.settingsManager.isSupportedFeedHandler() {
+            self.settingsManager.unsupportedFeedHandlerAlert(withFeedUrl: feedUrl)
+        } else if let url = URL(string: String(format: feedHandler.url!, feedUrl)) {
             #if DEBUG
             NSLog("Info: Opening feed (\(url))")
             #endif
 
-            // Warn of known unsupported or bugged readers
-            if !self.settingsManager.isFeedHandlerSet() {
-                self.settingsManager.noFeedHandlerConfiguredAlert()
-            } else if !self.settingsManager.isSupportedFeedHandler() {
-                self.settingsManager.unsupportedFeedHandlerAlert(withFeedUrl: feedUrl)
-            } else if feedHandler.type == FeedHandlerType.copy {
+            if feedHandler.type == FeedHandlerType.copy {
                 let pasteBoard = NSPasteboard.general
                 pasteBoard.clearContents()
                 pasteBoard.setString(url.absoluteString, forType: .string)
             } else {
                 let applicationId = feedHandler.type == FeedHandlerType.web ? "com.apple.safari" : feedHandler.appId
-
                 NSWorkspace.shared.open([url], withAppBundleIdentifier: applicationId,
                                         options: NSWorkspace.LaunchOptions.default,
                                         additionalEventParamDescriptor: nil,
