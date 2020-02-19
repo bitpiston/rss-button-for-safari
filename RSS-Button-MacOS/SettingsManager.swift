@@ -139,6 +139,20 @@ class SettingsManager {
         return type == FeedHandlerType.app && self.unsupportedHandlers.contains(appId!) ? false : true
     }
     
+    @objc func launchApplication(bundleIdentifier: String = "com.bitpiston.RSSButton4Safari") -> Void {
+        if #available(OSX 10.15, *) {
+            guard let url = NSWorkspace.shared.urlForApplication(withBundleIdentifier: bundleIdentifier) else { return }
+            NSWorkspace.shared.openApplication(at: url,
+                                               configuration: NSWorkspace.OpenConfiguration(),
+                                               completionHandler: nil)
+        } else {
+            NSWorkspace.shared.launchApplication(withBundleIdentifier: bundleIdentifier,
+                                                 options: NSWorkspace.LaunchOptions.default,
+                                                 additionalEventParamDescriptor: nil,
+                                                 launchIdentifier: nil)
+        }
+    }
+    
     @objc func noFeedHandlerConfiguredAlert(fromExtension: Bool = false) -> Void {
         let alert = NSAlert()
         alert.messageText = "No news reader configured"
@@ -150,7 +164,12 @@ class SettingsManager {
         alert.alertStyle = .warning
         alert.addButton(withTitle: "OK")
         alert.runModal()
+        
         NSLog("Error: No news reader configured")
+        
+        if fromExtension {
+            self.launchApplication()
+        }
     }
     
     @objc func noFeedHandlersAlert(fromExtension: Bool = false) -> Void {
@@ -164,7 +183,12 @@ class SettingsManager {
         alert.alertStyle = .warning
         alert.addButton(withTitle: "OK")
         alert.runModal()
+        
         NSLog("Error: No news reader avaiable")
+        
+        if fromExtension {
+            self.launchApplication()
+        }
     }
     
     @objc func unsupportedFeedHandlerAlert(withFeedUrl feedUrl: String?) -> Void {
@@ -181,6 +205,9 @@ class SettingsManager {
         alert.alertStyle = .warning
         alert.addButton(withTitle: "OK")
         alert.runModal()
+        
         NSLog("Error: Attempted to open a feed with \(appName) which is bugged")
+        
+        self.launchApplication()
     }
 }
