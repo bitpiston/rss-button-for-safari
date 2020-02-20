@@ -208,6 +208,8 @@ class SettingsManager {
         
         NSLog("Error: Attempted to open a feed with \(appName) which is bugged")
         
-        self.launchApplication()
+        if feedUrl != nil {
+            self.launchApplication()
+        }
     }
 }
