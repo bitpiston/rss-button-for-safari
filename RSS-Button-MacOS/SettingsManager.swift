@@ -98,7 +98,7 @@ class SettingsManager {
         }
     }
     
-    func setFeedHandler(feedHandler: FeedHandlerModel) -> Void {
+    func setFeedHandler(_ feedHandler: FeedHandlerModel) -> Void {
         self.feedHandler = feedHandler
         
         #if DEBUG
@@ -110,7 +110,7 @@ class SettingsManager {
         return self.feedHandler
     }
     
-    func setBadgeButtonState(enabled: Bool) -> Void {
+    func setBadgeButtonState(_ enabled: Bool) -> Void {
         self.badgeButtonState = enabled
         
         #if DEBUG

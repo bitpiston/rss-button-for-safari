@@ -9,17 +9,22 @@
 import Cocoa
 import SafariServices
 
-class ViewController: NSViewController, NSWindowDelegate {
+class ViewController: NSViewController, NSWindowDelegate, NSTextFieldDelegate {
 
     @IBOutlet weak var statusTextField: NSTextField!
     @IBOutlet weak var informationTextField: NSTextField!
     @IBOutlet weak var enableButton: NSButton!
     @IBOutlet weak var readerPopUpButton: NSPopUpButton!
+    @IBOutlet weak var customUrlTextField: NSTextField!
     @IBOutlet weak var badgeButtonToggle: NSButton!
+    @IBOutlet weak var customUrlTextFieldHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var customUrlTextFieldPaddingConstraint: NSLayoutConstraint!
+   
+    var feedHandlers = [FeedHandlerModel]()
+    var previousCustomUrl: String?
+    let customUrlTitle = "Custom URL"
     
-    var feedHandlers    = [FeedHandlerModel]()
-    
-    let extensionId     = (Bundle.main.infoDictionary!["Extension bundle identifier"] as? String)!
+    let extensionId = (Bundle.main.infoDictionary!["Extension bundle identifier"] as? String)!
     let settingsManager = SettingsManager.shared
     
     //static let shared = ViewController()
@@ -27,15 +32,17 @@ class ViewController: NSViewController, NSWindowDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        checkExtensionState()
-        updateFeedHandlers()
-        updateSettings()
+        self.customUrlTextField.delegate = self
+        
+        self.checkExtensionState()
+        self.updateFeedHandlers()
+        self.updateSettings()
     }
     
     override func viewWillAppear() {
         super.viewWillAppear()
         
-        checkExtensionState()
+        self.checkExtensionState()
     }
     
     override func viewDidAppear() {
@@ -46,7 +53,7 @@ class ViewController: NSViewController, NSWindowDelegate {
         
         Timer.scheduledTimer(timeInterval: 1.0,
                              target: self,
-                             selector: #selector(checkExtensionState),
+                             selector: #selector(self.checkExtensionState),
                              userInfo: nil,
                              repeats: true)
     }
@@ -76,92 +83,111 @@ class ViewController: NSViewController, NSWindowDelegate {
     }
     
     func updateFeedHandlers() -> Void {
-        DispatchQueue.main.async {
-            self.feedHandlers = self.settingsManager.defaultFeedHandlers
+        self.feedHandlers = self.settingsManager.defaultFeedHandlers
+        
+        let defaultFeedHandler = LSCopyDefaultHandlerForURLScheme("feed" as CFString)?.takeRetainedValue()
+        let feedHandler = self.settingsManager.getFeedHandler()
+        
+        #if DEBUG
+        NSLog("Info: default feed handler from launch services (\(String(describing: defaultFeedHandler)))")
+        NSLog("Info: retrieved feed handler from preferences (\(String(describing: feedHandler.title)), \(String(describing: feedHandler.appId)))")
+        #endif
+        
+        // Get all the applications registered as handlers for feed URLs
+        if let foundFeedHandlers = LSCopyAllHandlersForURLScheme("feed" as CFString)?.takeRetainedValue() {
+            let identifiers = foundFeedHandlers as! [String]
             
-            // Sandboxed applications do not have access to launch services to set the default application so
-            // we will have to launch apps directly
-            if let foundFeedHandlers = LSCopyAllHandlersForURLScheme("feed" as CFString)?.takeRetainedValue() {
-                let identifiers = foundFeedHandlers as! [String]
+            for (index, id) in identifiers.enumerated() {
+                if id == "com.apple.news" { continue }
                 
-                for (index, id) in identifiers.enumerated() {
-                    if id == "com.apple.news" { continue }
-                    // Make sure the application exists as old cruft can remain in launch services
-                    guard let path = NSWorkspace.shared.absolutePathForApplication(withBundleIdentifier: id) else {
-                        #if DEBUG
-                        NSLog("Info: bad feed handler with no path detected and skipped (\(id))")
-                        #endif
-                        continue
-                    }
-                    
-                    if FileManager.default.fileExists(atPath: path) {
-                        let name = FileManager.default.displayName(atPath: path)
-                        //let bundle = Bundle(path: path)
-                        //let bundleName = bundle?.object(forInfoDictionaryKey: "CFBundleName") as? String
-                        //let version = bundle?.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
-                        self.feedHandlers.insert(FeedHandlerModel(title: name,
-                                                                  type: FeedHandlerType.app,
-                                                                  url: "feed:%@",
-                                                                  appId: id), at: 0 + index)
-                        #if DEBUG
-                        NSLog("Info: found valid feed handler (\(id))")
-                        #endif
-                    }
-                    
+                // Make sure the application exists as old cruft can remain in launch services
+                guard let path = NSWorkspace.shared.absolutePathForApplication(withBundleIdentifier: id) else {
                     #if DEBUG
-                    if !FileManager.default.fileExists(atPath: path) {
-                        NSLog("Info: bad feed handler that does not exist detected and skipped (\(id))")
-                    }
+                    NSLog("Info: bad feed handler with no path detected and skipped (\(id))")
+                    #endif
+                    continue
+                }
+                
+                if FileManager.default.fileExists(atPath: path) {
+                    let name = FileManager.default.displayName(atPath: path)
+                    
+                    self.feedHandlers.insert(FeedHandlerModel(title: name,
+                                                              type: FeedHandlerType.app,
+                                                              url: "feed:%@",
+                                                              appId: id), at: 0 + index)
+                    #if DEBUG
+                    NSLog("Info: found valid feed handler (\(id))")
                     #endif
                 }
-            }
-            
-            let readerMenu = NSMenu()
-            
-            readerMenu.addItem(withTitle: "None Selected", action: nil, keyEquivalent: "")
-            
-            for type in FeedHandlerType.allCases {
-                readerMenu.addItem(NSMenuItem.separator())
                 
-                for handler in self.feedHandlers.filter({$0.type == type}) {
-                    if handler.type == FeedHandlerType.none { continue }
-                    
-                    readerMenu.addItem(withTitle: handler.title, action: nil, keyEquivalent: "")
+                #if DEBUG
+                if !FileManager.default.fileExists(atPath: path) {
+                    NSLog("Info: bad feed handler that does not exist detected and skipped (\(id))")
                 }
+                #endif
             }
+        }
+        
+        // Custom URLs
+        if feedHandler.type == FeedHandlerType.custom {
+            self.feedHandlers.append(feedHandler)
+        } else {
+            self.feedHandlers.append(FeedHandlerModel(title: self.customUrlTitle,
+                                                      type: FeedHandlerType.custom,
+                                                      url: "https://example.com/?url=%@",
+                                                      appId: nil))
+        }
+        
+        // Create the menu of feed handlers
+        let readerMenu = NSMenu()
+        readerMenu.addItem(withTitle: "None Selected", action: nil, keyEquivalent: "")
+        
+        for type in FeedHandlerType.allCases {
+            readerMenu.addItem(NSMenuItem.separator())
             
-            self.readerPopUpButton.menu = readerMenu
-            
-            let defaultFeedHandler = LSCopyDefaultHandlerForURLScheme("feed" as CFString)?.takeRetainedValue()
-            let feedHandler = self.settingsManager.getFeedHandler()
-            
-            #if DEBUG
-            NSLog("Info: default feed handler from launch services (\(String(describing: defaultFeedHandler)))")
-            NSLog("Info: Saved feed handler from preferences (\(String(describing: feedHandler.title)), \(String(describing: feedHandler.appId)))")
-            #endif
-            
-            // Set the default feed handler if none already selected unless apple news
-            if !self.settingsManager.isFeedHandlerSet() {
-                if defaultFeedHandler != nil && defaultFeedHandler! as String != "com.apple.news",
-                    let feedHandlerToSet = self.feedHandlers.first(where: {$0.appId == defaultFeedHandler! as String}) {
-                    if self.settingsManager.isSupportedFeedHandler() {
-                        self.readerPopUpButton.selectItem(withTitle: feedHandlerToSet.title)
-                        self.settingsManager.setFeedHandler(feedHandler: feedHandlerToSet)
-                    }
-                } else {
-                    if self.feedHandlers.filter({$0.type == FeedHandlerType.app}).count > 0 {
-                        self.settingsManager.noFeedHandlerConfiguredAlert()
-                    } else {
-                        self.settingsManager.noFeedHandlersAlert()
-                    }
+            for handler in self.feedHandlers.filter({$0.type == type}) {
+                if handler.type == FeedHandlerType.none { continue }
+                
+                readerMenu.addItem(withTitle: handler.title, action: nil, keyEquivalent: "")
+            }
+        }
+        
+        self.readerPopUpButton.menu = readerMenu
+        
+        // Set the default feed handler if on first run unless apple news
+        if !self.settingsManager.isFeedHandlerSet() {
+            if defaultFeedHandler != nil && defaultFeedHandler! as String != "com.apple.news",
+                let feedHandlerToSet = self.feedHandlers.first(where: {$0.appId == defaultFeedHandler! as String}) {
+                
+                if self.settingsManager.isSupportedFeedHandler() {
+                    self.readerPopUpButton.selectItem(withTitle: feedHandlerToSet.title)
+                    self.settingsManager.setFeedHandler(feedHandlerToSet)
                 }
             } else {
-                self.readerPopUpButton.selectItem(withTitle: feedHandler.title)
+                if self.feedHandlers.filter({$0.type == FeedHandlerType.app}).count > 0 {
+                    self.settingsManager.noFeedHandlerConfiguredAlert()
+                } else {
+                    self.settingsManager.noFeedHandlersAlert()
+                }
             }
+        } else {
+            self.readerPopUpButton.selectItem(withTitle: feedHandler.title)
         }
     }
     
     func updateSettings() -> Void {
+        let feedHandler = self.settingsManager.getFeedHandler()
+        
+        if feedHandler.type == FeedHandlerType.custom {
+            if let url = feedHandler.url {
+                self.customUrlTextField.stringValue = url
+            }
+            
+            self.setCustomUrlFieldVisibility(true)
+        } else {
+            self.setCustomUrlFieldVisibility(false)
+        }
+        
         if self.settingsManager.getBadgeButtonState() {
             self.badgeButtonToggle.state = NSControl.StateValue.on
         } else {
@@ -169,25 +195,94 @@ class ViewController: NSViewController, NSWindowDelegate {
         }
     }
     
-    @IBAction func readerPopUpButtonSelected(_ sender: NSMenuItem) {
+    func controlTextDidChange(_ obj: Notification)
+    {
+        guard let object = obj.object as? NSTextField else { return }
+        let value = object.stringValue
+        
+        if value.contains("%@") {
+            self.settingsManager.setFeedHandler(FeedHandlerModel(title: self.customUrlTitle,
+                                                                 type: FeedHandlerType.custom,
+                                                                 url: value,
+                                                                 appId: nil))
+        }
+    }
+    
+    func setCustomUrlFieldVisibility(_ visible: Bool, animated: Bool = true) -> Void {
+        if visible {
+            self.customUrlTextField.isEnabled = true
+            self.customUrlTextField.isHidden = false
+            NSAnimationContext.runAnimationGroup({ (context) in
+                context.allowsImplicitAnimation = true
+                context.duration = 0.2
+                self.customUrlTextFieldHeightConstraint.animator().constant = CGFloat(21)
+                self.customUrlTextFieldPaddingConstraint.animator().constant = CGFloat(16)
+            }, completionHandler: { () -> Void in
+                NSAnimationContext.runAnimationGroup({ (context) in
+                    context.allowsImplicitAnimation = true
+                    context.duration = 0.1
+                    self.customUrlTextField.animator().alphaValue = 1
+                })
+            })
+        } else {
+            NSAnimationContext.runAnimationGroup({ (context) in
+                context.allowsImplicitAnimation = true
+                context.duration = 0.1
+                self.customUrlTextField.animator().alphaValue = 0
+            }, completionHandler: { () -> Void in
+                NSAnimationContext.runAnimationGroup({ (context) in
+                    context.allowsImplicitAnimation = true
+                    context.duration = 0.2
+                    self.customUrlTextFieldHeightConstraint.animator().constant = 0
+                    self.customUrlTextFieldPaddingConstraint.animator().constant = 0
+                }, completionHandler: { () -> Void in
+                    self.customUrlTextField.isEnabled = false
+                    self.customUrlTextField.isHidden = true
+                })
+            })
+        }
+    }
+    
+    @IBAction func readerPopUpButtonSelected(_ sender: NSMenuItem) -> Void {
+        // Set the handler and warn if unsupported
         if let feedHandler = self.feedHandlers.first(where: {$0.title == sender.title}) {
-            self.settingsManager.setFeedHandler(feedHandler: feedHandler)
+            // Toggle and populate the text field for custom URLs
+            if feedHandler.type == FeedHandlerType.custom {
+                self.customUrlTextField.stringValue = self.previousCustomUrl ?? feedHandler.url!
+                self.setCustomUrlFieldVisibility(true)
+                //self.customUrlTextField.window?.makeFirstResponder(self.customUrlTextField)
+            } else {
+                let previousFeedHandler = self.settingsManager.getFeedHandler()
+                
+                if previousFeedHandler.type == FeedHandlerType.custom {
+                    self.previousCustomUrl = self.customUrlTextField.stringValue
+                }
+                
+                self.setCustomUrlFieldVisibility(false)
+            }
+            
+            self.settingsManager.setFeedHandler(feedHandler)
             
             if !self.settingsManager.isSupportedFeedHandler() {
                 self.settingsManager.unsupportedFeedHandlerAlert(withFeedUrl: nil)
             }
         } else {
-            self.settingsManager.setFeedHandler(feedHandler: self.settingsManager.defaultFeedHandlers[0])
+            self.settingsManager.setFeedHandler(self.settingsManager.defaultFeedHandlers[0])
         }
     }
     
-    @IBAction func enableButtonClicked(_ sender: NSButton) {
+    @IBAction func enableButtonClicked(_ sender: NSButton) -> Void {
         SFSafariApplication.showPreferencesForExtension(withIdentifier: extensionId)
     }
     
-    @IBAction func badgeButtonToggleClicked(_ sender: NSButton) {
+    @IBAction func badgeButtonToggleClicked(_ sender: NSButton) -> Void {
         let value = sender.state.rawValue == 0 ? false : true
         
-        self.settingsManager.setBadgeButtonState(enabled: value)
+        self.settingsManager.setBadgeButtonState(value)
     }
+}
+
+extension NSTextField {
+    
+    func controlTextDidChange(obj: NSNotification) {}
 }

@@ -12,6 +12,7 @@ import Foundation
     case none = 0
     case app  = 1
     case web  = 2
+    case custom = 4
     case copy = 3
 }
 
@@ -23,7 +24,8 @@ class FeedHandlerModel: NSObject, NSCoding {
     let appId: String?
     
     init(title: String, type: FeedHandlerType, url: String?, appId: String?) {
-        if (type == FeedHandlerType.app && appId == nil) || (type == FeedHandlerType.web && url == nil) {
+        if (type == FeedHandlerType.app && appId == nil) ||
+           ((type == FeedHandlerType.web || type == FeedHandlerType.custom) && url == nil) {
             NSLog("Error: Invalid FeedHandlerModel (\(title))")
         }
         

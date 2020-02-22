@@ -88,7 +88,8 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
                 pasteBoard.clearContents()
                 pasteBoard.setString(url.absoluteString, forType: .string)
             } else {
-                let applicationId = feedHandler.type == FeedHandlerType.web ? "com.apple.safari" : feedHandler.appId
+                let applicationId = feedHandler.type == FeedHandlerType.web ||
+                                    feedHandler.type == FeedHandlerType.custom ? "com.apple.safari" : feedHandler.appId
                 NSWorkspace.shared.open([url], withAppBundleIdentifier: applicationId,
                                         options: NSWorkspace.LaunchOptions.default,
                                         additionalEventParamDescriptor: nil,
