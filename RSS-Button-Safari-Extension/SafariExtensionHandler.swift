@@ -23,36 +23,70 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
             
             switch messageName {
             case "extractedFeeds":
-                guard let url: URL = properties?.url, userInfo?["feeds"] != nil else { return }
+                guard userInfo?["feeds"] != nil else { return }
+                
                 let feeds = self.decodeJSONFeeds(data: userInfo!["feeds"] as? [FeedDictionary])
                 
                 if !feeds.isEmpty {
-                    self.stateManager.setFeeds(url: url, feeds: feeds)
+                    self.stateManager.setFeeds(hash: page.hash, feeds: feeds)
                     SFSafariApplication.setToolbarItemsNeedUpdate()
                 }
                 
             default:
-                NSLog("Error: Unhandled message received")
+                NSLog("Error: Unhandled message received in \(page.description)")
             }
         }
     }
     
     override func validateToolbarItem(in window: SFSafariWindow, validationHandler: @escaping ((Bool, String) -> Void)) {
-        getActivePageProperties {
-            if let url: URL = $0?.url {
-                let feedCount  = self.stateManager.countFeeds(url: url)
-                let feedsFound = feedCount > 0 ? true : false
-                let badgeText  = self.settingsManager.getBadgeButtonState() && feedsFound ? String(feedCount) : ""
-                
+        window.getActiveTab { tab in
+            guard let tab = tab else {
                 #if DEBUG
-                NSLog("Info: validateToolbarItem (\(url)) with feedsFound (\(feedsFound))")
-                NSLog("Info: SafariExtensionStateManager feeds stored for \(self.stateManager.feeds.count) pages")
+                NSLog("Info: Failed to get active tab \(window.description)")
                 #endif
-                
-                validationHandler(feedsFound, badgeText)
-            } else {
                 validationHandler(false, "")
+                return
             }
+            
+            tab.getActivePage(completionHandler: { page in
+                guard let page = page else {
+                    #if DEBUG
+                    NSLog("Info: Failed to get active page \(tab.description)")
+                    #endif
+                    validationHandler(false, "")
+                    return
+                }
+                
+                page.getPropertiesWithCompletionHandler { properties in
+                    guard let properties = properties else {
+                        #if DEBUG
+                        NSLog("Info: Failed to get page properties in \(page.description)")
+                        #endif
+                        validationHandler(false, "")
+                        return
+                    }
+                    
+                    guard let url = properties.url,
+                        url.scheme == "http" || url.scheme == "https" else {
+                        #if DEBUG
+                        NSLog("Info: Failed to get valid url from page properties in \(page.description)")
+                        #endif
+                        validationHandler(false, "")
+                        return
+                    }
+                
+                    let feedCount  = self.stateManager.countFeeds(hash: page.hash)
+                    let feedsFound = feedCount > 0 ? true : false
+                    let badgeText  = self.settingsManager.getBadgeButtonState() && feedsFound ? String(feedCount) : ""
+                    
+                    #if DEBUG
+                    NSLog("Info: validateToolbarItem (\(url), \(page.hash)) with feedsFound (\(feedsFound))")
+                    NSLog("Info: SafariExtensionStateManager feeds stored for \(self.stateManager.feeds.count) pages")
+                    #endif
+                    
+                    validationHandler(feedsFound, badgeText)
+                }
+            })
         }
     }
     
@@ -61,15 +95,47 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     }
     
     override func popoverWillShow(in window: SFSafariWindow) {
-        getActivePageProperties {
-            guard let url = $0?.url else { return }
-            let feeds = self.stateManager.getFeeds(url: url) 
+        window.getActiveTab { tab in
+            guard let tab = tab else {
+                #if DEBUG
+                NSLog("Info: Failed to get active tab \(window.description)")
+                #endif
+                return
+            }
             
-            #if DEBUG
-            NSLog("Info: popoverWillShow (\(url)) with \(feeds.count) feeds (\(feeds))")
-            #endif
-            
-            self.viewController.updateFeeds(with: feeds)
+            tab.getActivePage(completionHandler: { page in
+                guard let page = page else {
+                    #if DEBUG
+                    NSLog("Info: Failed to get active page \(tab.description)")
+                    #endif
+                    return
+                }
+                
+                page.getPropertiesWithCompletionHandler { properties in
+                    guard let properties = properties else {
+                        #if DEBUG
+                        NSLog("Info: Failed to get page properties in \(page.description)")
+                        #endif
+                        return
+                    }
+                    
+                    guard let url = properties.url,
+                        url.scheme == "http" || url.scheme == "https" else {
+                        #if DEBUG
+                        NSLog("Info: Failed to get valid url from page properties in \(page.description)")
+                        #endif
+                        return
+                    }
+                    
+                    let feeds = self.stateManager.getFeeds(hash: page.hash)
+                    
+                    #if DEBUG
+                    NSLog("Info: popoverWillShow (\(url), \(page.hash)) with \(feeds.count) feeds (\(feeds))")
+                    #endif
+                    
+                    self.viewController.updateFeeds(with: feeds)
+                }
+            })
         }
     }
     
@@ -90,29 +156,5 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
         
         return feeds
     }
-    
-    func getActivePage(completionHandler: @escaping (SFSafariPage?) -> Void) {
-        SFSafariApplication.getActiveWindow {
-            $0?.getActiveTab {
-                $0?.getActivePage(completionHandler: completionHandler)
-            }
-        }
-    }
-    
-    func getActivePageProperties(completionHandler: @escaping (SFSafariPageProperties?) -> Void) {
-        getActivePage {
-            $0?.getPropertiesWithCompletionHandler(completionHandler)
-        }
-    }
-    
-    //func getActiveTab(completionHandler: @escaping (SFSafariTab?) -> Void) {
-    //    SFSafariApplication.getActiveWindow {
-    //        $0?.getActiveTab(completionHandler: completionHandler)
-    //    }
-    //}
-    
-    //func getActiveWindow(completionHandler: @escaping (SFSafariWindow?) -> Void) {
-    //    SFSafariApplication.getActiveWindow(completionHandler: completionHandler)
-    //}
     
 }

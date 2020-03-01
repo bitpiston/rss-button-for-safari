@@ -13,22 +13,22 @@ class SafariExtensionStateManager {
     
     static let shared = SafariExtensionStateManager()
     
-    var feeds: [URL: [FeedModel]] = [:]
+    var feeds: [Int: [FeedModel]] = [:]
     
-    func setFeeds(url: URL, feeds: [FeedModel]) -> Void {
-        self.feeds[url] = feeds
+    func setFeeds(hash: Int, feeds: [FeedModel]) -> Void {
+        self.feeds[hash] = feeds
     }
     
-    func getFeeds(url: URL) -> [FeedModel] {
-        return self.feeds[url] ?? [FeedModel]()
+    func getFeeds(hash: Int) -> [FeedModel] {
+        return self.feeds[hash] ?? [FeedModel]()
     }
     
-    func hasFeeds(url: URL) -> Bool {
-        return self.feeds[url]?.isEmpty ?? true ? false : true
+    func hasFeeds(hash: Int) -> Bool {
+        return self.feeds[hash]?.isEmpty ?? true ? false : true
     }
     
-    func countFeeds(url: URL) -> Int {
-        return self.feeds[url]?.count ?? 0
+    func countFeeds(hash: Int) -> Int {
+        return self.feeds[hash]?.count ?? 0
     }
     
 }
