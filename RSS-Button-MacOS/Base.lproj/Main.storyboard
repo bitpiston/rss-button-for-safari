@@ -252,7 +252,7 @@
                                     <action selector="enableButtonClicked:" target="XfG-lQ-9wD" id="4fJ-dJ-nEe"/>
                                 </connections>
                             </button>
-                            <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bUZ-18-RKj" customClass="MenuWithSections">
+                            <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bUZ-18-RKj">
                                 <rect key="frame" x="203" y="62" width="75" height="25"/>
                                 <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" autoenablesItems="NO" selectedItem="pTV-pp-Khw" id="dgi-BK-2rY">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -334,7 +334,7 @@
                             <constraint firstItem="4bH-9M-t0F" firstAttribute="trailing" secondItem="Inz-Z9-QFp" secondAttribute="trailing" id="1lR-0r-5Tn"/>
                             <constraint firstItem="4bH-9M-t0F" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" symbolic="YES" id="6Ui-UB-ufs"/>
                             <constraint firstItem="4bH-9M-t0F" firstAttribute="centerX" secondItem="5D9-kQ-vsz" secondAttribute="centerX" id="7Yc-Kc-ZUD"/>
-                            <constraint firstItem="V3X-Og-zhb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Fbj-lN-egk" secondAttribute="trailing" symbolic="YES" id="AUN-uG-mv8"/>
+                            <constraint firstItem="V3X-Og-zhb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Fbj-lN-egk" secondAttribute="trailing" constant="8" symbolic="YES" id="AUN-uG-mv8"/>
                             <constraint firstItem="V3X-Og-zhb" firstAttribute="baseline" secondItem="Fbj-lN-egk" secondAttribute="baseline" id="Ab8-dy-xGQ"/>
                             <constraint firstItem="C2e-fL-pSJ" firstAttribute="leading" secondItem="4bH-9M-t0F" secondAttribute="leading" id="BCc-hM-7QB"/>
                             <constraint firstItem="V3X-Og-zhb" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="234" id="C4u-ci-KD8"/>
