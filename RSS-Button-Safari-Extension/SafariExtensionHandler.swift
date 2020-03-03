@@ -81,7 +81,6 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
                     
                     #if DEBUG
                     NSLog("Info: validateToolbarItem (\(url), \(page.hash)) with feedsFound (\(feedsFound))")
-                    NSLog("Info: SafariExtensionStateManager feeds stored for \(self.stateManager.feeds.count) pages")
                     #endif
                     
                     validationHandler(feedsFound, badgeText)
