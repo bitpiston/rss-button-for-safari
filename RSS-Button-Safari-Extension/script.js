@@ -11,11 +11,28 @@
 'use strict';
 
 var feeds = [],
-    parsed = false;
+    parsed = false,
+    href = window.location.href,
+    timer = 0,
+    counter = 0;
 
 document.addEventListener("DOMContentLoaded", function(event) {
     if (isValidPage()) {
         extractFeeds();
+        
+        // To handle document / url changes requires polling
+        startPolling();
+        
+        // Don't poll if the tab is inactive
+        document.addEventListener('visibilitychange', function(event) {
+            if (document.hidden && timer != 0) {
+                stopPolling();
+            } else {
+                startPolling();
+            }
+        });
+        
+        // Resume polling on interaction for SPAs?
     }
 });
 
@@ -24,6 +41,38 @@ function isValidPage() {
             typeof safari != "undefined" &&
             (document.domain !== "undefined" || document.location != null) &&
             window.location.href !== "favorites://");
+}
+
+function pollForChanges() {
+    if (counter < 10) {
+        counter++;
+        
+        if (parsed === true && href != window.location.href) {
+            href = window.location.href;
+            
+            parsed = false;
+            extractFeeds();
+            
+            stopPolling();
+            startPolling(10);
+        } else {
+            startPolling();
+        }
+    } else {
+        stopPolling();
+    }
+}
+
+function startPolling(seconds = 1) {
+    timer = setTimeout(pollForChanges, seconds * 1000);
+}
+
+function stopPolling() {
+    if (timer != 0) {
+        clearTimeout(timer);
+        timer = 0;
+    }
+    counter = 0;
 }
 
 function extractFeeds(setParsed = true) {
@@ -73,6 +122,7 @@ function extractFeeds(setParsed = true) {
     
     if (feeds.length > 0) {
         safari.extension.dispatchMessage("extractedFeeds", {feeds: feeds});
+        console.info('RSS Button for Safari detected ' + feeds.length + ' feed(s).');
     }
 }
 

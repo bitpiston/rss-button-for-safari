@@ -11,43 +11,43 @@ import SafariServices
 
 class SafariExtensionStateManager {
     private let queue = DispatchQueue(label: "com.bitpiston.RSSButton4Safari.feedStore",
-                                            attributes: .concurrent)
+                                      attributes: .concurrent)
     
     static let shared = SafariExtensionStateManager()
     
-    private var feeds: [Int: [FeedModel]] = [:]
+    private var feeds: [URL: [FeedModel]] = [:]
     
-    func setFeeds(hash: Int, feeds: [FeedModel]) -> Void {
+    func setFeeds(url: URL, feeds: [FeedModel]) -> Void {
         self.queue.async(flags: .barrier) {
-             self.feeds[hash] = feeds
+             self.feeds[url] = feeds
         }
     }
     
-    func getFeeds(hash: Int) -> [FeedModel] {
+    func getFeeds(url: URL) -> [FeedModel] {
         var result: [FeedModel]?
         
         self.queue.sync {
-            result = self.feeds[hash]
+            result = self.feeds[url]
         }
         
         return result ?? [FeedModel]()
     }
     
-    func hasFeeds(hash: Int) -> Bool {
+    func hasFeeds(url: URL) -> Bool {
         var result: Bool?
         
         self.queue.sync {
-            result = self.feeds[hash]?.isEmpty
+            result = self.feeds[url]?.isEmpty
         }
         
         return result ?? true ? false : true
     }
     
-    func countFeeds(hash: Int) -> Int {
+    func countFeeds(url: URL) -> Int {
         var result: Int?
         
         self.queue.sync {
-            result = self.feeds[hash]?.count
+            result = self.feeds[url]?.count
         }
         
         return result ?? 0

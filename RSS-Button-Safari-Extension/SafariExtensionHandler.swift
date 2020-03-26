@@ -23,12 +23,24 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
             
             switch messageName {
             case "extractedFeeds":
-                guard userInfo?["feeds"] != nil else { return }
+                guard let url: URL = properties?.url else {
+                    #if DEBUG
+                    NSLog("Info: Failed to get valid url from page properties in \(page.description) during extractedFeeds message")
+                    #endif
+                    return
+                }
+                
+                guard userInfo?["feeds"] != nil else {
+                    #if DEBUG
+                    NSLog("Info: userInfo feed data nil \(page.description) during extractedFeeds message")
+                    #endif
+                    return
+                }
                 
                 let feeds = self.decodeJSONFeeds(data: userInfo!["feeds"] as? [FeedDictionary])
                 
                 if !feeds.isEmpty {
-                    self.stateManager.setFeeds(hash: page.hash, feeds: feeds)
+                    self.stateManager.setFeeds(url: url, feeds: feeds)
                     SFSafariApplication.setToolbarItemsNeedUpdate()
                 }
                 
@@ -75,12 +87,12 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
                         return
                     }
                 
-                    let feedCount  = self.stateManager.countFeeds(hash: page.hash)
+                    let feedCount  = self.stateManager.countFeeds(url: url)
                     let feedsFound = feedCount > 0 ? true : false
                     let badgeText  = self.settingsManager.getBadgeButtonState() && feedsFound ? String(feedCount) : ""
                     
                     #if DEBUG
-                    NSLog("Info: validateToolbarItem (\(url), \(page.hash)) with feedsFound (\(feedsFound))")
+                    NSLog("Info: validateToolbarItem (\(url)) with feedsFound (\(feedsFound))")
                     #endif
                     
                     validationHandler(feedsFound, badgeText)
@@ -126,10 +138,10 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
                         return
                     }
                     
-                    let feeds = self.stateManager.getFeeds(hash: page.hash)
+                    let feeds = self.stateManager.getFeeds(url: url)
                     
                     #if DEBUG
-                    NSLog("Info: popoverWillShow (\(url), \(page.hash)) with \(feeds.count) feeds (\(feeds))")
+                    NSLog("Info: popoverWillShow (\(url)) with \(feeds.count) feeds (\(feeds))")
                     #endif
                     
                     self.viewController.updateFeeds(with: feeds)
