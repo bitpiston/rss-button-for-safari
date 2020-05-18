@@ -49,8 +49,8 @@ function pollForChanges() {
         
         if (parsed === true && href != window.location.href) {
             href = window.location.href;
-            
             parsed = false;
+            
             extractFeeds();
             
             stopPolling();
@@ -177,7 +177,7 @@ function _getBaseUrl() {
         var link = baseLinks[i];
         
         if (link.attributes.getNamedItem("href") !== null) {
-            url = link.attributes.getNamedItem("href").value;
+            var url = link.attributes.getNamedItem("href").value;
             
             if (url.charAt(url.length - 1) != "/") {
                 url += "/";
