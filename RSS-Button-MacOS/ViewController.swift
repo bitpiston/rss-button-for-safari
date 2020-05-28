@@ -171,7 +171,11 @@ class ViewController: NSViewController, NSWindowDelegate, NSTextFieldDelegate {
                 }
             }
         } else {
-            self.readerPopUpButton.selectItem(withTitle: feedHandler.title)
+            if (self.feedHandlers.first(where: {$0.title == feedHandler.title}) != nil) {
+                self.readerPopUpButton.selectItem(withTitle: feedHandler.title)
+            } else {
+                self.settingsManager.noFeedHandlerConfiguredAlert()
+            }
         }
     }
     
