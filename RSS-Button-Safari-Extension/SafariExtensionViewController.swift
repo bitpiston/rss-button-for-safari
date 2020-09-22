@@ -30,13 +30,49 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
         tableView.dataSource = self
         
         preferredContentSize = CGSize(width: 310, height: 75)
+        
+        let menu = NSMenu()
+        menu.addItem(NSMenuItem(title: "Subscribe", action: #selector(subscribeMenuClicked(_:)), keyEquivalent: ""))
+        menu.addItem(NSMenuItem(title: "Copy Address", action: #selector(copyMenuClicked(_:)), keyEquivalent: ""))
+        menu.addItem(NSMenuItem(title: "Open in Safari", action: #selector(openMenuClicked(_:)), keyEquivalent: ""))
+        tableView.menu = menu
+    }
+    
+    @objc func subscribeMenuClicked(_ sender: NSMenuItem) {
+        guard tableView.clickedRow >= 0 else { return }
+        
+        self.subscribeToFeed(feeds[tableView.clickedRow])
+        self.dismissPopover()
+    }
+    
+    @objc func copyMenuClicked(_ sender: NSMenuItem) {
+        guard tableView.clickedRow >= 0 else { return }
+        
+        if let url = URL(string: feeds[tableView.clickedRow].url) {
+            self.copyToClipboard(url.absoluteString)
+        }
+        
+        self.dismissPopover()
+    }
+    
+    @objc func openMenuClicked(_ sender: NSMenuItem) {
+        guard tableView.clickedRow >= 0 else { return }
+
+        if let url = URL(string: feeds[tableView.clickedRow].url) {
+            NSWorkspace.shared.open([url], withAppBundleIdentifier: "com.apple.safari",
+                                    options: NSWorkspace.LaunchOptions.default,
+                                    additionalEventParamDescriptor: nil,
+                                    launchIdentifiers: nil)
+        }
+        
+        self.dismissPopover()
     }
     
     func updatePreferredContentSize() -> Void {
-        contentWidth = maxCellWidth
-        maxCellWidth = 0
+        self.contentWidth = self.maxCellWidth + 20
+        self.maxCellWidth = 0
         
-        let width: CGFloat = min(max(contentWidth, 310), 410)
+        let width: CGFloat = max(min(self.contentWidth, 420), 310)
         let height: CGFloat = tableView.fittingSize.height + 30
         
         preferredContentSize = CGSize(width: width, height: height)
@@ -65,28 +101,29 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
     }
     
     @objc func subscribeButtonClicked(_ sender: NSButton) {
-        let row = tableView.row(for: sender)
+        self.subscribeToFeed(feeds[tableView.row(for: sender)])
+        self.dismissPopover()
+    }
+    
+    func subscribeToFeed(_ feed: FeedModel) -> Void {
         let feedHandler = settingsManager.getFeedHandler()
-        let feedUrl = feeds[row].url
         
         #if DEBUG
-        NSLog("Info: Subscribe button clicked for feed (\(feedUrl)) with feed handler (\(String(describing: feedHandler.appId)))")
+        NSLog("Info: Subscribe button clicked for feed (\(feed.url)) with feed handler (\(String(describing: feedHandler.appId)))")
         #endif
         
         // Warn of known unsupported or bugged readers
         if !self.settingsManager.isFeedHandlerSet() {
             self.settingsManager.noFeedHandlerConfiguredAlert(fromExtension: true)
         } else if !self.settingsManager.isSupportedFeedHandler() {
-            self.settingsManager.unsupportedFeedHandlerAlert(withFeedUrl: feedUrl)
-        } else if let url = URL(string: String(format: feedHandler.url!, feedUrl)) {
+            self.settingsManager.unsupportedFeedHandlerAlert(withFeedUrl: feed.url)
+        } else if let url = URL(string: String(format: feedHandler.url!, feed.url)) {
             #if DEBUG
             NSLog("Info: Opening feed (\(url))")
             #endif
 
             if feedHandler.type == FeedHandlerType.copy {
-                let pasteBoard = NSPasteboard.general
-                pasteBoard.clearContents()
-                pasteBoard.setString(url.absoluteString, forType: .string)
+                self.copyToClipboard(url.absoluteString)
             } else {
                 let applicationId = feedHandler.type == FeedHandlerType.web ||
                                     feedHandler.type == FeedHandlerType.custom ? "com.apple.safari" : feedHandler.appId
@@ -101,37 +138,43 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
         
         self.dismissPopover()
     }
+    
+    func copyToClipboard(_ string: String) -> Void {
+        let pasteBoard = NSPasteboard.general
+        pasteBoard.clearContents()
+        pasteBoard.setString(string, forType: .string)
+    }
 }
 
 extension SafariExtensionViewController: NSTableViewDataSource, NSTableViewDelegate {
     
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return feeds.count
+        return self.feeds.count
     }
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        guard feeds.count > row else {
+        guard self.feeds.count > row else {
             return nil
         }
         
         let cellIdentifier = NSUserInterfaceItemIdentifier(rawValue: "cellIdentifier")
         
         if let cellView = tableView.makeView(withIdentifier: cellIdentifier, owner: self) as? FeedTableCellView {
-            cellView.titleTextField.stringValue = feeds[row].title
-            cellView.detailsTextField.stringValue = {
+            cellView.titleTextField.stringValue = {
                 if showFeedType == true {
-                    return "(\(feeds[row].type)) " + feeds[row].url
+                    return "(\(self.feeds[row].type)) " + self.feeds[row].title
                 } else {
-                    return feeds[row].url
+                    return self.feeds[row].title
                 }
             }()
+            cellView.detailsTextField.stringValue = self.feeds[row].url
             cellView.subscribeButton.target = self
             cellView.subscribeButton.action = #selector(self.subscribeButtonClicked(_:))
             
-            maxCellWidth = max(maxCellWidth, cellView.fittingSize.width)
+            self.maxCellWidth = max(self.maxCellWidth, cellView.fittingSize.width)
             
             if row == feeds.count - 1 {
-                updatePreferredContentSize()
+                self.updatePreferredContentSize()
             }
             
             return cellView
