@@ -77,6 +77,11 @@ class ViewController: NSViewController, NSWindowDelegate, NSTextFieldDelegate {
                     self?.statusTextField.stringValue = status ? "● Enabled" : "● Disabled"
                     self?.informationTextField.stringValue = status ? "The extension is enabled. You can add the RSS Button to the Safari toolbar by right clicking and choosing Customize Toolbar." : "The extension is currently disabled. Please enable it from Safari preferences under the extensions tab."
                     //self?.enableButton.isHidden = status
+                } else {
+                    // Error message due to failure to install?
+                    self?.statusTextField.textColor = .systemRed
+                    self?.statusTextField.stringValue = "● Not Installed"
+                    self?.informationTextField.stringValue = "The extension is not installed. Please quit Safari, quit and move RSS Button for Safari to the trash and reinstall from the Mac App Store."
                 }
             }
         }
@@ -199,8 +204,7 @@ class ViewController: NSViewController, NSWindowDelegate, NSTextFieldDelegate {
         }
     }
     
-    func controlTextDidChange(_ obj: Notification)
-    {
+    func controlTextDidChange(_ obj: Notification) {
         guard let object = obj.object as? NSTextField else { return }
         let value = object.stringValue
         

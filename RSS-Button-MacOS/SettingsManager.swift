@@ -22,6 +22,8 @@ class SettingsManager {
         "org.mozilla.thunderbird",
         "com.mentalfaculty.cream.mac",
         "com.reederapp.rkit2.mac",     // Reeder v3
+        "com.froggyproggy.rss-reader",
+        "com.devhd.feedly.osx",
     ]
     
     init() {
@@ -49,6 +51,10 @@ class SettingsManager {
             FeedHandlerModel(title: "Feed HQ",
                              type: FeedHandlerType.web,
                              url: "https://feedhq.org/feed/add/?feed=%@",
+                             appId: nil),
+            FeedHandlerModel(title: "Feed Wrangler",
+                             type: FeedHandlerType.web,
+                             url: "https://feedwrangler.net/feeds/bookmarklet?feed_url=%@",
                              appId: nil),
             FeedHandlerModel(title: "NewsBlur",
                              type: FeedHandlerType.web,
