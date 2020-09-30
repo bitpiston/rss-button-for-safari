@@ -22,6 +22,8 @@ class SettingsManager {
         "org.mozilla.thunderbird",
         "com.mentalfaculty.cream.mac",
         "com.reederapp.rkit2.mac",     // Reeder v3
+        "com.froggyproggy.rss-reader",
+        "com.devhd.feedly.osx",
     ]
     
     init() {
