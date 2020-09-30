@@ -10,11 +10,10 @@
 
 'use strict';
 
-var feeds = [],
+var feeds  = [],
     parsed = false,
-    href = window.location.href,
-    timer = 0,
-    counter = 0;
+    href   = window.location.href,
+    timer  = 0;
 
 document.addEventListener("DOMContentLoaded", function(event) {
     if (isValidPage()) {
@@ -27,12 +26,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
         document.addEventListener('visibilitychange', function(event) {
             if (document.hidden && timer != 0) {
                 stopPolling();
+                console.info('RSS Button for Safari stopped polling for changes.');
             } else {
                 startPolling();
+                console.info('RSS Button for Safari started polling for changes.');
             }
         });
-        
-        // Resume polling on interaction for SPAs?
     }
 });
 
@@ -44,22 +43,17 @@ function isValidPage() {
 }
 
 function pollForChanges() {
-    if (counter < 10) {
-        counter++;
-        
-        if (parsed === true && href != window.location.href) {
-            href = window.location.href;
-            parsed = false;
-            
-            extractFeeds();
-            
-            stopPolling();
-            startPolling(10);
-        } else {
-            startPolling();
-        }
-    } else {
+    if (parsed === true && href != window.location.href) {
         stopPolling();
+        
+        href = window.location.href;
+        parsed = false;
+        
+        extractFeeds();
+        
+        startPolling();
+    } else {
+        startPolling();
     }
 }
 
@@ -72,7 +66,6 @@ function stopPolling() {
         clearTimeout(timer);
         timer = 0;
     }
-    counter = 0;
 }
 
 function extractFeeds(setParsed = true) {
