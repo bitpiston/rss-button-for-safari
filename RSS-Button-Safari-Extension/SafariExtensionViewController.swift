@@ -69,10 +69,10 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
     }
     
     func updatePreferredContentSize() -> Void {
-        self.contentWidth = self.maxCellWidth + 20
+        self.contentWidth = self.maxCellWidth + 64
         self.maxCellWidth = 0
         
-        let width: CGFloat = max(min(self.contentWidth, 420), 310)
+        let width: CGFloat = max(min(self.contentWidth, 420), 345)
         let height: CGFloat = tableView.fittingSize.height + 30
         
         preferredContentSize = CGSize(width: width, height: height)
