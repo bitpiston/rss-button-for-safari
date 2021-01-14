@@ -33,8 +33,11 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
         
         let menu = NSMenu()
         menu.addItem(NSMenuItem(title: "Subscribe", action: #selector(subscribeMenuClicked(_:)), keyEquivalent: ""))
+        menu.addItem(NSMenuItem.separator())
         menu.addItem(NSMenuItem(title: "Copy Address", action: #selector(copyMenuClicked(_:)), keyEquivalent: ""))
-        menu.addItem(NSMenuItem(title: "Open in Safari", action: #selector(openMenuClicked(_:)), keyEquivalent: ""))
+        menu.addItem(NSMenuItem.separator())
+        menu.addItem(NSMenuItem(title: "Open Feed in New Tab", action: #selector(openTabMenuClicked(_:)), keyEquivalent: ""))
+        menu.addItem(NSMenuItem(title: "Open Feed in New Window", action: #selector(openWindowMenuClicked(_:)), keyEquivalent: ""))
         tableView.menu = menu
     }
     
@@ -42,7 +45,6 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
         guard tableView.clickedRow >= 0 else { return }
         
         self.subscribeToFeed(feeds[tableView.clickedRow])
-        self.dismissPopover()
     }
     
     @objc func copyMenuClicked(_ sender: NSMenuItem) {
@@ -55,17 +57,26 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
         self.dismissPopover()
     }
     
-    @objc func openMenuClicked(_ sender: NSMenuItem) {
+    @objc func openTabMenuClicked(_ sender: NSMenuItem) {
         guard tableView.clickedRow >= 0 else { return }
 
         if let url = URL(string: feeds[tableView.clickedRow].url) {
-            NSWorkspace.shared.open([url], withAppBundleIdentifier: "com.apple.safari",
-                                    options: NSWorkspace.LaunchOptions.default,
-                                    additionalEventParamDescriptor: nil,
-                                    launchIdentifiers: nil)
+            SFSafariApplication.getActiveWindow { (window) in
+                window?.openTab(with: url, makeActiveIfPossible: true, completionHandler: { (tab) in
+                    self.dismissPopover()
+                })
+            }
         }
-        
-        self.dismissPopover()
+    }
+    
+    @objc func openWindowMenuClicked(_ sender: NSMenuItem) {
+        guard tableView.clickedRow >= 0 else { return }
+
+        if let url = URL(string: feeds[tableView.clickedRow].url) {
+            SFSafariApplication.openWindow(with: url, completionHandler: { (tab) in
+                self.dismissPopover()
+            })
+        }
     }
     
     func updatePreferredContentSize() -> Void {
@@ -102,7 +113,6 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
     
     @objc func subscribeButtonClicked(_ sender: NSButton) {
         self.subscribeToFeed(feeds[tableView.row(for: sender)])
-        self.dismissPopover()
     }
     
     func subscribeToFeed(_ feed: FeedModel) -> Void {
@@ -118,19 +128,28 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
         } else if !self.settingsManager.isSupportedFeedHandler() {
             self.settingsManager.unsupportedFeedHandlerAlert(withFeedUrl: feed.url)
         } else if let url = URL(string: String(format: feedHandler.url!, feed.url)) {
-            #if DEBUG
-            NSLog("Info: Opening feed (\(url))")
-            #endif
-
             if feedHandler.type == FeedHandlerType.copy {
                 self.copyToClipboard(url.absoluteString)
-            } else {
-                let applicationId = feedHandler.type == FeedHandlerType.web ||
-                                    feedHandler.type == FeedHandlerType.custom ? "com.apple.safari" : feedHandler.appId
-                NSWorkspace.shared.open([url], withAppBundleIdentifier: applicationId,
+                #if DEBUG
+                NSLog("Info: Copying feed (\(url)) to clipboard")
+                #endif
+            } else if feedHandler.type == FeedHandlerType.app {
+                NSWorkspace.shared.open([url], withAppBundleIdentifier: feedHandler.appId,
                                         options: NSWorkspace.LaunchOptions.default,
                                         additionalEventParamDescriptor: nil,
                                         launchIdentifiers: nil)
+                #if DEBUG
+                NSLog("Info: Opening feed (\(url)) in \(feedHandler.title)")
+                #endif
+            } else {
+                SFSafariApplication.getActiveWindow { (window) in
+                    window?.openTab(with: url, makeActiveIfPossible: true,  completionHandler: { (tab) in
+                        self.dismissPopover()
+                    })
+                }
+                #if DEBUG
+                NSLog("Info: Opening feed (\(url)) in Safari")
+                #endif
             }
         } else {
             NSLog("Error: Invalid URL for feed")
