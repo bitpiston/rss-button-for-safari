@@ -86,6 +86,7 @@ function extractFeeds(setParsed = true) {
                 
                 if (type == "application/rss+xml" ||
                     type == "application/atom+xml" ||
+                    type == "application/rdf+xml" ||
                     type == "text/xml" ||
                     type == "application/feed+json") {
                     var href  = link.attributes.getNamedItem("href").value,
@@ -124,6 +125,7 @@ function typeFromString(string) {
         "rss" : "RSS",
         "atom": "Atom",
         "json": "JSON",
+        "rdf" : "RDF",
     };
     
     for (var key in types) {
