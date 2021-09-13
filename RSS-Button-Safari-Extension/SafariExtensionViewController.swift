@@ -15,8 +15,6 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
     @IBOutlet weak var tableView: NSTableView!
     
     var feeds = [FeedModel]()
-    var contentWidth: CGFloat = 0
-    var maxCellWidth: CGFloat = 0
     var showFeedType: Bool = false
     
     let settingsManager = SettingsManager.shared
@@ -29,7 +27,7 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        preferredContentSize = CGSize(width: 310, height: 75)
+        preferredContentSize = CGSize(width: 420, height: 101)
         
         let menu = NSMenu()
         menu.addItem(NSMenuItem(title: "Subscribe", action: #selector(subscribeMenuClicked(_:)), keyEquivalent: ""))
@@ -80,13 +78,11 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
     }
     
     func updatePreferredContentSize() -> Void {
-        self.contentWidth = self.maxCellWidth + 64
-        self.maxCellWidth = 0
-        
-        let width: CGFloat = max(min(self.contentWidth, 420), 345)
-        let height: CGFloat = tableView.fittingSize.height + 30
+        let width = CGFloat(420)
+        let height = CGFloat((self.feeds.count * 55) + 46)
         
         preferredContentSize = CGSize(width: width, height: height)
+        tableView.sizeToFit()
     }
     
     func updateFeeds(with feeds: [FeedModel]) -> Void {
@@ -106,7 +102,7 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
                 self.showFeedType = false
             }
             
-            //self.tableView.sizeToFit()
+            self.updatePreferredContentSize()
             self.tableView.reloadData()
         }
     }
@@ -197,11 +193,7 @@ extension SafariExtensionViewController: NSTableViewDataSource, NSTableViewDeleg
             cellView.subscribeButton.target = self
             cellView.subscribeButton.action = #selector(self.subscribeButtonClicked(_:))
             
-            self.maxCellWidth = max(self.maxCellWidth, cellView.fittingSize.width)
-            
-            if row == feeds.count - 1 {
-                self.updatePreferredContentSize()
-            }
+            cellView.layoutSubtreeIfNeeded()
             
             return cellView
         } else {
