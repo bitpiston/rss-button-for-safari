@@ -134,10 +134,17 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
                 NSLog("Info: Copying feed (\(url)) to clipboard")
                 #endif
             } else if feedHandler.type == FeedHandlerType.app {
-                NSWorkspace.shared.open([url], withAppBundleIdentifier: feedHandler.appId,
-                                        options: NSWorkspace.LaunchOptions.default,
-                                        additionalEventParamDescriptor: nil,
-                                        launchIdentifiers: nil)
+                if #available(OSX 10.15, *) {
+                    guard let appUrl = NSWorkspace.shared.urlForApplication(withBundleIdentifier: feedHandler.appId!) else { return }
+                    NSWorkspace.shared.open([url], withApplicationAt: appUrl,
+                                            configuration: NSWorkspace.OpenConfiguration(),
+                                            completionHandler: nil)
+                } else {
+                    NSWorkspace.shared.open([url], withAppBundleIdentifier: feedHandler.appId,
+                                            options: NSWorkspace.LaunchOptions.default,
+                                            additionalEventParamDescriptor: nil,
+                                            launchIdentifiers: nil)
+                }
                 #if DEBUG
                 NSLog("Info: Opening feed (\(url)) in \(feedHandler.title)")
                 #endif
