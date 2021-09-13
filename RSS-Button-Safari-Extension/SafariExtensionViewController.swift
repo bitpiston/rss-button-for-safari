@@ -30,9 +30,9 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
         preferredContentSize = CGSize(width: 420, height: 101)
         
         let menu = NSMenu()
-        menu.addItem(NSMenuItem(title: "Subscribe", action: #selector(subscribeMenuClicked(_:)), keyEquivalent: ""))
+        menu.addItem(NSMenuItem(title: "Subscribe to Feed", action: #selector(subscribeMenuClicked(_:)), keyEquivalent: ""))
         menu.addItem(NSMenuItem.separator())
-        menu.addItem(NSMenuItem(title: "Copy Address", action: #selector(copyMenuClicked(_:)), keyEquivalent: ""))
+        menu.addItem(NSMenuItem(title: "Copy Feed Address", action: #selector(copyMenuClicked(_:)), keyEquivalent: ""))
         menu.addItem(NSMenuItem.separator())
         menu.addItem(NSMenuItem(title: "Open Feed in New Tab", action: #selector(openTabMenuClicked(_:)), keyEquivalent: ""))
         menu.addItem(NSMenuItem(title: "Open Feed in New Window", action: #selector(openWindowMenuClicked(_:)), keyEquivalent: ""))
