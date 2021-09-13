@@ -89,7 +89,8 @@ function extractFeeds(setParsed = true) {
                     type == "application/rdf+xml" ||
                     type == "application/xml" ||
                     type == "text/xml" ||
-                    type == "application/feed+json") {
+                    type == "application/feed+json" ||
+                    type == "application/json") {
                     var href  = link.attributes.getNamedItem("href").value,
                         type  = typeFromString(type),
                         title;
