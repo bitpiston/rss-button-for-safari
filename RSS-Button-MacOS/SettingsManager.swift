@@ -18,12 +18,15 @@ class SettingsManager {
     let defaultFeedHandlers: [FeedHandlerModel]
     let badgeButtonKey = "badgeButtonState"
     let unsupportedHandlers = [
-        "com.newsbar-app",
-        "org.mozilla.thunderbird",
-        "com.mentalfaculty.cream.mac",
+        "com.apple.news",              // Apple News
+        "com.newsbar-app",             // Newsbar
+        "org.mozilla.thunderbird",     // Mozilla Thunderbird
         "com.reederapp.rkit2.mac",     // Reeder v3
-        "com.froggyproggy.rss-reader",
-        "com.devhd.feedly.osx",
+        "com.froggyproggy.rss-reader", // RSS Reader
+        "com.devhd.feedly.osx",        // Feedly
+        "com.acrylic.pulp",            // Pulp
+        "com.joshholtz.AnOtterRSS",    // An Otter RSS Reader
+        "com.synsion.Newsify",         // Newsify
     ]
     
     init() {
@@ -67,10 +70,6 @@ class SettingsManager {
             FeedHandlerModel(title: "Inoreader",
                              type: FeedHandlerType.web,
                              url: "https://www.inoreader.com/?add_feed=%@",
-                             appId: nil),
-            FeedHandlerModel(title: "Minimal Reader",
-                             type: FeedHandlerType.web,
-                             url: "https://minimalreader.com/settings/subscriptions/add?url=%@",
                              appId: nil),
             FeedHandlerModel(title: "BazQuz Reader",
                              type: FeedHandlerType.web,

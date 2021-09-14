@@ -15,8 +15,6 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
     @IBOutlet weak var tableView: NSTableView!
     
     var feeds = [FeedModel]()
-    var contentWidth: CGFloat = 0
-    var maxCellWidth: CGFloat = 0
     var showFeedType: Bool = false
     
     let settingsManager = SettingsManager.shared
@@ -29,12 +27,12 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        preferredContentSize = CGSize(width: 310, height: 75)
+        preferredContentSize = CGSize(width: 420, height: 101)
         
         let menu = NSMenu()
-        menu.addItem(NSMenuItem(title: "Subscribe", action: #selector(subscribeMenuClicked(_:)), keyEquivalent: ""))
+        menu.addItem(NSMenuItem(title: "Subscribe to Feed", action: #selector(subscribeMenuClicked(_:)), keyEquivalent: ""))
         menu.addItem(NSMenuItem.separator())
-        menu.addItem(NSMenuItem(title: "Copy Address", action: #selector(copyMenuClicked(_:)), keyEquivalent: ""))
+        menu.addItem(NSMenuItem(title: "Copy Feed Address", action: #selector(copyMenuClicked(_:)), keyEquivalent: ""))
         menu.addItem(NSMenuItem.separator())
         menu.addItem(NSMenuItem(title: "Open Feed in New Tab", action: #selector(openTabMenuClicked(_:)), keyEquivalent: ""))
         menu.addItem(NSMenuItem(title: "Open Feed in New Window", action: #selector(openWindowMenuClicked(_:)), keyEquivalent: ""))
@@ -80,13 +78,11 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
     }
     
     func updatePreferredContentSize() -> Void {
-        self.contentWidth = self.maxCellWidth + 64
-        self.maxCellWidth = 0
-        
-        let width: CGFloat = max(min(self.contentWidth, 420), 345)
-        let height: CGFloat = tableView.fittingSize.height + 30
+        let width = CGFloat(420)
+        let height = CGFloat((self.feeds.count * 55) + 46)
         
         preferredContentSize = CGSize(width: width, height: height)
+        tableView.sizeToFit()
     }
     
     func updateFeeds(with feeds: [FeedModel]) -> Void {
@@ -106,7 +102,7 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
                 self.showFeedType = false
             }
             
-            //self.tableView.sizeToFit()
+            self.updatePreferredContentSize()
             self.tableView.reloadData()
         }
     }
@@ -134,10 +130,17 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
                 NSLog("Info: Copying feed (\(url)) to clipboard")
                 #endif
             } else if feedHandler.type == FeedHandlerType.app {
-                NSWorkspace.shared.open([url], withAppBundleIdentifier: feedHandler.appId,
-                                        options: NSWorkspace.LaunchOptions.default,
-                                        additionalEventParamDescriptor: nil,
-                                        launchIdentifiers: nil)
+                if #available(OSX 10.15, *) {
+                    guard let appUrl = NSWorkspace.shared.urlForApplication(withBundleIdentifier: feedHandler.appId!) else { return }
+                    NSWorkspace.shared.open([url], withApplicationAt: appUrl,
+                                            configuration: NSWorkspace.OpenConfiguration(),
+                                            completionHandler: nil)
+                } else {
+                    NSWorkspace.shared.open([url], withAppBundleIdentifier: feedHandler.appId,
+                                            options: NSWorkspace.LaunchOptions.default,
+                                            additionalEventParamDescriptor: nil,
+                                            launchIdentifiers: nil)
+                }
                 #if DEBUG
                 NSLog("Info: Opening feed (\(url)) in \(feedHandler.title)")
                 #endif
@@ -190,11 +193,7 @@ extension SafariExtensionViewController: NSTableViewDataSource, NSTableViewDeleg
             cellView.subscribeButton.target = self
             cellView.subscribeButton.action = #selector(self.subscribeButtonClicked(_:))
             
-            self.maxCellWidth = max(self.maxCellWidth, cellView.fittingSize.width)
-            
-            if row == feeds.count - 1 {
-                self.updatePreferredContentSize()
-            }
+            cellView.layoutSubtreeIfNeeded()
             
             return cellView
         } else {
