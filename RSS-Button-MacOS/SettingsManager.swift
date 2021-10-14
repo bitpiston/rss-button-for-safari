@@ -19,6 +19,7 @@ class SettingsManager {
     let badgeButtonKey = "badgeButtonState"
     let unsupportedHandlers = [
         "com.apple.news",              // Apple News
+        "com.apple.mail",              // Apple Mail
         "com.newsbar-app",             // Newsbar
         "org.mozilla.thunderbird",     // Mozilla Thunderbird
         "com.reederapp.rkit2.mac",     // Reeder v3
