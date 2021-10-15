@@ -159,27 +159,18 @@ class ViewController: NSViewController, NSWindowDelegate, NSTextFieldDelegate {
         
         self.readerPopUpButton.menu = readerMenu
         
-        // Set the default feed handler if on first run unless apple news
-        if !self.settingsManager.isFeedHandlerSet() {
-            if defaultFeedHandler != nil && defaultFeedHandler! as String != "com.apple.news",
-                let feedHandlerToSet = self.feedHandlers.first(where: {$0.appId == defaultFeedHandler! as String}) {
-                
-                if self.settingsManager.isSupportedFeedHandler() {
-                    self.readerPopUpButton.selectItem(withTitle: feedHandlerToSet.title)
-                    self.settingsManager.setFeedHandler(feedHandlerToSet)
-                }
-            } else {
-                if self.feedHandlers.filter({$0.type == FeedHandlerType.app}).count > 0 {
-                    self.settingsManager.noFeedHandlerConfiguredAlert()
-                } else {
-                    self.settingsManager.noFeedHandlersAlert()
-                }
-            }
-        } else {
+        // Set the feed handler if configured or alert
+        if self.settingsManager.isFeedHandlerSet() {
             if (self.feedHandlers.first(where: {$0.title == feedHandler.title}) != nil) {
                 self.readerPopUpButton.selectItem(withTitle: feedHandler.title)
             } else {
                 self.settingsManager.noFeedHandlerConfiguredAlert()
+            }
+        } else {
+            if self.feedHandlers.filter({$0.type == FeedHandlerType.app}).count > 0 {
+                self.settingsManager.noFeedHandlerConfiguredAlert()
+            } else {
+                self.settingsManager.noFeedHandlersAlert()
             }
         }
     }
