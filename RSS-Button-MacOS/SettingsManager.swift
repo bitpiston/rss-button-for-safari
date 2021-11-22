@@ -20,6 +20,7 @@ class SettingsManager {
     let unsupportedHandlers = [
         "com.apple.news",              // Apple News
         "com.apple.mail",              // Apple Mail
+        "com.apple.safari",            // Apple Safari
         "com.newsbar-app",             // Newsbar
         "org.mozilla.thunderbird",     // Mozilla Thunderbird
         "com.reederapp.rkit2.mac",     // Reeder v3
