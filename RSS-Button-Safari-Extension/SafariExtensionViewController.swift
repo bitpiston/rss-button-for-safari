@@ -145,14 +145,21 @@ class SafariExtensionViewController: SFSafariExtensionViewController {
                 NSLog("Info: Opening feed (\(url)) in \(feedHandler.title)")
                 #endif
             } else {
-                SFSafariApplication.getActiveWindow { (window) in
-                    window?.openTab(with: url, makeActiveIfPossible: true,  completionHandler: { (tab) in
-                        self.dismissPopover()
-                    })
+                if url.scheme == "https" || url.scheme == "http" {
+                    SFSafariApplication.getActiveWindow { (window) in
+                        window?.openTab(with: url, makeActiveIfPossible: true,  completionHandler: { (tab) in
+                            self.dismissPopover()
+                        })
+                    }
+                    #if DEBUG
+                    NSLog("Info: Opening feed (\(url)) in Safari")
+                    #endif
+                } else {
+                    NSWorkspace.shared.open(url)
+                    #if DEBUG
+                    NSLog("Info: Opening feed (\(url)) in default application")
+                    #endif
                 }
-                #if DEBUG
-                NSLog("Info: Opening feed (\(url)) in Safari")
-                #endif
             }
         } else {
             NSLog("Error: Invalid URL for feed")
