@@ -104,7 +104,12 @@ function extractFeeds(setParsed = true) {
                     }
                     
                     if (href) {
-                        feeds.push({url: _fullUrl(href), title: title, type: type});
+                        try {
+                            feeds.push({url: getUrl(href), title: title, type: type});
+                        } catch (error) {
+                            // Invalid URL or base URI when constructing URL() in getUrl()
+                            continue;
+                        }
                     }
                 }
             }
@@ -164,50 +169,9 @@ function titleFromType(type) {
     return title;
 }
 
-function _getBaseUrl() {
-    var head = document.getElementsByTagName("head")[0];
-    var baseLinks = head.getElementsByTagName("base");
-    var baseUrl;
+function getUrl(href) {
+    var base = document.baseURI;
+    var url = new URL(href, base);
     
-    for (var i=0; i < baseLinks.length; i++) {
-        var link = baseLinks[i];
-        
-        if (link.attributes.getNamedItem("href") !== null) {
-            var url = link.attributes.getNamedItem("href").value;
-            
-            if (url.charAt(url.length - 1) != "/") {
-                url += "/";
-            }
-            
-            baseUrl = url;
-            break;
-        }
-    }
-    
-    if (baseUrl === undefined) {
-        baseUrl = document.URL.split(":")[0] + "://" + document.domain + "/"
-    }
-    
-    return baseUrl;
-}
-
-function _fullUrl(url) {
-    var trimmedUrl = url.trim();
-    var protocolRelative = trimmedUrl.substr(0,2);
-    
-    if (protocolRelative === "//") {
-        trimmedUrl = document.URL.split(":")[0] + ":" + trimmedUrl;
-    }
-    
-    var protocol = trimmedUrl.substr(0,4);
-    
-    if (protocol !== "http" && protocol !== "feed") {
-        if (trimmedUrl[0] == "/") {
-            trimmedUrl = trimmedUrl.slice(1);
-        }
-        
-        trimmedUrl = _getBaseUrl() + trimmedUrl;
-    }
-    
-    return trimmedUrl;
+    return url.href;
 }
