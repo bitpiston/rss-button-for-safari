@@ -586,7 +586,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 76;
+				CURRENT_PROJECT_VERSION = 78;
 				DEVELOPMENT_TEAM = YE2H3T9GV5;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "RSS-Button-MacOS/Info.plist";
@@ -595,7 +595,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 1.7.2;
+				MARKETING_VERSION = 1.7.3;
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bitpiston.RSSButton4Safari;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -614,7 +614,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 76;
+				CURRENT_PROJECT_VERSION = 78;
 				DEVELOPMENT_TEAM = YE2H3T9GV5;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "RSS-Button-MacOS/Info.plist";
@@ -623,7 +623,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 1.7.2;
+				MARKETING_VERSION = 1.7.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bitpiston.RSSButton4Safari;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -717,7 +717,7 @@
 				CODE_SIGN_ENTITLEMENTS = "RSS-Button-Safari-Extension/RSS_Button.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 76;
+				CURRENT_PROJECT_VERSION = 78;
 				DEVELOPMENT_TEAM = YE2H3T9GV5;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "RSS-Button-Safari-Extension/Info.plist";
@@ -727,7 +727,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 1.7.2;
+				MARKETING_VERSION = 1.7.3;
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bitpiston.RSSButton4Safari.SafariExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -745,7 +745,7 @@
 				CODE_SIGN_ENTITLEMENTS = "RSS-Button-Safari-Extension/RSS_Button.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 76;
+				CURRENT_PROJECT_VERSION = 78;
 				DEVELOPMENT_TEAM = YE2H3T9GV5;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "RSS-Button-Safari-Extension/Info.plist";
@@ -755,7 +755,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 1.7.2;
+				MARKETING_VERSION = 1.7.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bitpiston.RSSButton4Safari.SafariExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
